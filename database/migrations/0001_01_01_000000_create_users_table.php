@@ -32,8 +32,9 @@ return new class extends Migration
 
         Schema::create('tarifs', function (Blueprint $table) {
             $table->id();
-            $table->integer('power'); // Daya dalam VA (Volt-Ampere)
+            $table->unsignedInteger('power'); // Daya dalam VA (Volt-Ampere)
             $table->decimal('per_kwh', 10, 2); // Harga per kWh
+            $table->decimal('penalty_per_day', 10, 2)->default(0); // Denda per hari keterlambatan
             $table->text('description')->nullable(); // Deskripsi tarif
             $table->timestamps();
         });
@@ -42,10 +43,10 @@ return new class extends Migration
             $table->id();
             $table->string('meter_number')->unique(); // Nomor meter kWh fisik
             $table->text('address');
-            $table->integer('initial_meter'); // Catatan awal meter kWh
+            $table->unsignedInteger('initial_meter'); // Catatan awal meter kWh
             $table->boolean('is_blocked')->default(false);
             $table->text('block_reason')->nullable(); // Alasan pemblokiran
-            $table->foreignId('user_id')->nullable()->constrained('users')->nullOnDelete();
+            $table->foreignId('user_id')->constrained('users')->cascadeOnDelete();
             $table->foreignId('tarif_id')->nullable()->constrained('tarifs')->nullOnDelete();
             $table->timestamps();
         });

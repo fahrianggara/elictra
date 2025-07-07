@@ -38,4 +38,14 @@ class Customer extends Model
     {
         return $this->belongsTo(Tarif::class);
     }
+
+    /**
+     * Relasi ke model Tagihan.
+     *
+     * @return void
+     */
+    public function bills()
+    {
+        return $this->hasMany(Bill::class);
+    }
 }
