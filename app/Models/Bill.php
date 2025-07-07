@@ -37,7 +37,6 @@ class Bill extends Model
         return config('app.admin_fee');
     }
 
-
     /**
      * Accessor for penalty attribute.
      *
