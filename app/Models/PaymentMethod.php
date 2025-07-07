@@ -11,6 +11,7 @@ class PaymentMethod extends Model
         'label',
         'icon',
         'is_active',
+        'number',
         'description'
     ];
 

@@ -16,6 +16,7 @@ return new class extends Migration
             $table->string('name')->unique(); // bank_transfer, e-wallet, etc.
             $table->string('label'); // e.g., "Bank Transfer", "E-Wallet"
             $table->string('icon')->nullable(); // Path to the icon file
+            $table->unsignedBigInteger('number'); // Account number or identifier for the payment method
             $table->boolean('is_active')->default(true); // Indicates if the payment method is active
             $table->text('description')->nullable(); // Additional information about the payment method
             $table->timestamps();
