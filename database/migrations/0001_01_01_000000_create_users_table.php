@@ -30,6 +30,26 @@ return new class extends Migration
             $table->timestamps();
         });
 
+        Schema::create('tarifs', function (Blueprint $table) {
+            $table->id();
+            $table->integer('power'); // Daya dalam VA (Volt-Ampere)
+            $table->decimal('per_kwh', 10, 2); // Harga per kWh
+            $table->text('description')->nullable(); // Deskripsi tarif
+            $table->timestamps();
+        });
+
+        Schema::create('customers', function (Blueprint $table) {
+            $table->id();
+            $table->string('meter_number')->unique(); // Nomor meter kWh fisik
+            $table->text('address');
+            $table->integer('initial_meter'); // Catatan awal meter kWh
+            $table->boolean('is_blocked')->default(false);
+            $table->text('block_reason')->nullable(); // Alasan pemblokiran
+            $table->foreignId('user_id')->nullable()->constrained('users')->nullOnDelete();
+            $table->foreignId('tarif_id')->nullable()->constrained('tarifs')->nullOnDelete();
+            $table->timestamps();
+        });
+
         Schema::create('password_reset_tokens', function (Blueprint $table) {
             $table->string('email')->primary();
             $table->string('token');
@@ -53,6 +73,7 @@ return new class extends Migration
     {
         Schema::dropIfExists('roles');
         Schema::dropIfExists('users');
+        Schema::dropIfExists('customers');
         Schema::dropIfExists('password_reset_tokens');
         Schema::dropIfExists('sessions');
     }
