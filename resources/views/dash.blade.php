@@ -8,8 +8,10 @@
     <title>{{ $title ?? config('app.name') }}</title>
 
     <link rel="stylesheet" href="{{ asset('css/app.css') }}">
+    <link rel="stylesheet" href="{{ asset('css/coreui.min.css') }}">
+    <link rel="stylesheet" href='https://cdn-uicons.flaticon.com/2.6.0/uicons-regular-rounded/css/uicons-regular-rounded.css'>
 
-    @vite(['resources/sass/app.scss', 'resources/js/app.js'])
+    @vite(['resources/css/app.css', 'resources/js/app.js'])
     @livewireStyles
     @stack('styles')
 </head>
@@ -18,6 +20,7 @@
     @livewire('layout.sidebar')
 
     @livewireScripts
+    <script src="{{ asset('js/coreui.bundle.min.js') }}"></script>
     @stack('scripts')
 </body>
 
