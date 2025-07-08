@@ -51,10 +51,20 @@ class User extends Authenticatable
     /**
      * Get the role associated with the user.
      *
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     * @return BelongsTo
      */
     public function role()
     {
         return $this->belongsTo(Role::class);
+    }
+
+    /**
+     * Get the activity logs for the user.
+     *
+     * @return HasMany
+     */
+    public function activities()
+    {
+        return $this->hasMany(ActivityLog::class);
     }
 }

@@ -15,7 +15,7 @@ class Tarif extends Model
     /**
      * Relasi ke model Customer.
      *
-     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     * @return HasMany
      */
     public function customers()
     {
