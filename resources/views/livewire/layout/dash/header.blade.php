@@ -7,15 +7,6 @@
         </button>
     </div>
     <div class="container-fluid breadcrumb-container pl-[270px] bg-white py-[10px] absolute top-[63px] border-bottom">
-        <nav aria-label="breadcrumb">
-            <ol class="breadcrumb my-0">
-                <li class="breadcrumb-item"><a class="text-blue-600" href="#">Home</a>
-                </li>
-                <li class="breadcrumb-item"><span>Theme</span>
-                </li>
-                <li class="breadcrumb-item active"><span>Colors</span>
-                </li>
-            </ol>
-        </nav>
+        {{ Breadcrumbs::render() }}
     </div>
 </header>

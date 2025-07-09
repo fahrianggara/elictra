@@ -12,12 +12,10 @@
     </div>
 
     <ul class="sidebar-nav">
-        <x-dash.nav-item href="admin.dashboard" icon="fas fa-tachometer-alt">
-            Dashboard
-        </x-dash.nav-item>
+        <x-dash.nav-item href="admin.dashboard" icon="fas fa-tachometer-alt">Dashboard</x-dash.nav-item>
 
         <li class="nav-title mt-0">Master</li>
-        <x-dash.nav-item href="#" icon="fas fa-users">Pelanggan</x-dash.nav-item>
+        <x-dash.nav-item href="admin.customers" icon="fas fa-users">Pelanggan</x-dash.nav-item>
         <x-dash.nav-item href="#" icon="fas fa-bolt">Tarif Listrik</x-dash.nav-item>
         <x-dash.nav-item href="#" icon="fas fa-money-bill">Metode Pembayaran</x-dash.nav-item>
         <x-dash.nav-item href="#" icon="fas fa-user">Pengguna</x-dash.nav-item>
