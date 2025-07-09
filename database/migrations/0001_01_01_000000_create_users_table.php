@@ -32,6 +32,7 @@ return new class extends Migration
 
         Schema::create('tarifs', function (Blueprint $table) {
             $table->id();
+            $table->string('type'); // Jenis tarif (R1, R2, R3, etc.)
             $table->unsignedInteger('power'); // Daya dalam VA (Volt-Ampere)
             $table->decimal('per_kwh', 10, 2); // Harga per kWh
             $table->decimal('penalty_per_day', 10, 2)->default(0); // Denda per hari keterlambatan
