@@ -5,7 +5,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
-    <title>{{ $title ?? config('app.name') }}</title>
+    <title>{{ $title ? "$title - " . config('app.name') : config('app.name') }}</title>
 
     <link rel="stylesheet" href="{{ asset('css/coreui.css') }}">
     <link rel="stylesheet" href="{{ asset('css/custom.css') }}">
@@ -26,14 +26,12 @@
 
         <div class="body flex-grow-1 d-flex flex-column">
             <div class="container-fluid pl-[80px] py-[10px]">
-                {{-- {{ $slot }} --}}
+                {{ $slot }}
             </div>
 
         </div>
 
         @livewire('layout.dash.footer')
-
-        {{-- @livewire('admin.logout') --}}
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js" integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r" crossorigin="anonymous"></script>
