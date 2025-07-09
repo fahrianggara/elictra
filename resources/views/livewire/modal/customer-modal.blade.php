@@ -13,6 +13,14 @@
         placeholder="Masukkan meter listik awalannya berapa" min="0" max="9999999999"
         :error="$errors->first('initial_meter')" />
 
+    <x-select
+        label="Tarif Listrik"
+        wire:model="tarif_id"
+        :required="true"
+        :error="$errors->first('tarif_id')"
+        :options="$tarifs"
+    />
+
     <x-textarea label="Alamat" wire:model="address" rows="4" :required="true"
         placeholder="Masukkan alamat pengguna" :error="$errors->first('address')" />
 

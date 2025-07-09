@@ -2,6 +2,7 @@
 
 namespace App\Livewire\Modal;
 
+use App\Models\Tarif;
 use Livewire\Attributes\On;
 use Livewire\Component;
 
@@ -14,7 +15,13 @@ class CustomerModal extends Component
      */
     public function render()
     {
-        return view('livewire.modal.customer-modal');
+        $tarifs = Tarif::all()->mapWithKeys(function ($item) {
+            return [$item->id => "{$item->type} - {$item->power}VA"];
+        })->toArray();
+
+        return view('livewire.modal.customer-modal', [
+            'tarifs' => $tarifs
+        ]);
     }
 
     /**
