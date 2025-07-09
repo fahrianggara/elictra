@@ -5,7 +5,7 @@
                 <div class="card-header flex justify-between items-center">
                     Data Pelanggan
 
-                    <button class="btn btn-primary btn-sm">
+                    <button wire:click="$dispatch('customer:create')" class="btn btn-primary btn-sm">
                         Tambah Pelanggan
                     </button>
                 </div>
@@ -62,4 +62,6 @@
             </div>
         </div>
     </div>
+
+    @livewire('modal.customer-modal')
 </div>
