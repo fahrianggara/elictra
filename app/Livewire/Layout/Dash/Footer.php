@@ -1,10 +1,10 @@
 <?php
 
-namespace App\Livewire\Layout;
+namespace App\Livewire\Layout\Dash;
 
 use Livewire\Component;
 
-class Header extends Component
+class Footer extends Component
 {
     /**
      * render
@@ -13,6 +13,6 @@ class Header extends Component
      */
     public function render()
     {
-        return view('livewire.layout.header');
+        return view('livewire.layout.dash.footer');
     }
 }
