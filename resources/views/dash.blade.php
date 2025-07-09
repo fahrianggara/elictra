@@ -25,7 +25,7 @@
         @livewire('layout.dash.header')
 
         <div class="body flex-grow-1 d-flex flex-column">
-            <div class="container-fluid pl-[80px] py-[10px]">
+            <div class="container-fluid pl-[80px] pr-[15px] py-[15px]">
                 {{ $slot }}
             </div>
 
