@@ -1,0 +1,18 @@
+<?php
+
+namespace App\Livewire\Layout;
+
+use Livewire\Component;
+
+class Header extends Component
+{
+    /**
+     * render
+     *
+     * @return void
+     */
+    public function render()
+    {
+        return view('livewire.layout.header');
+    }
+}
