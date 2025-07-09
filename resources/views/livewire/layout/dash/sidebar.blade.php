@@ -1,5 +1,5 @@
-<aside class="sidebar bg-white sidebar-fixed border-end sidebar-narrow-unfoldable" id="sidebar">
-    <div class="sidebar-header border-bottom p-[12px]">
+<aside class="sidebar bg-white sidebar-fixed border-end " id="sidebar">
+    <div class="sidebar-header border-bottom p-[12px] px-[1.3rem]">
         <div class="sidebar-brand">
             <a href="#" class="d-flex align-items-center text-decoration-none">
                 <img src="{{ asset('favicon/logo-text.png') }}" alt="Logo" class="sidebar-brand-full" width="150">

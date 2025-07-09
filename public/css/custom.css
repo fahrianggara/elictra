@@ -8,4 +8,8 @@ body {
     .body .container-fluid {
         padding-left: 15px;
     }
+
+    .breadcrumb-container {
+        padding-left: 15px !important;
+    }
 }
