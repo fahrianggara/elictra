@@ -42,7 +42,7 @@ return new class extends Migration
 
         Schema::create('customers', function (Blueprint $table) {
             $table->id();
-            $table->string('meter_number')->unique(); // Nomor meter kWh fisik
+            $table->unsignedBigInteger('meter_number')->unique(); // Nomor meter kWh fisik
             $table->text('address');
             $table->unsignedInteger('initial_meter'); // Catatan awal meter kWh
             $table->boolean('is_blocked')->default(false);

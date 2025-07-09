@@ -67,4 +67,14 @@ class User extends Authenticatable
     {
         return $this->hasMany(ActivityLog::class);
     }
+
+    /**
+     * Get the customer associated with the user.
+     *
+     * @return HasOne
+     */
+    public function customer()
+    {
+        return $this->hasOne(Customer::class);
+    }
 }

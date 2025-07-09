@@ -17,7 +17,7 @@ body {
 .required::after {
     content: "*";
     color: red;
-    margin-left: 0.25rem;
+    margin-left: 0.05rem;
 }
 
 .override-padding {

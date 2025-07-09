@@ -2,19 +2,27 @@
 
 namespace App\Livewire\Admin;
 
+use App\Models\Customer;
+use Livewire\Attributes\On;
 use Livewire\Component;
 
 class Customers extends Component
 {
     /**
-     * render
+     * Render the customers view with pagination.
      *
      * @return void
      */
+    #[On('customer:success')]
     public function render()
     {
-        return view('livewire.admin.customers')
-            ->layout('dash')
-            ->title('Pelanggan');
+        $customers = Customer::query()
+            ->with(['tarif', 'user'])
+            ->orderBy('created_at', 'desc')
+            ->paginate(10);
+
+        return view('livewire.admin.customers', [
+            'customers' => $customers,
+        ])->layout('dash')->title('Pelanggan');
     }
 }

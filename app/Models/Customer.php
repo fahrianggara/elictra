@@ -13,6 +13,7 @@ class Customer extends Model
         'is_blocked',
         'block_reason',
         'user_id',
+        'tarif_id',
     ];
 
     protected $casts = [

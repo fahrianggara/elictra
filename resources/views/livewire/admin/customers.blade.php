@@ -26,7 +26,44 @@
                     </div>
 
                     <x-dash.table headers="No, Nama & Email, Alamat, No. Meteran, Tarif Listrik, Status, ">
-                        <tr>
+                        @forelse ($customers as $customer)
+                            <tr>
+                                <td>{{ $loop->iteration }}</td>
+                                <td>
+                                    {{ $customer->user->name }}
+                                    <p class="mb-0 text-muted">{{ $customer->user->email }}</p>
+                                </td>
+                                <td class="w-[40%]">{{ $customer->address }}</td>
+                                <td>{{ $customer->meter_number }}</td>
+                                <td>{{ $customer->tarif->type }} - {{ $customer->tarif->power }}VA</td>
+                                <td>
+                                    <span class="badge bg-{{ $customer->is_blocked ? 'danger' : 'success' }}">
+                                        {{ $customer->is_blocked ? 'Terblokir' : 'Aktif' }}
+                                    </span>
+                                </td>
+                                <td>
+                                    <x-dash.table-action>
+                                        <li>
+                                            <a class="dropdown-item" href="#" wire:click="$dispatch('customer:edit', {{ $customer->id }})">
+                                                <i class="fas fa-edit text-warning mr-2"></i>
+                                                Edit
+                                            </a>
+                                        </li>
+                                        <li>
+                                            <a class="dropdown-item" href="#" wire:click="$dispatch('customer:delete', {{ $customer->id }})">
+                                                <i class="fas fa-trash text-danger mr-2"></i>
+                                                Hapus
+                                            </a>
+                                        </li>
+                                    </x-dash.table-action>
+                                </td>
+                            </tr>
+                        @empty
+                            <tr>
+                                <td colspan="7" class="text-center">Tidak ada data pelanggan</td>
+                            </tr>
+                        @endforelse
+                        {{-- <tr>
                             <td>1</td>
                             <td>
                                 Fahri Anggara
@@ -56,7 +93,7 @@
                                     </li>
                                 </x-dash.table-action>
                             </td>
-                        </tr>
+                        </tr> --}}
                     </x-dash.table>
                 </div>
             </div>
