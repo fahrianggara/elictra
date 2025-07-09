@@ -27,4 +27,14 @@ class CustomerModal extends Component
     {
         $this->dispatch('modal:show');
     }
+
+    /**
+     * Close the customer modal.
+     *
+     * @return void
+     */
+    public function close()
+    {
+        $this->dispatch('modal:hide');
+    }
 }

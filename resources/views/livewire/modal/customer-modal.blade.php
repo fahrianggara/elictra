@@ -1,4 +1,4 @@
-<x-modal id="modal-costumer" title="Tambah Pelanggan" class="show d-block">
+<x-modal id="modal-costumer" title="Tambah Pelanggan" >
     <x-input label="Nama" wire:model="name" :required="true"
         placeholder="Masukkan nama pelanggan" :error="$errors->first('name')" />
 
