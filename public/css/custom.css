@@ -4,6 +4,17 @@ body {
     font-family: "Inter", sans-serif;
 }
 
+.form-label {
+    font-weight: 500;
+    font-size: 0.95rem;
+}
+
+.required::after {
+    content: "*";
+    color: red;
+    margin-left: 0.25rem;
+}
+
 .override-padding {
     padding-left: 80px !important;
 }

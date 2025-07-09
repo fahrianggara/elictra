@@ -1,6 +1,6 @@
-<div class="modal fade" id="{{ $id }}" tabindex="-1" aria-labelledby="{{ $id }}Label" aria-hidden="true"
-    wire:ignore.self>
-    <div class="modal-dialog {{ $size }}">
+<div id="{{ $id }}" tabindex="-1" aria-labelledby="{{ $id }}Label" aria-hidden="true"
+    wire:ignore.self {{ $attributes->merge(['class' => 'modal fade']) }}>
+    <div class="modal-dialog {{ $size }} modal-dialog-centered modal-dialog-scrollable">
         <div class="modal-content">
             @if ($showHeader)
                 <div class="modal-header">
@@ -13,7 +13,7 @@
             </div>
 
             <div class="modal-footer p-[5px]">
-                <x-button type="secondary" action="close" target="close">
+                <x-button color="secondary" action="close" target="close">
                     {{ $closeText }}
                 </x-button>
 
