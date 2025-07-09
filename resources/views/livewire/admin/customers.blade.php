@@ -50,13 +50,19 @@
                                 </td>
                                 <td>
                                     <x-dash.table-action>
-                                        <x-dropdown-item :action="'edit(' . $customer->id . ')'"
-                                            icon="fas fa-edit text-warning"
-                                            :target="'edit'">Edit</x-dropdown-item>
+                                        <li>
+                                            <a class="dropdown-item" href="#" wire:click="$dispatch('customer:edit', { id: '{{ encrypt($customer->id) }}' })">
+                                                <i class="fas fa-edit text-warning mr-2"></i>
+                                                Edit
+                                            </a>
+                                        </li>
 
-                                        <x-dropdown-item :action="'destroy(' . $customer->id . ')'"
-                                            icon="fas fa-trash text-danger"
-                                            :target="'destroy'">Hapus</x-dropdown-item>
+                                        <li>
+                                            <a class="dropdown-item" href="#" wire:click="$dispatch('customer:destroy', { id: '{{ encrypt($customer->id) }}' })">
+                                                <i class="fas fa-trash-alt text-danger mr-2"></i>
+                                                Hapus
+                                            </a>
+                                        </li>
                                     </x-dash.table-action>
                                 </td>
                             </tr>

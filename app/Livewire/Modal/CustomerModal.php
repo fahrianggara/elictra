@@ -77,6 +77,60 @@ class CustomerModal extends Component
     }
 
     /**
+     * Edit an existing customer.
+     *
+     * @param  mixed $id
+     * @return void
+     */
+    #[On('customer:edit')]
+    public function edit($id)
+    {
+        $id = decrypt($id);
+        $user = User::with('customer')->findOrFail($id);
+
+        $this->editing = true;
+        $this->user_id = $user->id;
+        $this->name = $user->name;
+        $this->email = $user->email;
+        $this->tarif_id = $user->customer->tarif_id;
+        $this->address = $user->customer->address;
+        $this->meter_number = $user->customer->meter_number;
+        $this->initial_meter = $user->customer->initial_meter;
+
+        $this->dispatch('modal:show');
+    }
+
+    /**
+     * Update the customer data.
+     *
+     * @return void
+     */
+    public function update()
+    {
+        $this->validate();
+
+        $user = User::findOrFail($this->user_id);
+        $user->update([
+            'name' => $this->name,
+            'email' => $this->email,
+        ]);
+
+        $user->customer()->update([
+            'tarif_id' => $this->tarif_id,
+            'address' => $this->address,
+            'meter_number' => $this->meter_number,
+            'initial_meter' => $this->initial_meter,
+        ]);
+
+        $this->close();
+        $this->dispatch(
+            'customer:success', // <-- send event to Customer component
+            type: 'success',
+            message: 'Data pelanggan berhasil diperbarui.'
+        );
+    }
+
+    /**
      * Close the customer modal.
      *
      * @return void
