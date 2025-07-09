@@ -3,12 +3,19 @@
         <div class="col-lg-12">
             <div class="card">
                 <div class="card-header flex justify-between items-center">
-                    Data Pelanggan
+                    <div>
+                        <div class="spinner-border spinner-border-sm me-2" wire:loading wire:target="edit, destroy"
+                            role="status">
+                            <span class="visually-hidden">Loading...</span>
+                        </div>
+                        Data Pelanggan
+                    </div>
 
                     <button wire:click="$dispatch('customer:create')" class="btn btn-primary btn-sm">
                         Tambah Pelanggan
                     </button>
                 </div>
+
                 <div class="card-body">
                     <div class="row mb-3 justify-content-between">
                         <div class="col-md-2">
@@ -43,18 +50,13 @@
                                 </td>
                                 <td>
                                     <x-dash.table-action>
-                                        <li>
-                                            <a class="dropdown-item" href="#" wire:click="$dispatch('customer:edit', {{ $customer->id }})">
-                                                <i class="fas fa-edit text-warning mr-2"></i>
-                                                Edit
-                                            </a>
-                                        </li>
-                                        <li>
-                                            <a class="dropdown-item" href="#" wire:click="$dispatch('customer:delete', {{ $customer->id }})">
-                                                <i class="fas fa-trash text-danger mr-2"></i>
-                                                Hapus
-                                            </a>
-                                        </li>
+                                        <x-dropdown-item :action="'edit(' . $customer->id . ')'"
+                                            icon="fas fa-edit text-warning"
+                                            :target="'edit'">Edit</x-dropdown-item>
+
+                                        <x-dropdown-item :action="'destroy(' . $customer->id . ')'"
+                                            icon="fas fa-trash text-danger"
+                                            :target="'destroy'">Hapus</x-dropdown-item>
                                     </x-dash.table-action>
                                 </td>
                             </tr>
@@ -63,38 +65,11 @@
                                 <td colspan="7" class="text-center">Tidak ada data pelanggan</td>
                             </tr>
                         @endforelse
-                        {{-- <tr>
-                            <td>1</td>
-                            <td>
-                                Fahri Anggara
-                                <p class="mb-0 text-muted">fahriangga@mail.com</p>
-                            </td>
-                            <td>
-                                Jl. Lorem Ipsum Dolor Sit Amet No. 123 Jakarta Selatan
-                            </td>
-                            <td>1234567890</td>
-                            <td>R-1/900</td>
-                            <td>
-                                <span class="badge bg-success">Aktif</span>
-                            </td>
-                            <td>
-                                <x-dash.table-action>
-                                    <li>
-                                        <a class="dropdown-item" href="#">
-                                            <i class="fas fa-edit text-warning mr-2"></i>
-                                            Edit
-                                        </a>
-                                    </li>
-                                    <li>
-                                        <a class="dropdown-item" href="#">
-                                            <i class="fas fa-trash text-danger mr-2"></i>
-                                            Hapus
-                                        </a>
-                                    </li>
-                                </x-dash.table-action>
-                            </td>
-                        </tr> --}}
                     </x-dash.table>
+
+                    <div class="mt-3">
+                        {{ $customers->links('pagination::bootstrap-5') }}
+                    </div>
                 </div>
             </div>
         </div>
