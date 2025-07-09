@@ -9,6 +9,7 @@ use Livewire\Component;
 
 class CustomerModal extends Component
 {
+    public $deleting = false;
     public $editing = false;
     public $user_id;
     public $name;
@@ -131,13 +132,61 @@ class CustomerModal extends Component
     }
 
     /**
+     * Delete a customer.
+     *
+     * @param  mixed $id
+     * @return void
+     */
+    #[On('customer:delete')]
+    public function delete($id)
+    {
+        $id = decrypt($id);
+        $user = User::findOrFail($id);
+
+        $this->deleting = true;
+        $this->user_id = $user->id;
+        $this->name = $user->name;
+
+        $this->dispatch('modal:show');
+    }
+
+    /**
+     * Confirm the deletion of a customer.
+     *
+     * @return void
+     */
+    public function deleted()
+    {
+        User::findOrFail($this->user_id)->delete();
+
+        $this->close();
+        $this->dispatch(
+            'customer:success', // <-- send event to Customer component
+            type: 'success',
+            message: 'Data pelanggan berhasil dihapus.'
+        );
+    }
+
+    /**
      * Close the customer modal.
      *
      * @return void
      */
     public function close()
     {
+        $this->dispatch('modal:hide');
+    }
+
+    /**
+     * Close the modal and reset all fields.
+     *
+     * @return void
+     */
+    #[On('modal:onreset')]
+    public function onreset()
+    {
         $this->reset([
+            'deleting',
             'editing',
             'user_id',
             'name',
@@ -149,7 +198,6 @@ class CustomerModal extends Component
         ]);
 
         $this->resetErrorBag();
-        $this->dispatch('modal:hide');
     }
 
     /**

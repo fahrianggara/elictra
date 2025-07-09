@@ -58,7 +58,7 @@
                                         </li>
 
                                         <li>
-                                            <a class="dropdown-item" href="#" wire:click="$dispatch('customer:destroy', { id: '{{ encrypt($customer->id) }}' })">
+                                            <a class="dropdown-item" href="#" wire:click="$dispatch('customer:delete', { id: '{{ encrypt($customer->id) }}' })">
                                                 <i class="fas fa-trash-alt text-danger mr-2"></i>
                                                 Hapus
                                             </a>

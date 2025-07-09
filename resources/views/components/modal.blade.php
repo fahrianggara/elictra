@@ -1,6 +1,10 @@
+@props([
+    'centered' => true,
+])
+
 <div id="{{ $id }}" tabindex="-1" aria-labelledby="{{ $id }}Label" aria-hidden="true"
     wire:ignore.self {{ $attributes->merge(['class' => 'modal fade']) }}>
-    <div class="modal-dialog {{ $size }} modal-dialog-centered modal-dialog-scrollable">
+    <div class="modal-dialog {{ $size }} {{ $centered ? 'modal-dialog-centered modal-dialog-scrollable' : '' }}">
         <div class="modal-content">
             @if ($showHeader)
                 <div class="modal-header">
