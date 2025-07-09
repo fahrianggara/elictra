@@ -6,6 +6,7 @@
                 <img src="{{ asset('favicon/logo.png') }}" alt="Logo" class="sidebar-brand-narrow" width="38">
             </a>
         </div>
+        <button class="sidebar-toggler" type="button" data-coreui-toggle="unfoldable"></button>
         <button class="btn-close d-lg-none" type="button" data-coreui-dismiss="offcanvas" aria-label="Close"
             onclick="coreui.Sidebar.getInstance(document.querySelector(&quot;#sidebar&quot;)).toggle()">
         </button>
