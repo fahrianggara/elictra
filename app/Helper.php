@@ -24,3 +24,18 @@ if (!function_exists('setActive')) {
         }
     }
 }
+
+if (!function_exists('rupiah'))
+{
+    /**
+     * fungsi untuk format angka ke format rupiah
+     *
+     * @param  mixed $number
+     * @param  mixed $prefix
+     * @return void
+     */
+    function rupiah($number, $prefix = 'Rp')
+    {
+        return $prefix . number_format($number, 0, ',', '.');
+    }
+}

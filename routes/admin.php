@@ -8,5 +8,5 @@ use Illuminate\Support\Facades\Route;
 Route::group(['as' => 'admin'], function () {
     Route::get('dashboard', Dashboard::class)->name('.dashboard');
     Route::get('pelanggan', Customers::class)->name('.customers');
-    Route::get('tarif', Tarifs::class)->name('.tarifs');
+    Route::get('tarif-listrik', Tarifs::class)->name('.tarifs');
 });

@@ -2,10 +2,17 @@
 
 namespace App\Livewire\Admin;
 
+use App\Models\Tarif;
 use Livewire\Component;
+use Livewire\WithPagination;
 
 class Tarifs extends Component
 {
+    use WithPagination;
+
+    public $search;
+    public $perPage = 10;
+
     /**
      * Render the component view.
      *
@@ -13,8 +20,13 @@ class Tarifs extends Component
      */
     public function render()
     {
-        return view('livewire.admin.tarifs', [
+        $tarifs = Tarif::query()
+            ->withCount('customers')
+            ->when($this->search, fn($query) => $query->search($this->search))
+            ->paginate($this->perPage);
 
+        return view('livewire.admin.tarifs', [
+            'tarifs' => $tarifs,
         ])->layout('dash')->title('Tarif Listrik');
     }
 }

@@ -43,6 +43,10 @@ body {
     vertical-align: middle;
 }
 
+.table tr th {
+    white-space: nowrap;
+}
+
 .table-rounded {
     border-radius: 0.5rem;
     overflow: hidden;

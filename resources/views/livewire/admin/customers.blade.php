@@ -87,7 +87,7 @@
                 <div class="card-footer">
                     <div class="d-flex justify-content-between align-items-center">
                         <div class="text-muted text-[15px]">
-                            Menampilkan {{ $customers->count() }} dari {{ $customers->total() }} Data Pelanggan
+                            Menampilkan {{ $customers->count() }} dari {{ $customers->total() }} data
                         </div>
                         {{ $customers->links('components.pagination') }}
                     </div>

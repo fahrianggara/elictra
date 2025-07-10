@@ -34,7 +34,7 @@ return new class extends Migration
             $table->id();
             $table->string('type'); // Jenis tarif (R1, R2, R3, etc.)
             $table->unsignedInteger('power'); // Daya dalam VA (Volt-Ampere)
-            $table->decimal('per_kwh', 10, 2); // Harga per kWh
+            $table->decimal('price_per_kwh', 10, 2); // Harga per kWh
             $table->decimal('penalty_per_day', 10, 2)->default(0); // Denda per hari keterlambatan
             $table->text('description')->nullable(); // Deskripsi tarif
             $table->timestamps();
