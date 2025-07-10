@@ -2,7 +2,11 @@
 
 use App\Livewire\Admin\Customers;
 use App\Livewire\Admin\Dashboard;
+use App\Livewire\Admin\Tarifs;
 use Illuminate\Support\Facades\Route;
 
-Route::get('dashboard', Dashboard::class)->name('admin.dashboard');
-Route::get('pelanggan', Customers::class)->name('admin.customers');
+Route::group(['as' => 'admin'], function () {
+    Route::get('dashboard', Dashboard::class)->name('.dashboard');
+    Route::get('pelanggan', Customers::class)->name('.customers');
+    Route::get('tarif', Tarifs::class)->name('.tarifs');
+});
