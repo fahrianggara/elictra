@@ -75,4 +75,6 @@
             </div>
         </div>
     </div>
+
+    @livewire('modal.tarif-modal')
 </div>

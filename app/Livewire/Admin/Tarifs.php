@@ -3,6 +3,7 @@
 namespace App\Livewire\Admin;
 
 use App\Models\Tarif;
+use Livewire\Attributes\On;
 use Livewire\Component;
 use Livewire\WithPagination;
 
@@ -18,6 +19,7 @@ class Tarifs extends Component
      *
      * @return void
      */
+    #[On('tarif:success')]
     public function render()
     {
         $tarifs = Tarif::query()
