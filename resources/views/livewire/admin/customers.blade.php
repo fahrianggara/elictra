@@ -25,7 +25,7 @@
                                 ]" />
 
                             <x-select wire:model.change="filterTarif" placeholder="Filter Tarif Listrik" :options="[]"
-                                margin="mb-0" />
+                                margin="mb-0" :options="$tarifs" />
 
                             <x-select wire:model.change="filterStatus" placeholder="Filter Status Pelanggan"
                                 margin="mb-0" :options="[
@@ -90,11 +90,11 @@
                         </div>
                         <nav aria-label="Page navigation example">
                             <ul class="pagination">
-                                <li class="page-item"><a class="page-link" href="#">Previous</a></li>
+                                <li class="page-item"><a class="page-link" href="#"><i class="fas fa-angle-left"></i></a></li>
                                 <li class="page-item"><a class="page-link" href="#">1</a></li>
                                 <li class="page-item"><a class="page-link" href="#">2</a></li>
                                 <li class="page-item"><a class="page-link" href="#">3</a></li>
-                                <li class="page-item"><a class="page-link" href="#">Next</a></li>
+                                <li class="page-item"><a class="page-link" href="#"><i class="fas fa-angle-right"></i></a></li>
                             </ul>
                         </nav>
                     </div>
