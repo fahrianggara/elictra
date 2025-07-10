@@ -5,9 +5,12 @@
     $title = $editing ? 'Edit Metode Pembayaran' : 'Tambah Metode Pembayaran';
     $required = $editing ? false : true;
     $isDeleting = $deleting ? false : true; // Show header only when not deleting
-    $src = (is_string($logo) ? getFile($logo) : $logo)
-        ? getFile("livewire-tmp/{$logo->getFilename()}")
-        : 'https://placehold.co/600x400?text=Logo';
+    $src = 'https://placehold.co/600x400?text=Logo';
+    if (is_string($logo) && !empty($logo)) {
+        $src = getFile($logo);
+    } elseif ($logo && $logo->getFilename()) {
+        $src = getFile("livewire-tmp/{$logo->getFilename()}");
+    }
 @endphp
 
 <x-modal id="modal-metode-pembyaran" :title="$title" :show-header="$isDeleting" :centered="$isDeleting">

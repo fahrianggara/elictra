@@ -9,6 +9,31 @@ use Livewire\Component;
 class PaymentMethods extends Component
 {
     public $perPage = 10; // Default number of items per page
+    public $search;
+    public $filterType = '';
+    public $filterStatus = '';
+
+    /**
+     * Filtering the payment methods based on search and filters.
+     *
+     * @param  mixed $query
+     * @return object
+     */
+    public function filtering($query)
+    {
+        return $query
+            ->when($this->search, function ($query) {
+                $query->search($this->search);
+            })
+            ->when($this->filterType && $this->filterType !== 'all', function ($query) {
+                $query->where('type', $this->filterType);
+            })
+            ->when($this->filterStatus !== '' && $this->filterStatus !== 'all', function ($query) {
+                $query->where('is_active', $this->filterStatus == 1);
+            })
+            ->orderBy('is_active', 'desc');
+    }
+
     /**
      * Render the payment methods view.
      *
@@ -17,12 +42,29 @@ class PaymentMethods extends Component
     #[On('payment-method:success')]
     public function render()
     {
-        $paymentMethods = PaymentMethod::query()
-            ->orderBy('created_at', 'desc')
-            ->paginate($this->perPage);
+        $paymentMethods = $this->filtering(PaymentMethod::query())->paginate($this->perPage);
 
         return view('livewire.admin.payment-methods', [
             'paymentMethods' => $paymentMethods
         ])->layout('dash')->title('Metode Pembayaran');
     }
+
+    /**
+     * Update the status of a payment method.
+     *
+     * @param  mixed $id
+     * @param  mixed $value
+     * @return void
+     */
+    public function updateStatus($id, $value)
+    {
+        $method = PaymentMethod::find(decrypt($id));
+        if ($method) {
+            $method->is_active = $value;
+            $method->update();
+
+            $this->dispatch('toast', icon: 'success', message: 'Status metode pembayaran berhasil diperbarui.');
+        }
+    }
+
 }

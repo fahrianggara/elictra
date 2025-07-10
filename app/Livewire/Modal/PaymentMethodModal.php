@@ -31,10 +31,7 @@ class PaymentMethodModal extends Component
     public function updatedLogo()
     {
         // remove old image previously uploaded
-        if ($this->oldLogo && $this->oldLogo instanceof TemporaryUploadedFile) {
-            deleteFile("livewire-tmp/{$this->oldLogo->getFilename()}");
-        }
-
+        $this->deleteOldLogo(); // Delete the old logo file if it exists
         $this->oldLogo = $this->logo; // Store the new logo temporarily
     }
 
@@ -89,9 +86,115 @@ class PaymentMethodModal extends Component
             'is_active' => $this->is_active,
         ]);
 
+        $this->deleteOldLogo(); // Delete the old logo file if it exists
+
         $this->close();
         $this->dispatch('payment-method:success');
         $this->dispatch('toast', icon: 'success', message: 'Data metode pembayaran berhasil disimpan.');
+    }
+
+    /**
+     * Edit an existing payment method.
+     *
+     * @param  mixed $id
+     * @return void
+     */
+    #[On('payment-method:edit')]
+    public function edit($id)
+    {
+        $id = decrypt($id);
+        $paymentMethod = PaymentMethod::findOrFail($id);
+
+        $this->payment_method_id = $paymentMethod->id;
+        $this->type = $paymentMethod->type;
+        $this->label = $paymentMethod->label;
+        $this->number = $paymentMethod->number;
+        $this->logo = $paymentMethod->logo; // Load the existing logo
+        $this->editing = true;
+
+        $this->reset('deleting'); // Reset deleting state to false
+        $this->dispatch('modal:show');
+    }
+
+    /**
+     * Update the payment method data.
+     *
+     * @return void
+     */
+    public function update()
+    {
+        $this->validate();
+
+        $paymentMethod = PaymentMethod::findOrFail($this->payment_method_id);
+
+        // If a new logo is uploaded, handle the old logo deletion
+        if ($this->logo instanceof TemporaryUploadedFile) {
+            deleteFile($paymentMethod->logo);
+            $logo = uploadFile($this->logo, 'payment-methods');
+        } else {
+            $logo = $paymentMethod->logo; // Keep the old logo if no new one is uploaded
+        }
+
+        $paymentMethod->update([
+            'type' => $this->type,
+            'label' => $this->label,
+            'number' => $this->number,
+            'logo' => $logo,
+            'is_active' => $this->is_active,
+        ]);
+
+        $this->deleteOldLogo(); // Delete the old logo file if it exists
+
+        $this->close();
+        $this->dispatch('payment-method:success');
+        $this->dispatch('toast', icon: 'success', message: 'Data metode pembayaran berhasil diperbarui.');
+    }
+
+    /**
+     * Delete a payment method.
+     *
+     * @param  mixed $id
+     * @return void
+     */
+    #[On('payment-method:delete')]
+    public function delete($id)
+    {
+        $id = decrypt($id);
+        $paymentMethod = PaymentMethod::findOrFail($id);
+
+        $this->deleting = true;
+        $this->payment_method_id = $paymentMethod->id;
+
+        if ($paymentMethod->is_active) {
+            $this->dispatch('toast', icon: 'error', message: 'Metode pembayaran ini tidak dapat dihapus karena masih aktif.');
+            return;
+        }
+
+        $this->reset('editing'); // Reset editing state to false
+        $this->dispatch('modal:show');
+    }
+
+    /**
+     * Confirm the deletion of a payment method.
+     *
+     * @return void
+     */
+    public function deleted()
+    {
+        $paymentMethod = PaymentMethod::findOrFail($this->payment_method_id);
+
+        // Check if the payment method is in use
+        if ($paymentMethod->is_active) {
+            $this->dispatch('toast', icon: 'error', message: 'Metode pembayaran ini tidak dapat dihapus karena masih aktif.');
+            return;
+        }
+
+        // Delete the payment method
+        $paymentMethod->delete();
+
+        $this->close();
+        $this->dispatch('payment-method:success');
+        $this->dispatch('toast', icon: 'success', message: 'Data metode pembayaran berhasil dihapus.');
     }
 
     /**
@@ -120,6 +223,7 @@ class PaymentMethodModal extends Component
             'label',
             'number',
             'logo',
+            'oldLogo',
             'is_active',
         ]);
 
@@ -176,5 +280,17 @@ class PaymentMethodModal extends Component
             'logo.mimes'      => 'File logo harus berformat PNG.',
             'is_active.boolean' => 'Status aktif harus bernilai true atau false.',
         ];
+    }
+
+    /**
+     * Delete the old logo file if it exists.
+     *
+     * @return void
+     */
+    private function deleteOldLogo()
+    {
+        if ($this->oldLogo && $this->oldLogo instanceof TemporaryUploadedFile) {
+            deleteFile("livewire-tmp/{$this->oldLogo->getFilename()}");
+        }
     }
 }

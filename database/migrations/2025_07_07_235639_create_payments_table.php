@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('payment_methods', function (Blueprint $table) {
             $table->id();
-            $table->string('type')->unique(); // bank_transfer, e-wallet, etc.
+            $table->string('type'); // bank_transfer, e-wallet, etc.
             $table->string('label'); // No.Rekening, No.Akun, etc.
             $table->unsignedBigInteger('number'); // 1231231231321
             $table->string('logo')->nullable(); // URL to the logo image

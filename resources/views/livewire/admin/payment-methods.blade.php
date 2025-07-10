@@ -50,11 +50,12 @@
                                     <img src="{{ getFile($paymentMethod->logo) }}" class="h-[50px] w-[80px] object-contain rounded"
                                         alt="{{ $paymentMethod->label }}">
                                 </td>
-                                <td>{{ $paymentMethod->type }}</td>
+                                <td>{{ $paymentMethod->type_format }}</td>
                                 <td>{{ $paymentMethod->label }}</td>
                                 <td>{{ $paymentMethod->number }}</td>
                                 <td>
-                                    <select wire:model.change="status.{{ $paymentMethod->id }}" class="form-select w-[120px]">
+                                    <select wire:change="updateStatus('{{ encrypt($paymentMethod->id) }}', $event.target.value)"
+                                        wire:loading.attr="disabled" class="form-select w-[135px]">
                                         <option value="1" {{ $paymentMethod->is_active ? 'selected' : '' }}>Aktif</option>
                                         <option value="0" {{ !$paymentMethod->is_active ? 'selected' : '' }}>Tidak Aktif</option>
                                     </select>

@@ -23,4 +23,33 @@ class PaymentMethod extends Model
     {
         return $this->hasMany(Payment::class, 'method_id');
     }
+
+    /**
+     * Scope to search payment methods by label, number, or type.
+     *
+     * @param  mixed $query
+     * @param  mixed $search
+     * @return void
+     */
+    public function scopeSearch($query, $search)
+    {
+        return $query->where('label', 'like', '%' . $search . '%')
+            ->orWhere('number', 'like', '%' . $search . '%')
+            ->orWhere('type', 'like', '%' . $search . '%');
+    }
+
+    /**
+     * Get the formatted type of the payment method.
+     *
+     * @return void
+     */
+    public function getTypeFormatAttribute()
+    {
+        return match ($this->type) {
+            'bank_transfer' => 'Transfer Bank',
+            'e_wallet' => 'Dompet Digital',
+            'credit_card' => 'Kartu Kredit',
+            default => 'Lainnya',
+        };
+    }
 }
