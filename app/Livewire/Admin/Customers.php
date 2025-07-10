@@ -6,9 +6,12 @@ use App\Models\Customer;
 use App\Models\Tarif;
 use Livewire\Attributes\On;
 use Livewire\Component;
+use Livewire\WithPagination;
 
 class Customers extends Component
 {
+    use WithPagination;
+
     public $perPage = 10;
     public $search;
     public $filterTarif = '';

@@ -44,7 +44,7 @@
                     <x-dash.table headers="No, Nama & Email, Alamat, No. Meteran, Tarif Listrik, Status, ">
                         @forelse ($customers as $customer)
                             <tr>
-                                <td>{{ $loop->iteration }}</td>
+                                <td>{{ $customers->firstItem() + $loop->index }}</td>
                                 <td>
                                     {{ $customer->user->name }}
                                     <p class="mb-0 text-muted">{{ $customer->user->email }}</p>
@@ -86,18 +86,10 @@
                 </div>
                 <div class="card-footer">
                     <div class="d-flex justify-content-between align-items-center">
-                        <div>
+                        <div class="text-muted text-[15px]">
                             Menampilkan {{ $customers->count() }} dari {{ $customers->total() }} Data Pelanggan
                         </div>
-                        <nav aria-label="Page navigation example">
-                            <ul class="pagination">
-                                <li class="page-item"><a class="page-link" href="#"><i class="fas fa-angle-left"></i></a></li>
-                                <li class="page-item"><a class="page-link" href="#">1</a></li>
-                                <li class="page-item"><a class="page-link" href="#">2</a></li>
-                                <li class="page-item"><a class="page-link" href="#">3</a></li>
-                                <li class="page-item"><a class="page-link" href="#"><i class="fas fa-angle-right"></i></a></li>
-                            </ul>
-                        </nav>
+                        {{ $customers->links('components.pagination') }}
                     </div>
                 </div>
             </div>
