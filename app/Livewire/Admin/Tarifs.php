@@ -25,6 +25,7 @@ class Tarifs extends Component
         $tarifs = Tarif::query()
             ->withCount('customers')
             ->when($this->search, fn($query) => $query->search($this->search))
+            ->orderBy('customers_count', 'desc')
             ->paginate($this->perPage);
 
         return view('livewire.admin.tarifs', [
