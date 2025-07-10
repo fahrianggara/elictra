@@ -35,7 +35,7 @@ class Tarif extends Model
     {
         return $query->where(function ($q) use ($search) {
             $q->where('description', 'like', "%{$search}%")
-                ->whereRaw("CONCAT(type, ' - ', power, 'VA') LIKE ?", ["%{$search}%"])
+                ->orWhereRaw("CONCAT(type, ' - ', power, 'VA') LIKE ?", ["%{$search}%"])
                 ->orWhere('type', 'like', "%{$search}%")
                 ->orWhere('power', 'like', "%{$search}%");
         });

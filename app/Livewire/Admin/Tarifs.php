@@ -24,7 +24,7 @@ class Tarifs extends Component
     {
         $tarifs = Tarif::query()
             ->withCount('customers')
-            ->when($this->search, fn($query) => $query->search($this->search))
+            ->when($this->search, fn($query) => $query->search(trim($this->search)))
             ->orderBy('customers_count', 'desc')
             ->paginate($this->perPage);
 

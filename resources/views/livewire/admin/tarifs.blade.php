@@ -42,14 +42,16 @@
                                 <td>
                                     <x-dash.table-action>
                                         <li>
-                                            <a class="dropdown-item" href="javascript:void(0)" wire:click="">
+                                            <a class="dropdown-item" href="javascript:void(0)"
+                                                wire:click="$dispatch('tarif:edit', { id: '{{ encrypt($tarif->id) }}' })">
                                                 <i class="fas fa-edit text-warning mr-2"></i>
                                                 Edit
                                             </a>
                                         </li>
 
                                         <li>
-                                            <a class="dropdown-item" href="javascript:void(0)" wire:click="">
+                                            <a class="dropdown-item" href="javascript:void(0)"
+                                                wire:click="$dispatch('tarif:delete', { id: '{{ encrypt($tarif->id) }}' })">
                                                 <i class="fas fa-trash-alt text-danger mr-2"></i>
                                                 Hapus
                                             </a>

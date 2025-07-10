@@ -57,9 +57,103 @@ class TarifModal extends Component
 
         $this->close();
         $this->dispatch(
-            'tarif:success', // <-- send event to Customer component
+            'tarif:success', // <-- send event to Tarif component
             type: 'success',
             message: 'Data tarif berhasil disimpan.'
+        );
+    }
+
+    /**
+     * Edit an existing tarif.
+     *
+     * @param  mixed $id
+     * @return void
+     */
+    #[On('tarif:edit')]
+    public function edit($id)
+    {
+        $id = decrypt($id);
+        $tarif = Tarif::findOrFail($id);
+
+        $this->tarif_id = $tarif->id;
+        $this->type = $tarif->type;
+        $this->power = $tarif->power;
+        $this->price_per_kwh = $tarif->price_per_kwh;
+        $this->penalty_per_day = $tarif->penalty_per_day;
+        $this->description = $tarif->description;
+        $this->editing = true;
+
+        $this->dispatch('modal:show');
+    }
+
+    /**
+     * Update the tarif data.
+     *
+     * @return void
+     */
+    public function update()
+    {
+        $this->validate();
+
+        $tarif = Tarif::findOrFail($this->tarif_id);
+        $tarif->update([
+            'type' => $this->type,
+            'power' => $this->power,
+            'price_per_kwh' => $this->price_per_kwh,
+            'penalty_per_day' => $this->penalty_per_day,
+            'description' => $this->description,
+        ]);
+
+        $this->close();
+        $this->dispatch(
+            'tarif:success', // <-- send event to Tarif component
+            type: 'success',
+            message: 'Data tarif berhasil diperbarui.'
+        );
+    }
+
+    /**
+     * Delete a tarif.
+     *
+     * @param  mixed $id
+     * @return void
+     */
+    #[On('tarif:delete')]
+    public function delete($id)
+    {
+        $id = decrypt($id);
+        $tarif = Tarif::findOrFail($id);
+
+        $this->deleting = true;
+        $this->tarif_id = $tarif->id;
+        $this->type = $tarif->type;
+        $this->power = $tarif->power;
+
+        if ($tarif->customers()->count() > 0) {
+            $this->dispatch('error',
+                type: 'error',
+                message: 'Tarif ini tidak dapat dihapus karena sudah digunakan oleh pelanggan.'
+            );
+            return;
+        }
+
+        $this->dispatch('modal:show');
+    }
+
+    /**
+     * Confirm the deletion of a tarif.
+     *
+     * @return void
+     */
+    public function deleted()
+    {
+        Tarif::findOrFail($this->tarif_id)->delete();
+
+        $this->close();
+        $this->dispatch(
+            'tarif:success', // <-- send event to tarif component
+            type: 'success',
+            message: 'Data tarif berhasil dihapus.'
         );
     }
 
