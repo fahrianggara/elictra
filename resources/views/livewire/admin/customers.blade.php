@@ -9,7 +9,7 @@
                     </div>
 
                     <button wire:click="$dispatch('customer:create')" class="btn btn-primary btn-sm">
-                        Tambah Pelanggan
+                        Tambah
                     </button>
                 </div>
 
@@ -25,10 +25,10 @@
                                     100 => '100',
                                 ]" />
 
-                            <x-select wire:model.change="filterTarif" placeholder="Filter Tarif Listrik"
+                            <x-select wire:model.change="filterTarif" placeholder="Tarif Listrik"
                                 margin="mb-0" :options="$tarifs" showAll allLabel="Semua Tarif" />
 
-                            <x-select wire:model.change="filterStatus" placeholder="Filter Status Pelanggan"
+                            <x-select wire:model.change="filterStatus" placeholder="Status Pelanggan"
                                 margin="mb-0" :options="[
                                     'all' => 'Semua',
                                     0 => 'Aktif',

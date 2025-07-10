@@ -9,7 +9,7 @@
                     </div>
 
                     <button wire:click="$dispatch('tarif:create')" class="btn btn-primary btn-sm">
-                        Tambah Tarif Listrik
+                        Tambah
                     </button>
                 </div>
 

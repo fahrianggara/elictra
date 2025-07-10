@@ -2,7 +2,7 @@
     $color = $deleting ? 'danger' : 'primary';
     $action = $deleting ? 'deleted' : ($editing ? 'update' : 'store');
     $actionText = $deleting ? 'Hapus' : ($editing ? 'Edit' : 'Tambah');
-    $title = $editing ? 'Edit Tarif' : 'Tambah Tarif';
+    $title = $editing ? 'Edit Tarif Listrik' : 'Tambah Tarif Listrik';
     $required = $editing ? false : true;
     $isDeleting = $deleting ? false : true; // Show header only when not deleting
 @endphp
