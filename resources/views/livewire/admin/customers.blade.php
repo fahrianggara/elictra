@@ -4,7 +4,7 @@
             <div class="card">
                 <div class="card-header flex justify-between items-center">
                     <div>
-                        <x-spinner target="edit, destroy" />
+                        <x-spinner target="edit, destroy, search, perPage, filterTarif, filterStatus" />
                         Data Pelanggan
                     </div>
 
@@ -17,15 +17,16 @@
                     <div class="row mb-3 gap-2 justify-content-between align-items-center">
                         <div class="col-md-6 flex gap-2">
                             <x-select wire:model.change="perPage" placeholder="Tampilkan"
+                                class="w-[80px]"
                                 margin="mb-0" :options="[
-                                    10 => '10 Data',
-                                    25 => '25 Data',
-                                    50 => '50 Data',
-                                    100 => '100 Data',
+                                    10 => '10',
+                                    25 => '25',
+                                    50 => '50',
+                                    100 => '100',
                                 ]" />
 
-                            <x-select wire:model.change="filterTarif" placeholder="Filter Tarif Listrik" :options="[]"
-                                margin="mb-0" :options="$tarifs" />
+                            <x-select wire:model.change="filterTarif" placeholder="Filter Tarif Listrik"
+                                margin="mb-0" :options="$tarifs" showAll allLabel="Semua Tarif" />
 
                             <x-select wire:model.change="filterStatus" placeholder="Filter Status Pelanggan"
                                 margin="mb-0" :options="[
@@ -103,5 +104,7 @@
         </div>
     </div>
 
-    @livewire('modal.customer-modal')
+    @livewire('modal.customer-modal', [
+        'tarifs' => $tarifs
+    ])
 </div>

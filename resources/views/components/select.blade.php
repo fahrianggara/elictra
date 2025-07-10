@@ -5,6 +5,8 @@
     'error' => null,
     'options' => [], // ['value' => 'Label']
     'margin' => 'mb-3',
+    'showAll' => false, // << default: false
+    'allLabel' => 'Semua', // << bisa diubah kalau mau
 ])
 
 @php
@@ -37,7 +39,11 @@
             $error ? 'is-invalid' : '',
         ]) }}
     >
-        <option value="" disabled selected hidden>{{ $placeholder }}</option>
+        @if ($showAll)
+            <option value="">{{ $allLabel }}</option>
+        @else
+            <option value="" disabled selected hidden>{{ $placeholder }}</option>
+        @endif
 
         @foreach ($options as $optionValue => $optionLabel)
             <option value="{{ $optionValue }}">{{ $optionLabel }}</option>

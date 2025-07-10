@@ -18,6 +18,18 @@ class CustomerModal extends Component
     public $address;
     public $meter_number;
     public $initial_meter;
+    public $tarifs;
+
+    /**
+     * Mount the component with the given tarifs.
+     *
+     * @param  mixed $tarifs
+     * @return void
+     */
+    public function mount($tarifs)
+    {
+        $this->tarifs = $tarifs;
+    }
 
     /**
      * Render the customer modal view.
@@ -26,13 +38,7 @@ class CustomerModal extends Component
      */
     public function render()
     {
-        $tarifs = Tarif::all()->mapWithKeys(function ($item) {
-            return [$item->id => "{$item->type} - {$item->power}VA"];
-        })->toArray();
-
-        return view('livewire.modal.customer-modal', [
-            'tarifs' => $tarifs
-        ]);
+        return view('livewire.modal.customer-modal');
     }
 
     /**

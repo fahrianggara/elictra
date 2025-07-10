@@ -9,6 +9,25 @@ use Livewire\Component;
 
 class Customers extends Component
 {
+    public $perPage = 10;
+    public $search;
+    public $filterTarif = '';
+    public $filterStatus = '';
+
+    /**
+     * Filtering method to handle search and pagination.
+     *
+     * @return object
+     */
+    public function filtering($query)
+    {
+        return $query->when($this->search, fn ($q) => $q->search($this->search))
+            ->when($this->filterTarif, fn ($q) => $q->where('tarif_id', $this->filterTarif))
+            ->when($this->filterStatus !== 'all', fn ($q) => $q->where('is_blocked', $this->filterStatus))
+            ->with(['tarif', 'user'])
+            ->orderBy('created_at', 'desc');
+    }
+
     /**
      * Render the customers view with pagination.
      *
@@ -17,10 +36,7 @@ class Customers extends Component
     #[On('customer:success')]
     public function render()
     {
-        $customers = Customer::query()
-            ->with(['tarif', 'user'])
-            ->orderBy('created_at', 'desc')
-            ->paginate(10);
+        $customers = $this->filtering(Customer::query())->paginate($this->perPage);
 
         $tarifs = Tarif::all()->mapWithKeys(function ($item) {
             return [$item->id => "{$item->type} - {$item->power}VA"];
