@@ -12,8 +12,7 @@
     @if ($target) wire:target="{{ $target }}" @endif wire:loading.attr="disabled">
     {{-- Spinner saat loading --}}
     @if ($target)
-        <span class="spinner-border spinner-border-sm me-1 align-middle" wire:loading wire:target="{{ $target }}"
-            role="status" aria-hidden="true"></span>
+        <x-spinner target="{{ $target }}" class="me-1 align-middle" />
     @endif
 
     {{-- Icon tetap ditampilkan --}}

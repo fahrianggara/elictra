@@ -4,6 +4,7 @@
     'required' => false,
     'error' => null,
     'options' => [], // ['value' => 'Label']
+    'margin' => 'mb-3',
 ])
 
 @php
@@ -19,7 +20,8 @@
     $id = $name ? Str::slug($name) : null;
 @endphp
 
-<div class="mb-3">
+<div class="{{ $margin }}">
+    {{-- If the name is not set, we cannot render the select --}}
     @if ($label)
         <label for="{{ $id }}" class="form-label {{ $required ? 'required' : '' }}">
             {{ $label }}

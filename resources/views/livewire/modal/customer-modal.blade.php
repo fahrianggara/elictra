@@ -1,7 +1,7 @@
 @php
     $color = $deleting ? 'danger' : 'primary';
     $action = $deleting ? 'deleted' : ($editing ? 'update' : 'store');
-    $actionText = $editing ? 'Edit' : 'Tambah';
+    $actionText = $deleting ? 'Hapus' : ($editing ? 'Edit' : 'Tambah');
     $title = $editing ? 'Edit Pelanggan' : 'Tambah Pelanggan';
     $required = $editing ? false : true;
     $isDeleting = $deleting ? false : true; // Show header only when not deleting

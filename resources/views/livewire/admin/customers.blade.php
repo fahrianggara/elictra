@@ -4,10 +4,7 @@
             <div class="card">
                 <div class="card-header flex justify-between items-center">
                     <div>
-                        <div class="spinner-border spinner-border-sm me-2" wire:loading wire:target="edit, destroy"
-                            role="status">
-                            <span class="visually-hidden">Loading...</span>
-                        </div>
+                        <x-spinner target="edit, destroy" />
                         Data Pelanggan
                     </div>
 
@@ -17,16 +14,27 @@
                 </div>
 
                 <div class="card-body">
-                    <div class="row mb-3 justify-content-between">
-                        <div class="col-md-2">
-                            <select class="form-select" wire:model="perPage">
-                                <option value="10">10 per halaman</option>
-                                <option value="25">25 per halaman</option>
-                                <option value="50">50 per halaman</option>
-                                <option value="100">100 per halaman</option>
-                            </select>
+                    <div class="row mb-3 gap-2 justify-content-between align-items-center">
+                        <div class="col-md-6 flex gap-2">
+                            <x-select wire:model.change="perPage" placeholder="Tampilkan"
+                                margin="mb-0" :options="[
+                                    10 => '10 Data',
+                                    25 => '25 Data',
+                                    50 => '50 Data',
+                                    100 => '100 Data',
+                                ]" />
+
+                            <x-select wire:model.change="filterTarif" placeholder="Filter Tarif Listrik" :options="[]"
+                                margin="mb-0" />
+
+                            <x-select wire:model.change="filterStatus" placeholder="Filter Status Pelanggan"
+                                margin="mb-0" :options="[
+                                    'all' => 'Semua',
+                                    0 => 'Aktif',
+                                    1 => 'Terblokir',
+                                ]" />
                         </div>
-                        <div class="col-md-6">
+                        <div class="col-md-3">
                             <input type="text" class="form-control" placeholder="Cari Pelanggan..."
                                 wire:model.live.debounce.500ms="search">
                         </div>
@@ -51,14 +59,16 @@
                                 <td>
                                     <x-dash.table-action>
                                         <li>
-                                            <a class="dropdown-item" href="#" wire:click="$dispatch('customer:edit', { id: '{{ encrypt($customer->id) }}' })">
+                                            <a class="dropdown-item" href="javascript:void(0)"
+                                                wire:click="$dispatch('customer:edit', { id: '{{ encrypt($customer->id) }}' })">
                                                 <i class="fas fa-edit text-warning mr-2"></i>
                                                 Edit
                                             </a>
                                         </li>
 
                                         <li>
-                                            <a class="dropdown-item" href="#" wire:click="$dispatch('customer:delete', { id: '{{ encrypt($customer->id) }}' })">
+                                            <a class="dropdown-item" href="javascript:void(0)"
+                                                wire:click="$dispatch('customer:delete', { id: '{{ encrypt($customer->id) }}' })">
                                                 <i class="fas fa-trash-alt text-danger mr-2"></i>
                                                 Hapus
                                             </a>
@@ -72,9 +82,21 @@
                             </tr>
                         @endforelse
                     </x-dash.table>
-
-                    <div class="mt-3">
-                        {{ $customers->links('pagination::bootstrap-5') }}
+                </div>
+                <div class="card-footer">
+                    <div class="d-flex justify-content-between align-items-center">
+                        <div>
+                            Menampilkan {{ $customers->count() }} dari {{ $customers->total() }} Data Pelanggan
+                        </div>
+                        <nav aria-label="Page navigation example">
+                            <ul class="pagination">
+                                <li class="page-item"><a class="page-link" href="#">Previous</a></li>
+                                <li class="page-item"><a class="page-link" href="#">1</a></li>
+                                <li class="page-item"><a class="page-link" href="#">2</a></li>
+                                <li class="page-item"><a class="page-link" href="#">3</a></li>
+                                <li class="page-item"><a class="page-link" href="#">Next</a></li>
+                            </ul>
+                        </nav>
                     </div>
                 </div>
             </div>
