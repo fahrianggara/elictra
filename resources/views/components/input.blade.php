@@ -8,6 +8,7 @@
     'max' => null,
     'append' => false,
     'prepend' => false,
+    'readonly' => false,
 ])
 
 @php
@@ -43,6 +44,7 @@
             type="{{ $type }}"
             placeholder="{{ $placeholder }}"
             {{ $required ? 'required' : '' }}
+            {{ $readonly ? 'readonly' : '' }}
             @if ($type === 'number' && $min !== null) min="{{ $min }}" @endif
             @if ($type === 'number' && $max !== null) max="{{ $max }}" @endif
             {{ $attributes->class([

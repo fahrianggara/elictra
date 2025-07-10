@@ -3,6 +3,7 @@
 namespace App\Livewire\Admin;
 
 use App\Models\PaymentMethod;
+use Livewire\Attributes\On;
 use Livewire\Component;
 
 class PaymentMethods extends Component
@@ -13,6 +14,7 @@ class PaymentMethods extends Component
      *
      * @return void
      */
+    #[On('payment-method:success')]
     public function render()
     {
         $paymentMethods = PaymentMethod::query()

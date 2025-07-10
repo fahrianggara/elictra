@@ -42,28 +42,28 @@
                                 wire:model.live.debounce.500ms="search">
                         </div>
                     </div>
-                    <x-dash.table headers="No, Tipe Pembayaran, Label, Nomor Pembayaran, Logo, Status, ">
+                    <x-dash.table headers="No, Logo, Tipe Pembayaran, Label, Nomor Pembayaran, Status, ">
                         @forelse ($paymentMethods as $paymentMethod)
                             <tr>
                                 <td>{{ $paymentMethods->firstItem() + $loop->index }}</td>
+                                <td>
+                                    <img src="{{ getFile($paymentMethod->logo) }}" class="h-[50px] w-[80px] object-contain rounded"
+                                        alt="{{ $paymentMethod->label }}">
+                                </td>
                                 <td>{{ $paymentMethod->type }}</td>
                                 <td>{{ $paymentMethod->label }}</td>
                                 <td>{{ $paymentMethod->number }}</td>
                                 <td>
-                                    <img src="https://www.bca.co.id/-/media/Feature/Card/List-Card/Tentang-BCA/Brand-Assets/Logo-BCA/Logo-BCA_Biru.png"
-                                        alt="Bank Transfer" class="h-[50px]">
-                                        {{-- <img src="{{ getFile($paymentMethod->logo) }}" alt="Bank Transfer" class="h-[50px]"> --}}
-                                </td>
-                                <td>
-                                    <span class="badge bg-{{ $paymentMethod->is_active ? 'success' : 'secondary' }}">
-                                        {{ $paymentMethod->is_active ? 'Aktif' : 'Tidak Aktif' }}
-                                    </span>
+                                    <select wire:model.change="status.{{ $paymentMethod->id }}" class="form-select w-[120px]">
+                                        <option value="1" {{ $paymentMethod->is_active ? 'selected' : '' }}>Aktif</option>
+                                        <option value="0" {{ !$paymentMethod->is_active ? 'selected' : '' }}>Tidak Aktif</option>
+                                    </select>
                                 </td>
                                 <td>
                                     <x-dash.table-action>
                                         <li>
                                             <a class="dropdown-item" href="javascript:void(0)"
-                                                wire:click="$dispatch('payment-method:edit', { id: 'a' })">
+                                                wire:click="$dispatch('payment-method:edit', { id: '{{ encrypt($paymentMethod->id) }}' })">
                                                 <i class="fas fa-edit text-warning mr-2"></i>
                                                 Edit
                                             </a>
@@ -71,7 +71,7 @@
 
                                         <li>
                                             <a class="dropdown-item" href="javascript:void(0)"
-                                                wire:click="$dispatch('payment-method:delete', { id: 'a' })">
+                                                wire:click="$dispatch('payment-method:delete', { id: '{{ encrypt($paymentMethod->id) }}' })">
                                                 <i class="fas fa-trash-alt text-danger mr-2"></i>
                                                 Hapus
                                             </a>
@@ -99,4 +99,6 @@
             </div>
         </div>
     </div>
+
+    @livewire('modal.payment-method-modal')
 </div>
