@@ -8,7 +8,6 @@
     <title>{{ $title ? "$title - " . config('app.name') : config('app.name') }}</title>
 
     <link rel="stylesheet" href="{{ asset('css/coreui.css') }}">
-    {{-- <link rel="stylesheet" href="{{ asset('css/custom.css') }}"> --}}
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11.12.3/dist/sweetalert2.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
 
@@ -46,8 +45,23 @@
         integrity="sha384-kiD3MgQ2eSqSjSfkoKS7/ipCvMvkfmpWHk3WRppeqnYxCVF0wQ+7gHzkXfJyvHbQ" crossorigin="anonymous">
     </script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.12.3/dist/sweetalert2.all.min.js"></script>
-    {{-- <script src="{{ asset('js/custom.js') }}"></script> --}}
+    <script src="{{ asset('js/custom.js') }}"></script>
+
     @livewireScripts
+
+    <script>
+        Livewire.on('toast', (e) => {
+            const fireOptions = {
+                icon: e.icon || 'success',
+                title: e.title || e.message || '',
+                ...e.fireOptions, // if using nested fireOptions
+            };
+
+            const mixinOptions = e.mixinOptions || {};
+            toast(fireOptions, mixinOptions);
+        });
+    </script>
+
     @stack('scripts')
 </body>
 

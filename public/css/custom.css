@@ -72,3 +72,29 @@ body {
 .dropstart .dropdown-toggle::before {
     display: none;
 }
+
+.swal2-popup.swal2-toast {
+    padding: 6px 16px 12px 16px !important;
+}
+
+.swal2-popup.swal2-toast .swal2-title {
+    font-size: 0.93rem !important;
+    font-weight: 500 !important;
+    line-height: 1.4 !important;
+    margin: 0 10px;
+    position: relative !important;
+    top: 2px !important;
+}
+
+.swal2-popup.swal2-toast .swal2-icon {
+    position: relative !important;
+    top: 2px !important;
+}
+
+body.swal2-toast-shown .swal2-container {
+    width: 400px !important;
+}
+
+.swal2-popup.swal2-toast {
+    border-radius: 10px;
+}

@@ -3,6 +3,7 @@
 namespace App\Livewire\Modal;
 
 use App\Models\Tarif;
+use Illuminate\Validation\Rule;
 use Livewire\Attributes\On;
 use Livewire\Component;
 
@@ -35,6 +36,7 @@ class TarifModal extends Component
     #[On('tarif:create')]
     public function create()
     {
+        $this->onreset(); // Reset all fields and error bags
         $this->dispatch('modal:show');
     }
 
@@ -56,11 +58,8 @@ class TarifModal extends Component
         ]);
 
         $this->close();
-        $this->dispatch(
-            'tarif:success', // <-- send event to Tarif component
-            type: 'success',
-            message: 'Data tarif berhasil disimpan.'
-        );
+        $this->dispatch('tarif:success');
+        $this->dispatch('toast', icon: 'success', message: 'Data tarif berhasil disimpan.');
     }
 
     /**
@@ -83,6 +82,7 @@ class TarifModal extends Component
         $this->description = $tarif->description;
         $this->editing = true;
 
+        $this->reset('deleting'); // Reset deleting state to false
         $this->dispatch('modal:show');
     }
 
@@ -105,11 +105,8 @@ class TarifModal extends Component
         ]);
 
         $this->close();
-        $this->dispatch(
-            'tarif:success', // <-- send event to Tarif component
-            type: 'success',
-            message: 'Data tarif berhasil diperbarui.'
-        );
+        $this->dispatch('tarif:success');
+        $this->dispatch('toast', icon: 'success', message: 'Data tarif berhasil diperbarui.');
     }
 
     /**
@@ -122,20 +119,14 @@ class TarifModal extends Component
     public function delete($id)
     {
         $id = decrypt($id);
-        $tarif = Tarif::findOrFail($id);
+        $tarif = Tarif::withCount('customers')->findOrFail($id);
 
         $this->deleting = true;
         $this->tarif_id = $tarif->id;
         $this->type = $tarif->type;
         $this->power = $tarif->power;
 
-        if ($tarif->customers()->count() > 0) {
-            $this->dispatch('error',
-                type: 'error',
-                message: 'Tarif ini tidak dapat dihapus karena sudah digunakan oleh pelanggan.'
-            );
-            return;
-        }
+        if ($this->isTarifInUse($tarif)) return;
 
         $this->dispatch('modal:show');
     }
@@ -147,14 +138,15 @@ class TarifModal extends Component
      */
     public function deleted()
     {
-        Tarif::findOrFail($this->tarif_id)->delete();
+        $tarif = Tarif::withCount('customers')->findOrFail($this->tarif_id);
+
+        if ($this->isTarifInUse($tarif)) return;
+
+        $tarif->delete();
 
         $this->close();
-        $this->dispatch(
-            'tarif:success', // <-- send event to tarif component
-            type: 'success',
-            message: 'Data tarif berhasil dihapus.'
-        );
+        $this->dispatch('tarif:success');
+        $this->dispatch('toast', icon: 'success', message: 'Data tarif berhasil dihapus.');
     }
 
     /**
@@ -197,7 +189,14 @@ class TarifModal extends Component
     protected function rules()
     {
         return [
-            'type' => 'required|string|max:255',
+            'type' => [
+                'required',
+                'string',
+                'max:255',
+                Rule::unique('tarifs')->where(function ($query) {
+                    return $query->where('type', $this->type)->where('power', $this->power);
+                })->ignore($this->tarif_id),
+            ],
             'power' => 'required|numeric|min:0',
             'price_per_kwh' => 'required|numeric|min:0',
             'penalty_per_day' => 'required|numeric|min:0',
@@ -216,18 +215,42 @@ class TarifModal extends Component
             'type.required' => 'Tipe tarif wajib diisi.',
             'type.string'   => 'Tipe tarif harus berupa teks.',
             'type.max'      => 'Tipe tarif maksimal :max karakter.',
-            'power.required'=> 'Daya wajib diisi.',
+            'type.unique'   => "Tipe {$this->type} dengan daya {$this->power} ini sudah ada. Silakan pilih tipe tarif yang berbeda.",
+            'power.required' => 'Daya wajib diisi.',
             'power.numeric' => 'Daya harus berupa angka.',
             'power.min'     => 'Daya tidak boleh kurang dari :min.',
             'price_per_kwh.required' => 'Harga per KWh wajib diisi.',
             'price_per_kwh.numeric'  => 'Harga per KWh harus berupa angka.',
             'price_per_kwh.min'      => 'Harga per KWh tidak boleh kurang dari :min.',
-            'penalty_per_day.numeric'=> 'Denda per hari harus berupa angka.',
+            'penalty_per_day.numeric' => 'Denda per hari harus berupa angka.',
             'penalty_per_day.required' => 'Denda per hari wajib diisi.',
             'penalty_per_day.min'    => 'Denda per hari tidak boleh kurang dari :min.',
             'description.required'    => 'Deskripsi wajib diisi.',
             'description.string'     => 'Deskripsi harus berupa teks.',
             'description.max'        => 'Deskripsi maksimal :max karakter.',
         ];
+    }
+
+    /**
+     * Check if tarif is used by any customer and show error toast if true.
+     *
+     * @param  Tarif  $tarif
+     * @return bool
+     */
+    protected function isTarifInUse(Tarif $tarif): bool
+    {
+        if ($tarif->customers_count > 0) {
+            $message = "Tarif ini tidak dapat dihapus! karena sudah digunakan oleh {$tarif->customers_count} pelanggan.";
+
+            $this->dispatch(
+                'toast',
+                fireOptions: ['icon' => 'error', 'title' => $message],
+                mixinOptions: ['position' => 'top-end', 'timer' => 5000],
+            );
+
+            return true;
+        }
+
+        return false;
     }
 }
