@@ -20,3 +20,8 @@ Breadcrumbs::for('admin.tarifs', function (BreadcrumbTrail $trail) {
     $trail->parent('master');
     $trail->push('Tarif Listrik', route('admin.tarifs'));
 });
+
+Breadcrumbs::for('admin.payment_methods', function (BreadcrumbTrail $trail) {
+    $trail->parent('master');
+    $trail->push('Metode Pembayaran', route('admin.payment_methods'));
+});
