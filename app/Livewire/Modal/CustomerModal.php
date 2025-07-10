@@ -49,6 +49,7 @@ class CustomerModal extends Component
     #[On('customer:create')]
     public function create()
     {
+        $this->onreset(); // Reset all fields and error bags
         $this->dispatch('modal:show');
     }
 
@@ -76,11 +77,8 @@ class CustomerModal extends Component
         ]);
 
         $this->close();
-        $this->dispatch(
-            'customer:success', // <-- send event to Customer component
-            type: 'success',
-            message: 'Data pelanggan berhasil dibuat.'
-        );
+        $this->dispatch('customer:success');
+        $this->dispatch('toast', icon: 'success', message: 'Data pelanggan berhasil disimpan.');
     }
 
     /**
@@ -104,6 +102,7 @@ class CustomerModal extends Component
         $this->meter_number = $user->customer->meter_number;
         $this->initial_meter = $user->customer->initial_meter;
 
+        $this->reset('deleting'); // Reset deleting state to false
         $this->dispatch('modal:show');
     }
 
@@ -130,11 +129,8 @@ class CustomerModal extends Component
         ]);
 
         $this->close();
-        $this->dispatch(
-            'customer:success', // <-- send event to Customer component
-            type: 'success',
-            message: 'Data pelanggan berhasil diperbarui.'
-        );
+        $this->dispatch('customer:success'); // <-- send event to Customer component
+        $this->dispatch('toast', icon: 'success', message: 'Data pelanggan berhasil diperbarui.');
     }
 
     /**
@@ -153,6 +149,7 @@ class CustomerModal extends Component
         $this->user_id = $user->id;
         $this->name = $user->name;
 
+        $this->reset('editing'); // Reset editing state to false
         $this->dispatch('modal:show');
     }
 
@@ -166,11 +163,8 @@ class CustomerModal extends Component
         User::findOrFail($this->user_id)->delete();
 
         $this->close();
-        $this->dispatch(
-            'customer:success', // <-- send event to Customer component
-            type: 'success',
-            message: 'Data pelanggan berhasil dihapus.'
-        );
+        $this->dispatch('customer:success'); // <-- send event to Customer component
+        $this->dispatch('toast', icon: 'success', message: 'Data pelanggan berhasil dihapus.');
     }
 
     /**

@@ -51,7 +51,7 @@
                                 </td>
                                 <td class="w-[400px]">{{ $customer->address }}</td>
                                 <td>
-                                    <p class="mb-1">{{ $customer->tarif->type }} - {{ $customer->tarif->power }}VA</p>
+                                    <p class="mb-1">{{ $customer->tarif?->type }} - {{ $customer->tarif?->power }}VA</p>
                                     {{ $customer->meter_number }}
                                 </td>
                                 <td>

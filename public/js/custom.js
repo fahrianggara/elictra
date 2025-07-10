@@ -19,7 +19,7 @@ $(document).on("mouseleave", ".sidebar.sidebar-narrow-unfoldable", function () {
 function toast(fireOptions = {}, mixinOptions = {}) {
     const defaultMixinOptions = {
         toast: true,
-        position: 'bottom-end',
+        position: 'top-end',
         showConfirmButton: false,
         timer: 5000,
         timerProgressBar: true,

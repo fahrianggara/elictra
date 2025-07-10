@@ -11,7 +11,7 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11.12.3/dist/sweetalert2.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
 
-    @vite(['resources/css/app.css', 'resources/js/app.js', 'public/css/custom.css', 'public/js/custom.js'])
+    @vite(['resources/css/app.css', 'resources/js/app.js', 'public/css/custom.css'])
     @livewireStyles
     @stack('styles')
 </head>

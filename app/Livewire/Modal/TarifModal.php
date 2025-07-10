@@ -128,6 +128,7 @@ class TarifModal extends Component
 
         if ($this->isTarifInUse($tarif)) return;
 
+        $this->reset('editing'); // Reset editing state to false
         $this->dispatch('modal:show');
     }
 
