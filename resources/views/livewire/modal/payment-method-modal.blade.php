@@ -17,7 +17,7 @@
     @if ($deleting) <!-- Deleting state -->
         <p>Apakah Anda yakin ingin menghapus metode pembayaran ini?</p>
     @else
-        <x-file-upload :src="$src" label="Logo" wire:model="logo" :required="true"
+        <x-file-upload :src="$src" label="Logo" wire:model="logo" :required="$required"
             :error="$errors->first('logo')" />
 
         <x-select wire:model.change="type" label="Tipe Pembayaran" placeholder="Pilih tipe pembayaran" :options="[

@@ -4,7 +4,7 @@
             <div class="card">
                 <div class="card-header flex justify-between items-center">
                     <div>
-                        <x-spinner target="edit, destroy, search, perPage" />
+                        <x-spinner target="updated, search, perPage, updateStatus, filterType, filterStatus" />
                         Data Metode Pembayaran
                     </div>
 
@@ -23,15 +23,15 @@
                                     100 => '100',
                                 ]" />
 
-                            <x-select wire:model.change="filterType" placeholder="Tipe Pembayaran"
-                                class="w-[190px]" margin="mb-0" :options="[
+                            <x-select wire:model.change="filterType" placeholder="Tipe Pembayaran" class="w-[190px]"
+                                margin="mb-0" :options="[
                                     'all' => 'Semua',
                                     'bank_transfer' => 'Transfer Bank',
                                     'e_wallet' => 'Dompet Digital',
                                 ]" />
 
-                            <x-select wire:model.change="filterStatus" placeholder="Status"
-                                class="w-[150px]" margin="mb-0" :options="[
+                            <x-select wire:model.change="filterStatus" placeholder="Status" class="w-[150px]"
+                                margin="mb-0" :options="[
                                     'all' => 'Semua',
                                     1 => 'Aktif',
                                     0 => 'Tidak Aktif',
@@ -44,10 +44,11 @@
                     </div>
                     <x-dash.table headers="No, Logo, Tipe Pembayaran, Label, Nomor Pembayaran, Status, ">
                         @forelse ($paymentMethods as $paymentMethod)
-                            <tr>
+                            <tr wire:key="payment-method-{{ $paymentMethod->id }}">
                                 <td>{{ $paymentMethods->firstItem() + $loop->index }}</td>
                                 <td>
-                                    <img src="{{ getFile($paymentMethod->logo) }}" class="h-[50px] w-[80px] object-contain rounded"
+                                    <img src="{{ getFile($paymentMethod->logo) }}"
+                                        class="h-[50px] w-[80px] object-contain rounded"
                                         alt="{{ $paymentMethod->label }}">
                                 </td>
                                 <td>{{ $paymentMethod->type_format }}</td>
@@ -55,9 +56,12 @@
                                 <td>{{ $paymentMethod->number }}</td>
                                 <td>
                                     <select wire:change="updateStatus('{{ encrypt($paymentMethod->id) }}', $event.target.value)"
-                                        wire:loading.attr="disabled" class="form-select w-[135px]">
-                                        <option value="1" {{ $paymentMethod->is_active ? 'selected' : '' }}>Aktif</option>
-                                        <option value="0" {{ !$paymentMethod->is_active ? 'selected' : '' }}>Tidak Aktif</option>
+                                        wire:loading.attr="disabled" wire:target="updateStatus"
+                                        class="form-select w-[135px]" wire:key="select-{{ $paymentMethod->id }}">
+                                        <option value="1" {{ $paymentMethod->is_active ? 'selected' : '' }}>Aktif
+                                        </option>
+                                        <option value="0" {{ !$paymentMethod->is_active ? 'selected' : '' }}>Tidak
+                                            Aktif</option>
                                     </select>
                                 </td>
                                 <td>
@@ -85,7 +89,6 @@
                                 <td colspan="7" class="text-center">Belum ada data metode pembayaran.</td>
                             </tr>
                         @endforelse
-
                     </x-dash.table>
                 </div>
 

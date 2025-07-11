@@ -190,6 +190,7 @@ class PaymentMethodModal extends Component
         }
 
         // Delete the payment method
+        deleteFile($paymentMethod->logo); // Delete the existing logo file
         $paymentMethod->delete();
 
         $this->close();
@@ -252,7 +253,7 @@ class PaymentMethodModal extends Component
                 'digits_between:10,20',
                 Rule::unique('payment_methods', 'number')->ignore($this->payment_method_id),
             ],
-            'logo' => 'required|max:5120|mimes:png',
+            'logo' => 'max:5120|mimes:png|' . $this->editing ? 'nullable' : 'required',
             'is_active' => 'boolean',
         ];
     }
