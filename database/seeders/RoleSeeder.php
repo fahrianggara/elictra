@@ -19,11 +19,11 @@ class RoleSeeder extends Seeder
                 'description' => 'Memiliki akses penuh ke seluruh fitur sistem, termasuk pengaturan, manajemen pengguna, dan kontrol data utama.'
             ],
             [
-                'name' => 'officer',
+                'name' => 'petugas',
                 'description' => 'Memiliki akses untuk mengelola data pelanggan, input meteran, dan verifikasi transaksi, tetapi tidak dapat mengakses pengaturan sistem dan manajemen pengguna.'
             ],
             [
-                'name' => 'customer',
+                'name' => 'pelanggan',
                 'description' => 'Pengguna akhir yang dapat melihat informasi tagihan, melakukan pembayaran, dan memantau riwayat transaksi mereka.'
             ],
         ];

@@ -26,3 +26,8 @@ Breadcrumbs::for('admin.payment_methods', function (BreadcrumbTrail $trail) {
     $trail->parent('admin');
     $trail->push('Metode Pembayaran', route('admin.payment_methods'));
 });
+
+Breadcrumbs::for('admin.users', function (BreadcrumbTrail $trail) {
+    $trail->parent('admin');
+    $trail->push('Pengguna', route('admin.users'));
+});

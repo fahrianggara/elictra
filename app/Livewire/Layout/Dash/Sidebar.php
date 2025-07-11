@@ -7,7 +7,7 @@ use Livewire\Component;
 class Sidebar extends Component
 {
     /**
-     * render
+     * Render the component view.
      *
      * @return void
      */

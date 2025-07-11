@@ -19,7 +19,7 @@
         <x-dash.nav-item href="admin.customers" icon="fas fa-users">Pelanggan</x-dash.nav-item>
         <x-dash.nav-item href="admin.tarifs" icon="fas fa-bolt">Tarif Listrik</x-dash.nav-item>
         <x-dash.nav-item href="admin.payment_methods" icon="fas fa-money-bill">Metode Pembayaran</x-dash.nav-item>
-        <x-dash.nav-item href="#" icon="fas fa-user">Pengguna</x-dash.nav-item>
+        <x-dash.nav-item href="admin.users" icon="fas fa-user">Pengguna</x-dash.nav-item>
         <x-dash.nav-item href="#" icon="fas fa-user-shield">Peran Pengguna</x-dash.nav-item>
 
         <li class="nav-title">Manajemen</li>

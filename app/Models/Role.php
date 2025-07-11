@@ -25,4 +25,14 @@ class Role extends Model
     {
         return $this->hasMany(User::class);
     }
+
+    /**
+     * Get the formatted name of the role.
+     *
+     * @return void
+     */
+    public function getNameFormatAttribute()
+    {
+        return ucwords(str_replace('_', ' ', $this->name));
+    }
 }

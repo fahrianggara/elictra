@@ -86,7 +86,7 @@
                             </tr>
                         @empty
                             <tr>
-                                <td colspan="7" class="text-center">Belum ada data metode pembayaran.</td>
+                                <td colspan="7" class="text-center">Tidak ada data metode pembayaran.</td>
                             </tr>
                         @endforelse
                     </x-dash.table>
