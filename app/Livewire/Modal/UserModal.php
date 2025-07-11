@@ -116,6 +116,41 @@ class UserModal extends Component
     }
 
     /**
+     * Delete a user.
+     *
+     * @param  mixed $id
+     * @return void
+     */
+    #[On('user:delete')]
+    public function delete($id)
+    {
+        $id = decrypt($id);
+        $user = User::findOrFail($id);
+
+        $this->deleting = true;
+        $this->user_id = $user->id;
+        $this->email = $user->email;
+
+        $this->reset('editing'); // Reset editing state to false
+        $this->dispatch('modal:show');
+    }
+
+    /**
+     * Confirm the deletion of a user.
+     *
+     * @return void
+     */
+    public function deleted()
+    {
+        $user = User::findOrFail($this->user_id);
+        $user->delete();
+
+        $this->close();
+        $this->dispatch('user:success');
+        $this->dispatch('toast', icon: 'success', message: 'Data pengguna berhasil dihapus.');
+    }
+
+    /**
      * Close the modal.
      *
      * @return void

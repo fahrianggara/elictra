@@ -24,7 +24,7 @@
                                 ]" />
 
                             <x-select wire:model.change="filterRole" placeholder="Peran" class="w-[150px]"
-                                margin="mb-0" :options="$roles" />
+                                margin="mb-0" :options="$roles" showAll allLabel="Semua Peran" />
                         </div>
                         <div class="col-md-3">
                             <input type="text" class="form-control" placeholder="Cari pengguna..."

@@ -77,4 +77,19 @@ class User extends Authenticatable
     {
         return $this->hasOne(Customer::class);
     }
+
+    /**
+     * scope to search users by name or email.
+     *
+     * @param  mixed $query
+     * @param  mixed $search
+     * @return void
+     */
+    public function scopeSearch($query, $search)
+    {
+        return $query->where(function ($q) use ($search) {
+            $q->where('name', 'like', "%{$search}%")
+                ->orWhere('email', 'like', "%{$search}%");
+        });
+    }
 }
