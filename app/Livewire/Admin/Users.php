@@ -5,6 +5,7 @@ namespace App\Livewire\Admin;
 use App\Models\Role;
 use App\Models\User;
 use Illuminate\Support\Facades\Auth;
+use Livewire\Attributes\On;
 use Livewire\Component;
 use Livewire\WithPagination;
 
@@ -36,6 +37,7 @@ class Users extends Component
      *
      * @return void
      */
+    #[On('user:success')]
     public function render()
     {
         $roles = Role::all()->where('name', '!=', 'pelanggan')->mapWithKeys(function ($item) {

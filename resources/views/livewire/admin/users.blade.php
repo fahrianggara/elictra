@@ -23,8 +23,8 @@
                                     100 => '100',
                                 ]" />
 
-                            <x-select wire:model.change="filterRole" placeholder="Peran"
-                                class="w-[150px]" margin="mb-0" :options="$roles" />
+                            <x-select wire:model.change="filterRole" placeholder="Peran" class="w-[150px]"
+                                margin="mb-0" :options="$roles" />
                         </div>
                         <div class="col-md-3">
                             <input type="text" class="form-control" placeholder="Cari pengguna..."
@@ -37,8 +37,31 @@
                                 <td>{{ $users->firstItem() + $loop->index }}</td>
                                 <td>{{ $user->name }}</td>
                                 <td>{{ $user->email }}</td>
-                                <td>{{ $user->role->name ?? 'Tidak Ada Peran' }}</td>
-                                <td>{{ $user->created_at->format('d M Y H:i') }}</td>
+                                <td>
+                                    <p class="d-inline-flex px-2 py-1 text-[14px] fw-semibold border rounded-2 {{ $user->role->color }}">
+                                        {{ $user->role->name_format }}
+                                    </p>
+                                </td>
+                                <td>{{ $user->created_at->translatedFormat('l, d F Y - H:i') }}</td>
+                                <td>
+                                    <x-dash.table-action>
+                                        <li>
+                                            <a class="dropdown-item" href="javascript:void(0)"
+                                                wire:click="$dispatch('user:edit', { id: '{{ encrypt($user->id) }}' })">
+                                                <i class="fas fa-edit text-warning mr-2"></i>
+                                                Edit
+                                            </a>
+                                        </li>
+
+                                        <li>
+                                            <a class="dropdown-item" href="javascript:void(0)"
+                                                wire:click="$dispatch('user:delete', { id: '{{ encrypt($user->id) }}' })">
+                                                <i class="fas fa-trash-alt text-danger mr-2"></i>
+                                                Hapus
+                                            </a>
+                                        </li>
+                                    </x-dash.table-action>
+                                </td>
                             </tr>
                         @empty
                             <tr>
@@ -58,4 +81,8 @@
             </div>
         </div>
     </div>
+
+    @livewire('modal.user-modal', [
+        'roles' => $roles,
+    ])
 </div>

@@ -35,4 +35,19 @@ class Role extends Model
     {
         return ucwords(str_replace('_', ' ', $this->name));
     }
+
+    /**
+     * Get the color attribute based on the role name.
+     *
+     * @return void
+     */
+    public function getColorAttribute()
+    {
+        return match ($this->name) {
+            'admin' => 'text-success-emphasis bg-success-subtle border-success-subtle',
+            'petugas' => 'text-info-emphasis bg-info-subtle border-info-subtle',
+            'pelanggan' => 'text-primary-emphasis bg-primary-subtle border-primary-subtle',
+            default => 'text-secondary-emphasis bg-secondary-subtle border-secondary-subtle',
+        };
+    }
 }

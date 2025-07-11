@@ -22,6 +22,8 @@
 
     $name = $model ? Str::afterLast($model, '.') : null;
     $id = $name ? Str::slug($name) : null;
+
+    $isPassword = $type === 'password';
 @endphp
 
 <div class="mb-3">
@@ -31,7 +33,7 @@
         </label>
     @endif
 
-    <div class="input-group">
+    <div class="input-group" x-data="{ show: false }">
         @if ($prepend)
             <span class="input-group-text">
                 {{ $prepend }}
@@ -41,7 +43,7 @@
         <input
             id="{{ $id }}"
             name="{{ $name }}"
-            type="{{ $type }}"
+            :type="show ? 'text' : '{{ $type }}'"
             placeholder="{{ $placeholder }}"
             {{ $required ? 'required' : '' }}
             {{ $readonly ? 'readonly' : '' }}
@@ -53,7 +55,12 @@
             ]) }}
         >
 
-        @if($append)
+        @if ($isPassword)
+            <button type="button" class="input-group-text cursor-pointer" @click="show = !show">
+                <i x-show="!show" class="fas fa-eye"></i>
+                <i x-show="show" class="fas fa-eye-slash"></i>
+            </button>
+        @elseif($append)
             <span class="input-group-text">
                 {{ $append }}
             </span>
