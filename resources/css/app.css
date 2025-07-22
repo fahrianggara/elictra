@@ -4,3 +4,11 @@
 @source '../../storage/framework/views/*.php';
 @source '../**/*.blade.php';
 @source '../**/*.js';
+
+.container-fluid:not(.breadcrumb-container) {
+    @apply pl-[270px] pr-[15px] py-[12px];
+}
+
+.container-fluid.breadcrumb-container {
+    @apply pl-[270px];
+}

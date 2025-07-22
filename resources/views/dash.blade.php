@@ -11,7 +11,8 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11.12.3/dist/sweetalert2.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
 
-    @vite(['resources/css/app.css', 'resources/js/app.js', 'public/css/custom.css'])
+    @vite('resources/css/app.css')
+    @vite('public/css/custom.css')
     @livewireStyles
     @stack('styles')
 </head>
@@ -24,7 +25,7 @@
         @livewire('layout.dash.header')
 
         <div class="body flex-grow-1 d-flex flex-column">
-            <div class="container-fluid pl-[270px] pr-[15px] py-[15px]">
+            <div class="container-fluid">
                 {{ $slot }}
             </div>
 

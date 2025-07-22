@@ -1,9 +1,9 @@
-<aside class="sidebar bg-white sidebar-fixed border-end " id="sidebar">
-    <div class="sidebar-header border-bottom p-[12px] px-[1.3rem]">
+<aside class="sidebar bg-white sidebar-fixed border-end" id="sidebar">
+    <div class="sidebar-header border-bottom px-[2rem]">
         <div class="sidebar-brand">
             <a href="#" class="d-flex align-items-center text-decoration-none">
-                <img src="{{ asset('favicon/logo-text.png') }}" alt="Logo" class="sidebar-brand-full" width="150">
-                <img src="{{ asset('favicon/logo.png') }}" alt="Logo" class="sidebar-brand-narrow" width="38">
+                <img src="{{ asset('favicon/logo-text.png') }}" alt="Logo" class="sidebar-brand-full" width="119">
+                <img src="{{ asset('favicon/logo.png') }}" alt="Logo" class="sidebar-brand-narrow" width="30">
             </a>
         </div>
         <button class="sidebar-toggler" type="button" data-coreui-toggle="unfoldable"></button>
