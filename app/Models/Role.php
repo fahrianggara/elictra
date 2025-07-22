@@ -50,4 +50,17 @@ class Role extends Model
             default => 'text-secondary-emphasis bg-secondary-subtle border-secondary-subtle',
         };
     }
+
+    /**
+     * Scope to search roles by name or description.
+     *
+     * @param  mixed $query
+     * @param  mixed $search
+     * @return void
+     */
+    public function scopeSearch($query, $search)
+    {
+        return $query->where('name', 'like', "%{$search}%")
+            ->orWhere('description', 'like', "%{$search}%");
+    }
 }
