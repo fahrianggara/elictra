@@ -7,6 +7,6 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-Route::middleware(['guest'])->group(function () {
+Route::middleware(['guest', 'prevent.back.history'])->group(function () {
     Route::get('login', Login::class)->name('login');
 });

@@ -62,7 +62,15 @@ class Login extends Component
 
         // Attempt login
         if (Auth::attempt(['email' => $this->email, 'password' => $this->password], $this->remember)) {
-            return redirect()->intended('/dashboard');
+            $user = Auth::user();
+
+            if ($user->role->name == 'admin') {
+                return redirect()->route('admin.dashboard');
+            } elseif ($user->role->name == 'petugas') {
+                return redirect()->route('officer.dashboard');
+            } else {
+                return redirect()->route('home');
+            }
         }
 
         $this->addError('email', 'Oops! Akun tidak ditemukan atau kata sandi salah.');

@@ -10,7 +10,7 @@
                 <form wire:submit.prevent="login" autocomplete="off">
                     <div class="mb-4">
                         <input type="email" id="email" wire:model="email"
-                            class="border rounded-lg w-full py-3 px-4 leading-tight focus:outline-none focus:shadow-outline border-gray-300 ring-0 focus:border-blue-500 placeholder-gray-400 @error('password') border-red-500 @enderror"
+                            class="border rounded-lg w-full py-3 px-4 leading-tight focus:outline-none focus:shadow-outline border-gray-300 ring-0 focus:border-blue-500 placeholder-gray-400 @error('email') border-red-500 @enderror"
                             required autofocus placeholder="Masukkan alamat email anda">
 
                         @error('email')
