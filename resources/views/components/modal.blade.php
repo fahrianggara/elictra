@@ -1,5 +1,6 @@
 @props([
     'centered' => true,
+    'action' => 'close',
 ])
 
 <div id="{{ $id }}" tabindex="-1" aria-labelledby="{{ $id }}Label" aria-hidden="true"
@@ -17,9 +18,14 @@
             </div>
 
             <div class="modal-footer p-[5px]">
-                <x-button color="secondary" action="close" target="close">
-                    {{ $closeText }}
-                </x-button>
+                @if($action)
+                    <x-button color="secondary" action="{{ $action }}" target="{{ $action }}">
+                        {{ $closeText }}
+                    </x-button>
+                @else
+                    <button type="button" class="btn btn-secondary"
+                        data-bs-dismiss="modal">{{ $closeText }}</button>
+                @endif
 
                 @isset($actions)
                     {{ $actions }}
