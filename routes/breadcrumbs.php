@@ -36,3 +36,8 @@ Breadcrumbs::for('admin.roles', function (BreadcrumbTrail $trail) {
     $trail->parent('admin');
     $trail->push('Peran Pengguna', route('admin.roles'));
 });
+
+Breadcrumbs::for('admin.bills', function (BreadcrumbTrail $trail) {
+    $trail->parent('admin');
+    $trail->push('Tagihan', route('admin.bills'));
+});

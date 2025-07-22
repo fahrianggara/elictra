@@ -7,11 +7,11 @@
 
     <title>{{ $title ? "$title - " . config('app.name') : config('app.name') }}</title>
 
+    @vite('resources/css/app.css')
     <link rel="stylesheet" href="{{ asset('css/coreui.css') }}">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11.12.3/dist/sweetalert2.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
 
-    @vite('resources/css/app.css')
     @vite('public/css/custom.css')
     @livewireStyles
     @stack('styles')

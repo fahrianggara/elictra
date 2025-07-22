@@ -18,7 +18,7 @@ return new class extends Migration
             $table->year('year');
             $table->unsignedInteger('meter_start');
             $table->unsignedInteger('meter_end');
-            $table->enum('status', ['unpaid', 'paid', 'overdue', 'blocked'])->default('unpaid');
+            $table->enum('status', ['unpaid', 'paid', 'overdue', 'blocked', 'waiting'])->default('unpaid');
             $table->date('due_date'); // tanggal jatuh tempo pembayaran
             $table->timestamps();
         });

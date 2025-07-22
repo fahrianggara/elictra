@@ -8,7 +8,7 @@
 <x-dash.nav-item href="admin.roles" icon="fas fa-user-shield">Peran Pengguna</x-dash.nav-item>
 
 <li class="nav-title">Manajemen</li>
-<x-dash.nav-item href="#" icon="fas fa-file-invoice">Tagihan</x-dash.nav-item>
+<x-dash.nav-item href="admin.bills" icon="fas fa-file-invoice">Tagihan</x-dash.nav-item>
 <x-dash.nav-item href="#" icon="fas fa-credit-card">Pembayaran</x-dash.nav-item>
 {{-- <x-dash.nav-item href="#" icon="fas fa-ban">Pelanggan Diblokir</x-dash.nav-item> --}}
 
