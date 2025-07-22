@@ -3,6 +3,7 @@
 namespace App\Livewire\Admin;
 
 use App\Models\Role;
+use Livewire\Attributes\On;
 use Livewire\Component;
 use Livewire\WithPagination;
 
@@ -18,6 +19,7 @@ class Roles extends Component
      *
      * @return void
      */
+    #[On('role:success')]
     public function render()
     {
         $roles = Role::query()

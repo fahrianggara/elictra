@@ -8,7 +8,7 @@
                         Data Peran Pengguna
                     </div>
 
-                    <button wire:click="$dispatch('roles:create')" class="btn btn-primary btn-sm">
+                    <button wire:click="$dispatch('role:create')" class="btn btn-primary btn-sm">
                         Tambah
                     </button>
                 </div>
@@ -30,12 +30,13 @@
                         </div>
                     </div>
 
-                    <x-dash.table headers="No, Nama, Deskripsi, ">
+                    <x-dash.table headers="No, Nama, Deskripsi, Total Pengguna, ">
                         @forelse ($roles as $role)
                             <tr>
                                 <td>{{ $roles->firstItem() + $loop->index }}</td>
                                 <td>{{ ucfirst($role->name) }}</td>
-                                <td class="w-[70%]">{{ $role->description }}</td>
+                                <td class="w-[70%]">{{ $role->description ?? '-' }}</td>
+                                <td class="text-end">{{ $role->users_count }} Pengguna</td>
                                 <td class="text-end">
                                     <x-dash.table-action>
                                         <li>
@@ -75,4 +76,6 @@
             </div>
         </div>
     </div>
+
+    @livewire('modal.role-modal')
 </div>
