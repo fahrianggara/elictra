@@ -1,6 +1,6 @@
 <x-modal id="modal-logout" :show-header="false" :centered="false" action="">
-    <p>
-        Apakah anda yakin ingin keluar dari sistem ?
+    <p class="mb-0">
+        Apakah anda yakin ingin keluar dari {{ config('app.name') }} ?
     </p>
 
     <x-slot name="actions">

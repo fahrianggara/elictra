@@ -29,6 +29,7 @@ class Users extends Component
             // ->where('user_id', '!=', Auth::id())
             ->when($this->search, fn ($q) => $q->search($this->search))
             ->when($this->filterRole, fn ($q) => $q->whereHas('role', fn ($q) => $q->where('id', $this->filterRole)))
+            ->where('id', '!=', Auth::id())
             ->orderBy('created_at', 'desc');
     }
 

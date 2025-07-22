@@ -143,6 +143,12 @@ class UserModal extends Component
     public function deleted()
     {
         $user = User::findOrFail($this->user_id);
+
+        if ($user->id === auth()->id()) {
+            $this->dispatch('toast', icon: 'error', message: 'Anda tidak dapat menghapus akun Anda sendiri.');
+            return;
+        }
+
         $user->delete();
 
         $this->close();
