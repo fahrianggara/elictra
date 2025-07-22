@@ -1,0 +1,140 @@
+<?php
+
+use Illuminate\Support\Facades\Route;
+use Illuminate\Support\Facades\Storage;
+use Intervention\Image\Drivers\Gd\Driver;
+use Intervention\Image\Encoders\AutoEncoder;
+use Intervention\Image\ImageManager;
+
+if (!function_exists('setActive')) {
+    /**
+     * fungsi untuk menentukan menu aktif
+     *
+     * @param string ...$uris
+     * @return void
+     */
+    function setActive(...$uris)
+    {
+        $output = 'active';
+
+        if (count($uris) > 1 && is_string(end($uris))) {
+            $output = array_pop($uris);
+        }
+
+        foreach ($uris as $u) {
+            if (Route::is($u)) {
+                return $output;
+            }
+        }
+    }
+}
+
+if (!function_exists('rupiah'))
+{
+    /**
+     * fungsi untuk format angka ke format rupiah
+     *
+     * @param  mixed $number
+     * @param  mixed $prefix
+     * @return void
+     */
+    function rupiah($number, $prefix = 'Rp')
+    {
+        return $prefix . number_format($number, 0, ',', '.');
+    }
+}
+
+if (!function_exists('checkFile')) {
+    /**
+     * Check if file exists
+     *
+     * @param  string $file
+     * @return bool
+     */
+    function checkFile($file)
+    {
+        return Storage::disk('public')->exists($file);
+    }
+}
+
+if (!function_exists('deleteFile')) {
+    /**
+     * Check if file exists
+     *
+     * @param  string $file
+     * @return bool
+     */
+    function deleteFile($file)
+    {
+        if (checkFile($file)) {
+            return Storage::disk('public')->delete($file);
+        }
+
+        return false;
+    }
+}
+
+if (!function_exists('getFile')) {
+    /**
+     * Get the file path for a given file.
+     *
+     * @param string $file
+     * @return string
+     */
+    function getFile($file)
+    {
+        return checkFile($file)
+            ? asset("storage/{$file}")
+            : asset("storage/default.png");
+    }
+}
+
+if (!function_exists('getFilename')) {
+    /**
+     * Get the filename from a given path.
+     *
+     * @param  mixed $path
+     * @param  mixed $withExtension
+     * @return string
+     */
+    function getFilename(string $path, bool $withExtension = true): string
+    {
+        return $withExtension
+            ? basename($path)
+            : pathinfo($path, PATHINFO_FILENAME);
+    }
+}
+
+if (!function_exists('uploadFile')) {
+    /**
+     * Upload a file and return its slug.
+     *
+     * @param  object $file
+     * @param  string $path
+     * @param  int $width
+     * @param  int $height
+     * @param  int $quality
+     *
+     * @return string
+     */
+    function uploadFile(
+        object $image,
+        string $path = 'uploads',
+        int $width = 800,
+        int $height = 600,
+        int $quality = 75,
+    ): string {
+        $manager = new ImageManager(Driver::class);
+
+        // Convert the image to a cover with specified dimensions
+        // $imageRead = $manager->read($image)->cover($width, $height);
+        $imageRead = $manager->read($image);
+        $imageEncoded = $imageRead->encode(new AutoEncoder(quality: $quality));
+        $imageName = "{$path}/{$image->hashName()}";
+
+        // Ensure the directory exists
+        Storage::disk('public')->put($imageName, $imageEncoded);
+
+        return $imageName;
+    }
+}

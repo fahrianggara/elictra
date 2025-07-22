@@ -11,15 +11,44 @@ return new class extends Migration
      */
     public function up(): void
     {
+        Schema::create('roles', function (Blueprint $table) {
+            $table->id();
+            $table->string('name')->unique();
+            $table->string('description')->nullable();
+            $table->timestamps();
+        });
+
         Schema::create('users', function (Blueprint $table) {
             $table->id();
             $table->string('name');
-            $table->string('username')->unique();
             $table->string('avatar')->default('avatar.png');
             $table->string('email')->unique();
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
+            $table->foreignId('role_id')->nullable()->constrained('roles')->nullOnDelete();
             $table->rememberToken();
+            $table->timestamps();
+        });
+
+        Schema::create('tarifs', function (Blueprint $table) {
+            $table->id();
+            $table->string('type'); // Jenis tarif (R1, R2, R3, etc.)
+            $table->unsignedInteger('power'); // Daya dalam VA (Volt-Ampere)
+            $table->decimal('price_per_kwh', 10, 2); // Harga per kWh
+            $table->decimal('penalty_per_day', 10, 2)->default(0); // Denda per hari keterlambatan
+            $table->text('description')->nullable(); // Deskripsi tarif
+            $table->timestamps();
+        });
+
+        Schema::create('customers', function (Blueprint $table) {
+            $table->id();
+            $table->unsignedBigInteger('meter_number')->unique(); // Nomor meter kWh fisik
+            $table->text('address');
+            $table->unsignedInteger('initial_meter'); // Catatan awal meter kWh
+            $table->boolean('is_blocked')->default(false);
+            $table->text('block_reason')->nullable(); // Alasan pemblokiran
+            $table->foreignId('user_id')->constrained('users')->cascadeOnDelete();
+            $table->foreignId('tarif_id')->nullable()->constrained('tarifs')->nullOnDelete();
             $table->timestamps();
         });
 
@@ -44,7 +73,9 @@ return new class extends Migration
      */
     public function down(): void
     {
+        Schema::dropIfExists('roles');
         Schema::dropIfExists('users');
+        Schema::dropIfExists('customers');
         Schema::dropIfExists('password_reset_tokens');
         Schema::dropIfExists('sessions');
     }
