@@ -22,6 +22,8 @@ class PaymentMethodModal extends Component
     public $logo;
     public $oldLogo; // To store the old logo temporarily
     public $is_active = true;
+    public $name;
+    public $fee;
 
     /**
      * Mount the component with initial data if editing.
@@ -79,6 +81,8 @@ class PaymentMethodModal extends Component
         $logo = uploadFile($this->logo, 'payment-methods');
 
         PaymentMethod::create([
+            'name' => $this->name,
+            'fee' => $this->fee,
             'type' => $this->type,
             'label' => $this->label,
             'number' => $this->number,
@@ -106,6 +110,8 @@ class PaymentMethodModal extends Component
         $paymentMethod = PaymentMethod::findOrFail($id);
 
         $this->payment_method_id = $paymentMethod->id;
+        $this->name = $paymentMethod->name;
+        $this->fee = $paymentMethod->fee;
         $this->type = $paymentMethod->type;
         $this->label = $paymentMethod->label;
         $this->number = $paymentMethod->number;
@@ -136,6 +142,8 @@ class PaymentMethodModal extends Component
         }
 
         $paymentMethod->update([
+            'name' => $this->name,
+            'fee' => $this->fee,
             'type' => $this->type,
             'label' => $this->label,
             'number' => $this->number,
@@ -226,6 +234,8 @@ class PaymentMethodModal extends Component
             'logo',
             'oldLogo',
             'is_active',
+            'name',
+            'fee',
         ]);
 
         if ($this->logo instanceof TemporaryUploadedFile) {
@@ -244,7 +254,9 @@ class PaymentMethodModal extends Component
      */
     protected function rules()
     {
-        return [
+        $rules = [
+            'name' => 'required|string|max:255',
+            'fee' => 'required|numeric|min:0|max:999999.99',
             'type' => 'required|string|max:255',
             'label' => 'required|string|max:255',
             'number' => [
@@ -253,10 +265,18 @@ class PaymentMethodModal extends Component
                 'digits_between:10,20',
                 Rule::unique('payment_methods', 'number')->ignore($this->payment_method_id),
             ],
-            'logo' => 'max:5120|mimes:png|' . $this->editing ? 'nullable' : 'required',
             'is_active' => 'boolean',
         ];
+
+        if ($this->logo instanceof TemporaryUploadedFile) {
+            $rules['logo'] = 'nullable|mimes:png|max:5120';
+        } elseif (!$this->editing) {
+            $rules['logo'] = 'required|mimes:png|max:5120';
+        }
+
+        return $rules;
     }
+
 
     /**
      * Messages for validation errors.
@@ -266,6 +286,16 @@ class PaymentMethodModal extends Component
     protected function messages()
     {
         return [
+            'logo.required'   => 'File Logo wajib diunggah.',
+            'logo.max'        => 'File logo tidak boleh lebih dari 5120 kilobyte.',
+            'logo.mimes'      => 'File logo harus berformat PNG.',
+            'name.required'  => 'Nama metode pembayaran wajib diisi.',
+            'name.string'    => 'Nama harus berupa teks.',
+            'name.max'       => 'Nama tidak boleh lebih dari :max karakter.',
+            'fee.required'   => 'Biaya admin wajib diisi.',
+            'fee.numeric'    => 'Biaya admin harus berupa angka.',
+            'fee.min'        => 'Biaya transaksi tidak boleh kurang dari :min.',
+            'fee.max'        => 'Biaya transaksi tidak boleh lebih dari :max.',
             'type.required'   => 'Tipe wajib diisi.',
             'type.string'     => 'Tipe harus berupa teks.',
             'type.max'        => 'Tipe tidak boleh lebih dari :max karakter.',
@@ -276,9 +306,6 @@ class PaymentMethodModal extends Component
             'number.numeric'  => 'Nomor akun/rekening harus berupa angka.',
             'number.unique'   => 'Nomor akun/rekening sudah terdaftar.',
             'number.digits_between' => 'Nomor akun/rekening harus terdiri dari antara :min dan :max digit.',
-            'logo.required'   => 'File Logo wajib diunggah.',
-            'logo.max'        => 'File logo tidak boleh lebih dari 5120 kilobyte.',
-            'logo.mimes'      => 'File logo harus berformat PNG.',
             'is_active.boolean' => 'Status aktif harus bernilai true atau false.',
         ];
     }

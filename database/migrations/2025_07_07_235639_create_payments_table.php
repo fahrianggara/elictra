@@ -13,6 +13,8 @@ return new class extends Migration
     {
         Schema::create('payment_methods', function (Blueprint $table) {
             $table->id();
+            $table->string('name'); // Bank BCA, OVO, etc.
+            $table->decimal('fee', 8, 2)->default(0.00); // Transaction fee, e.g., 5000.00
             $table->string('type'); // bank_transfer, e-wallet, etc.
             $table->string('label'); // No.Rekening, No.Akun, etc.
             $table->unsignedBigInteger('number'); // 1231231231321

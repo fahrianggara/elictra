@@ -28,6 +28,12 @@
         <x-input label="Label" wire:model="label" readonly
             placeholder="Otomatis dari tipe pembayaran" :error="$errors->first('label')" />
 
+        <x-input label="Nama" wire:model="name" :required="$required"
+            placeholder="Masukkan nama metode pembayaran, cth: Bank BCA" :error="$errors->first('name')" />
+
+        <x-input type="number" min="0" label="Biaya Admin" wire:model="fee" :required="$required"
+            placeholder="Masukkan biaya admin, cth: 5000" :error="$errors->first('fee')" />
+
         <x-input type="number" min="0" label="Nomor Akun/Rekening" wire:model="number" :required="$required"
             placeholder="Masukkan harga nomor akun/rekening" :error="$errors->first('number')" />
     @endif

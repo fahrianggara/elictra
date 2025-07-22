@@ -42,7 +42,7 @@
                                 wire:model.live.debounce.500ms="search">
                         </div>
                     </div>
-                    <x-dash.table headers="No, Logo, Tipe Pembayaran, Label, Nomor Pembayaran, Status, ">
+                    <x-dash.table headers="No, Logo, Nama, Tipe Pembayaran, Label, Nomor Pembayaran, Status, Biaya Admin, ">
                         @forelse ($paymentMethods as $paymentMethod)
                             <tr wire:key="payment-method-{{ $paymentMethod->id }}">
                                 <td>{{ $paymentMethods->firstItem() + $loop->index }}</td>
@@ -51,6 +51,7 @@
                                         class="h-[50px] w-[80px] object-contain rounded"
                                         alt="{{ $paymentMethod->label }}">
                                 </td>
+                                <td>{{ $paymentMethod->name }}</td>
                                 <td>{{ $paymentMethod->type_format }}</td>
                                 <td>{{ $paymentMethod->label }}</td>
                                 <td>{{ $paymentMethod->number }}</td>
@@ -64,6 +65,7 @@
                                             Aktif</option>
                                     </select>
                                 </td>
+                                <td>{{ rupiah($paymentMethod->fee) }}</td>
                                 <td>
                                     <x-dash.table-action>
                                         <li>

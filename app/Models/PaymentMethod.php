@@ -7,11 +7,18 @@ use Illuminate\Database\Eloquent\Model;
 class PaymentMethod extends Model
 {
     protected $fillable = [
+        'name', // e.g., Bank BCA, OVO, etc.
+        'fee', // e.g., 5000.00 (transaction fee)
         'type', // e.g., bank_transfer, e-wallet, etc.
         'label', // e.g., No.Rekening, No.Akun, etc.
         'number', // e.g., 1231231231321
         'logo', // URL to the logo image
         'is_active', // true or false
+    ];
+
+    protected $casts = [
+        'is_active' => 'boolean',
+        'fee' => 'decimal:2', // Ensure fee is stored as a decimal with 2 places
     ];
 
     /**
