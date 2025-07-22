@@ -1,9 +1,14 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@100..900&display=swap');
 @import "tailwindcss";
 
 @source '../../vendor/laravel/framework/src/Illuminate/Pagination/resources/views/*.blade.php';
 @source '../../storage/framework/views/*.php';
 @source '../**/*.blade.php';
 @source '../**/*.js';
+
+body {
+    font-family: 'Inter Var', sans-serif;
+}
 
 .container-fluid:not(.breadcrumb-container) {
     @apply pl-[270px] pr-[15px] py-[12px];

@@ -38,7 +38,7 @@
                                 <td>{{ $user->name }}</td>
                                 <td>{{ $user->email }}</td>
                                 <td>
-                                    <p class="d-inline-flex px-2 py-1 text-[14px] fw-semibold border rounded-2 {{ $user->role->color }}">
+                                    <p class="d-inline-flex px-2 mb-0 py-1 text-[14px] fw-semibold border rounded-2 {{ $user->role->color }}">
                                         {{ $user->role->name_format }}
                                     </p>
                                 </td>
