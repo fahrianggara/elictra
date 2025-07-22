@@ -41,3 +41,8 @@ Breadcrumbs::for('admin.bills', function (BreadcrumbTrail $trail) {
     $trail->parent('admin');
     $trail->push('Tagihan', route('admin.bills'));
 });
+
+Breadcrumbs::for('admin.payments', function (BreadcrumbTrail $trail) {
+    $trail->parent('admin');
+    $trail->push('Pembayaran', route('admin.payments'));
+});

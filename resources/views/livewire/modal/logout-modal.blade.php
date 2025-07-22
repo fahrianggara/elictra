@@ -6,7 +6,7 @@
     <x-slot name="actions">
         <x-button color="danger" action="logout" target="logout"
             class="text-white ">
-            <i class="fas fa-sign-out-alt me-1"></i> {{ __('Logout') }}
+            Ya, Keluar
         </x-button>
     </x-slot>
 </x-modal>

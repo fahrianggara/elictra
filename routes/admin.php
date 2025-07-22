@@ -4,6 +4,7 @@ use App\Livewire\Admin\Bills;
 use App\Livewire\Admin\Customers;
 use App\Livewire\Admin\Dashboard;
 use App\Livewire\Admin\PaymentMethods;
+use App\Livewire\Admin\Payments;
 use App\Livewire\Admin\Roles;
 use App\Livewire\Admin\Tarifs;
 use App\Livewire\Admin\Users;
@@ -21,4 +22,5 @@ Route::group(['as' => 'admin'], function () {
     Route::get('pengguna', Users::class)->name('.users');
     Route::get('peran-pengguna', Roles::class)->name('.roles');
     Route::get('tagihan', Bills::class)->name('.bills');
+    Route::get('pembayaran', Payments::class)->name('.payments');
 });
