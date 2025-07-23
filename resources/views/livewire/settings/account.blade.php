@@ -1,5 +1,5 @@
 <div>
-    <div class="row">
+    <div class="row g-3">
         <div class="col-lg-3">
             @include('livewire.settings.information')
         </div>
@@ -24,14 +24,16 @@
                                 @enderror
                             </div>
 
-                            <div class="mb-3">
-                                <label for="email" class="form-label">Email</label>
-                                <input type="email" class="form-control @error('email') is-invalid @enderror" id="email"
-                                    wire:model="email" required placeholder="Masukkan email Anda">
-                                @error('email')
-                                    <span class="invalid-feedback d-block">{{ $message }}</span>
-                                @enderror
-                            </div>
+                            @if($user->role->name != 'pelanggan')
+                                <div class="mb-3">
+                                    <label for="email" class="form-label">Email</label>
+                                    <input type="email" class="form-control @error('email') is-invalid @enderror" id="email"
+                                        wire:model="email" required placeholder="Masukkan email Anda">
+                                    @error('email')
+                                        <span class="invalid-feedback d-block">{{ $message }}</span>
+                                    @enderror
+                                </div>
+                            @endif
 
                             <button type="submit" class="btn btn-primary" wire:loading.attr="disabled">
                                 <span wire:loading.remove>Perbarui Profil</span>

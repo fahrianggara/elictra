@@ -51,6 +51,12 @@ class Account extends Component
     public function mount()
     {
         $this->user = Auth::user();
+
+        // Redirect jika role pelanggan
+        if ($this->user->role->name == 'pelanggan') {
+            return redirect()->route('settings.security');
+        }
+
         $this->name = $this->user->name;
         $this->email = $this->user->email;
     }

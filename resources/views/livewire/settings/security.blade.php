@@ -1,5 +1,5 @@
 <div>
-    <div class="row">
+    <div class="row g-3">
         <div class="col-lg-3">
             @include('livewire.settings.information')
         </div>

@@ -54,6 +54,11 @@ Breadcrumbs::for('settings', function (BreadcrumbTrail $trail) {
 
 Breadcrumbs::for('settings.security', function (BreadcrumbTrail $trail) {
     // $trail->parent('admin');
-    $trail->parent('settings');
+    if (auth()->user()->role->name != 'pelanggan') {
+        $trail->parent('settings');
+    } else {
+        $trail->push('Pengaturan', "javascript:void(0);");
+    }
+
     $trail->push('Keamanan', route('settings.security'));
 });
