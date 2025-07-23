@@ -9,7 +9,7 @@
 
 <x-modal id="modal-costumer" :title="$title" :show-header="$isDeleting" :centered="$isDeleting">
     @if ($deleting) <!-- Deleting state -->
-        <p>Apakah Anda yakin ingin menghapus pelanggan dengan nama <strong>{{ $name }}</strong>?</p>
+        Apakah Anda yakin ingin menghapus pelanggan dengan nama <strong>{{ $name }}</strong>?
     @else
         <x-input label="Nama" wire:model="name" :required="$required"
         placeholder="Masukkan nama pelanggan" :error="$errors->first('name')" />

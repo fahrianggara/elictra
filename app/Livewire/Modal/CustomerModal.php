@@ -20,7 +20,7 @@ class CustomerModal extends Component
     public $tarif_id = "";
     public $address;
     public $meter_number;
-    public $initial_meter;
+    public $initial_meter = 0;
     public $tarifs;
     public $password;
     public $password_confirmation;
@@ -70,7 +70,7 @@ class CustomerModal extends Component
         $user = User::create([
             'name' => $this->name,
             'email' => $this->email,
-            'password' => bcrypt($this->meter_number), // Default password, can be changed later
+            'password' => bcrypt($this->password), // Default password, can be changed later
             'role_id' => 3, // 3 = Customer role
         ]);
 
@@ -168,7 +168,9 @@ class CustomerModal extends Component
      */
     public function deleted()
     {
-        Customer::with('user')->findOrFail($this->customer_id)->delete();
+        $customer = Customer::with('user')->findOrFail($this->customer_id);
+        $customer->user->delete(); // Delete the user associated with the customer
+        $customer->delete(); // Delete the customer record
 
         $this->close();
         $this->dispatch('customer:success'); // <-- send event to Customer component
@@ -281,6 +283,7 @@ class CustomerModal extends Component
 
             'password_confirmation.required' => 'Konfirmasi kata sandi wajib diisi.',
             'password_confirmation.same' => 'Konfirmasi kata sandi harus sama dengan kata sandi.',
+            'password_confirmation.string' => 'Konfirmasi kata sandi harus berupa teks.',
         ];
     }
 }
