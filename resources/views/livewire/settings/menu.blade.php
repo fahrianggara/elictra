@@ -1,9 +1,12 @@
 <div class="card-body">
     <div class="list-group list-group-transparent">
-        <a href="#" class="list-group-item list-group-item-action d-flex align-items-center active">
+        <a href="{{ route('settings') }}"
+            class="list-group-item list-group-item-action d-flex align-items-center
+                {{ request()->routeIs('settings') ? 'active' : '' }}">
             Akun Saya
         </a>
-        <a href="#" class="list-group-item list-group-item-action d-flex align-items-center">
+        <a href="{{ route('settings.security') }}" class="list-group-item list-group-item-action d-flex align-items-center
+            {{ request()->routeIs('settings.security') ? 'active' : '' }}">
             Keamanan
         </a>
     </div>

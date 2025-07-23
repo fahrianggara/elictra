@@ -5,6 +5,7 @@ use Illuminate\Support\Facades\Storage;
 use Intervention\Image\Drivers\Gd\Driver;
 use Intervention\Image\Encoders\AutoEncoder;
 use Intervention\Image\ImageManager;
+use Illuminate\Support\Str;
 
 if (!function_exists('setActive')) {
     /**
@@ -13,19 +14,14 @@ if (!function_exists('setActive')) {
      * @param string ...$uris
      * @return void
      */
-    function setActive(...$uris)
+    function setActive(...$routes): string
     {
-        $output = 'active';
-
-        if (count($uris) > 1 && is_string(end($uris))) {
-            $output = array_pop($uris);
-        }
-
-        foreach ($uris as $u) {
-            if (Route::is($u)) {
-                return $output;
+        foreach ($routes as $route) {
+            if (Str::is(trim($route), Route::currentRouteName())) {
+                return 'active';
             }
         }
+        return '';
     }
 }
 

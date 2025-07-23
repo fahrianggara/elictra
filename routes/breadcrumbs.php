@@ -51,3 +51,9 @@ Breadcrumbs::for('settings', function (BreadcrumbTrail $trail) {
     // $trail->parent('admin');
     $trail->push('Pengaturan', route('settings'));
 });
+
+Breadcrumbs::for('settings.security', function (BreadcrumbTrail $trail) {
+    // $trail->parent('admin');
+    $trail->parent('settings');
+    $trail->push('Keamanan', route('settings.security'));
+});
