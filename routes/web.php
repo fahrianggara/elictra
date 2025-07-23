@@ -1,7 +1,7 @@
 <?php
 
 use App\Livewire\Auth\Login;
-use App\Livewire\Settings;
+use App\Livewire\Settings\Account as Settings;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {

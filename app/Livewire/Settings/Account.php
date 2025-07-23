@@ -1,11 +1,11 @@
 <?php
 
-namespace App\Livewire;
+namespace App\Livewire\Settings;
 
 use Illuminate\Support\Facades\Auth;
 use Livewire\Component;
 
-class Settings extends Component
+class Account extends Component
 {
     public $user;
     public $name;
@@ -56,15 +56,15 @@ class Settings extends Component
     }
 
     /**
-     * Render the settings view.
+     * render
      *
      * @return void
      */
     public function render()
     {
-        return view('livewire.settings', [
-            'user' => $this->user,
-        ])->layout('dash')->title('Pengaturan');
+        return view('livewire.settings.account')
+            ->layout('dash')
+            ->title('Pengaturan Akun');
     }
 
     /**
