@@ -18,13 +18,14 @@ class NavItem extends Component
      */
     public function __construct($href, $icon)
     {
-        $this->href = $href;
         $this->icon = $icon;
 
-        $uris = explode(',', $href);
-        $this->isRoute = !str_starts_with(trim($uris[0]), '#') &&
-            !str_starts_with(trim($uris[0]), 'javascript:') &&
-            !str_contains($uris[0], '/'); // dianggap bukan route kalau ada slash langsung
+        $uris = array_map('trim', explode(',', $href));
+        $this->href = $href;
+        $this->isRoute =
+            !str_starts_with($uris[0], '#') &&
+            !str_starts_with($uris[0], 'javascript:') &&
+            !str_contains($uris[0], '/');
 
         $this->active = setActive(...$uris) ?? '';
     }

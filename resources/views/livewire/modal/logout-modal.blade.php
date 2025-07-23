@@ -22,5 +22,9 @@
         Livewire.on('logout:show', () => {
             modal.show();
         });
+
+        Livewire.on('logout:hide', () => {
+            modal.hide();
+        });
     </script>
 @endscript
