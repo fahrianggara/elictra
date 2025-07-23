@@ -26,6 +26,7 @@ class LogoutModal extends Component
     public function logout()
     {
         Auth::logout(); // Log out the user
+        $this->dispatch('logout:hide'); // Dispatch an event to close the modal
         return redirect()->route('login');
     }
 }
