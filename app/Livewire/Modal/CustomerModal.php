@@ -2,8 +2,10 @@
 
 namespace App\Livewire\Modal;
 
+use App\Models\Customer;
 use App\Models\Tarif;
 use App\Models\User;
+use Illuminate\Validation\Rule;
 use Livewire\Attributes\On;
 use Livewire\Component;
 
@@ -11,6 +13,7 @@ class CustomerModal extends Component
 {
     public $deleting = false;
     public $editing = false;
+    public $customer_id;
     public $user_id;
     public $name;
     public $email;
@@ -19,6 +22,8 @@ class CustomerModal extends Component
     public $meter_number;
     public $initial_meter;
     public $tarifs;
+    public $password;
+    public $password_confirmation;
 
     /**
      * Mount the component with the given tarifs.
@@ -91,16 +96,18 @@ class CustomerModal extends Component
     public function edit($id)
     {
         $id = decrypt($id);
-        $user = User::with('customer')->findOrFail($id);
+        // $user = User::with('customer')->findOrFail($id);
+        $customer = Customer::with('user')->findOrFail($id);
 
         $this->editing = true;
-        $this->user_id = $user->id;
-        $this->name = $user->name;
-        $this->email = $user->email;
-        $this->tarif_id = $user->customer->tarif_id;
-        $this->address = $user->customer->address;
-        $this->meter_number = $user->customer->meter_number;
-        $this->initial_meter = $user->customer->initial_meter;
+        $this->customer_id = $customer->id;
+        $this->user_id = $customer->user->id;
+        $this->name = $customer->user->name;
+        $this->email = $customer->user->email;
+        $this->tarif_id = $customer->tarif_id;
+        $this->address = $customer->address;
+        $this->meter_number = $customer->meter_number;
+        $this->initial_meter = $customer->initial_meter;
 
         $this->reset('deleting'); // Reset deleting state to false
         $this->dispatch('modal:show');
@@ -115,13 +122,14 @@ class CustomerModal extends Component
     {
         $this->validate();
 
-        $user = User::findOrFail($this->user_id);
-        $user->update([
+        $customer = Customer::with('user')->findOrFail($this->customer_id);
+
+        $customer->user->update([
             'name' => $this->name,
             'email' => $this->email,
         ]);
 
-        $user->customer()->update([
+        $customer->update([
             'tarif_id' => $this->tarif_id,
             'address' => $this->address,
             'meter_number' => $this->meter_number,
@@ -143,11 +151,11 @@ class CustomerModal extends Component
     public function delete($id)
     {
         $id = decrypt($id);
-        $user = User::findOrFail($id);
+        $customer = Customer::with('user')->findOrFail($id);
 
         $this->deleting = true;
-        $this->user_id = $user->id;
-        $this->name = $user->name;
+        $this->customer_id = $customer->id;
+        $this->name = $customer->user->name;
 
         $this->reset('editing'); // Reset editing state to false
         $this->dispatch('modal:show');
@@ -160,7 +168,7 @@ class CustomerModal extends Component
      */
     public function deleted()
     {
-        User::findOrFail($this->user_id)->delete();
+        Customer::with('user')->findOrFail($this->customer_id)->delete();
 
         $this->close();
         $this->dispatch('customer:success'); // <-- send event to Customer component
@@ -188,6 +196,7 @@ class CustomerModal extends Component
         $this->reset([
             'deleting',
             'editing',
+            'customer_id',
             'user_id',
             'name',
             'email',
@@ -195,6 +204,8 @@ class CustomerModal extends Component
             'tarif_id',
             'meter_number',
             'initial_meter',
+            'password',
+            'password_confirmation',
         ]);
 
         $this->resetErrorBag();
@@ -209,11 +220,23 @@ class CustomerModal extends Component
     {
         return [
             'name' => 'required|string|max:255|min:3',
-            'email' => 'required|email|max:255|unique:users,email,' . $this->user_id,
+            'email' => [
+                'required',
+                'email',
+                'max:255',
+                Rule::unique('users', 'email')->ignore($this->user_id),
+            ],
             'tarif_id' => 'required|exists:tarifs,id',
             'address' => 'required|string|max:255',
-            'meter_number' => 'required|numeric|digits_between:11,12|unique:customers,meter_number,' . $this->user_id,
+            'meter_number' => [
+                'required',
+                'numeric',
+                'digits_between:11,12',
+                Rule::unique('customers', 'meter_number')->ignore($this->customer_id),
+            ],
             'initial_meter' => 'required|numeric|min:0',
+            'password' => 'string|min:8|max:16|' . ($this->editing ? 'nullable' : 'required'),
+            'password_confirmation' => 'string|same:password|' . ($this->editing ? 'nullable' : 'required'),
         ];
     }
 
@@ -250,6 +273,14 @@ class CustomerModal extends Component
             'initial_meter.required' => 'Meter awal wajib diisi.',
             'initial_meter.numeric' => 'Meter awal harus berupa angka.',
             'initial_meter.min' => 'Meter awal minimal bernilai :min.',
+
+            'password.required' => 'Kata sandi wajib diisi.',
+            'password.string' => 'Kata sandi harus berupa teks.',
+            'password.min' => 'Kata sandi minimal :min karakter.',
+            'password.max' => 'Kata sandi maksimal :max karakter.',
+
+            'password_confirmation.required' => 'Konfirmasi kata sandi wajib diisi.',
+            'password_confirmation.same' => 'Konfirmasi kata sandi harus sama dengan kata sandi.',
         ];
     }
 }

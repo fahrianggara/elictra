@@ -29,7 +29,16 @@
             :error="$errors->first('tarif_id')" :options="$tarifs"/>
 
         <x-textarea label="Alamat" wire:model="address" rows="4" :required="$required"
-            placeholder="Masukkan alamat pengguna" :error="$errors->first('address')" />
+            placeholder="Masukkan alamat pelanggan" :error="$errors->first('address')" />
+
+        @if (!$editing) <!-- Only show password fields when creating a new user -->
+            <x-input type="password" label="Kata Sandi" wire:model="password" :required="$required"
+                placeholder="Masukkan kata sandi pelanggan" :error="$errors->first('password')" />
+
+            <x-input type="password" label="Konfirmasi Kata Sandi" wire:model="password_confirmation"
+                :required="$required" placeholder="Konfirmasi kata sandi pelanggan"
+                :error="$errors->first('password_confirmation')" />
+        @endif
     @endif
 
     <x-slot name="actions">
