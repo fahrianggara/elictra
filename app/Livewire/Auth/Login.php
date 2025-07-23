@@ -70,7 +70,7 @@ class Login extends Component
             } elseif ($user->role->name == 'petugas') {
                 return redirect()->route('officer.dashboard');
             } else {
-                return redirect()->route('home');
+                return redirect()->route('customer.dashboard');
             }
         }
 
