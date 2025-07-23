@@ -46,3 +46,8 @@ Breadcrumbs::for('admin.payments', function (BreadcrumbTrail $trail) {
     $trail->parent('admin');
     $trail->push('Pembayaran', route('admin.payments'));
 });
+
+Breadcrumbs::for('settings', function (BreadcrumbTrail $trail) {
+    // $trail->parent('admin');
+    $trail->push('Pengaturan', route('settings'));
+});

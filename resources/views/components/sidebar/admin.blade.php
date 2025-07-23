@@ -16,5 +16,5 @@
         <x-dash.nav-item href="#" icon="fas fa-chart-line">Laporan</x-dash.nav-item> --}}
 
 <li class="nav-title">Pengaturan</li>
-<x-dash.nav-item href="#" icon="fas fa-cogs">Pengaturan</x-dash.nav-item>
+<x-dash.nav-item href="settings" icon="fas fa-cogs">Pengaturan</x-dash.nav-item>
 {{-- <x-dash.nav-item href="#" icon="fas fa-history">Log Aktivitas</x-dash.nav-item> --}}
