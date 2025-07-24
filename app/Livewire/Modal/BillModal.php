@@ -5,13 +5,17 @@ namespace App\Livewire\Modal;
 use App\Models\Bill;
 use App\Models\Customer;
 use Carbon\Carbon;
+use Illuminate\Validation\Rule;
 use Livewire\Attributes\On;
 use Livewire\Component;
+use Illuminate\Support\Str;
+use Nette\Utils\Random;
 
 class BillModal extends Component
 {
     public $deleting = false;
     public $editing = false;
+    public $bill_id;
     public $customer_id = '';
     public $period;
     public $meter_start;
@@ -22,6 +26,7 @@ class BillModal extends Component
     public $customerInfo;
     public $total_meter;
     public $total_bill;
+    public $invoice;
 
     /**
      * Mount the component with the given customers.
@@ -49,7 +54,8 @@ class BillModal extends Component
 
             $billLast = $this->customerInfo->bills()->latest()->first();
             $this->meter_start = $billLast ? $billLast->meter_end : $this->customerInfo->initial_meter;
-            $this->period = $billLast ? null :now()->format('Y-m');
+            $this->period = $billLast ? null : now()->format('Y-m');
+            $this->invoice = Random::generate(15, '0-9A-Z');
 
             $this->resetErrorBag(['customer_id', 'meter_start']);
             if (!$billLast) $this->resetErrorBag('period');
@@ -128,6 +134,7 @@ class BillModal extends Component
                 ? Carbon::parse($this->due_date)
                 : Carbon::parse($this->period)->startOfMonth()->addDays(28),
             'status' => 'unpaid',
+            'invoice' => $this->invoice,
         ]);
 
         $this->close();
@@ -156,6 +163,7 @@ class BillModal extends Component
         $this->reset([
             'deleting',
             'editing',
+            'bill_id',
             'customer_id',
             'meter_start',
             'meter_end',
@@ -165,6 +173,7 @@ class BillModal extends Component
             'customerInfo',
             'total_meter',
             'total_bill',
+            'invoice',
         ]);
 
         $this->resetErrorBag();
@@ -183,6 +192,15 @@ class BillModal extends Component
             'meter_start' => 'required|numeric|min:0',
             'meter_end' => 'required|numeric|min:0',
             'due_date' => 'nullable|date|after_or_equal:today',
+            'invoice' => [
+                'required',
+                'string',
+                'max:255',
+                Rule::unique('bills')->where(function ($query) {
+                    return $query->where('customer_id', $this->customer_id)
+                        ->where('period', $this->period);
+                })->ignore($this->bill_id, 'id'),
+            ],
         ];
     }
 
@@ -206,6 +224,10 @@ class BillModal extends Component
             'meter_end.min'                => 'Meteran bulan ini minimal 0.',
             'due_date.date'                => 'Tanggal jatuh tempo harus berupa tanggal yang valid.',
             'due_date.after_or_equal'      => 'Tanggal jatuh tempo tidak boleh kurang dari hari ini.',
+            'invoice.required'             => 'Nomor invoice wajib diisi.',
+            'invoice.string'               => 'Nomor invoice harus berupa string.',
+            'invoice.max'                  => 'Nomor invoice maksimal :max karakter.',
+            'invoice.unique'               => 'Nomor invoice sudah digunakan untuk tagihan pada periode yang sama.',
         ];
     }
 }

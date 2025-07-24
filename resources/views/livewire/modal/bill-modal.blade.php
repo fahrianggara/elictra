@@ -31,6 +31,9 @@
             @endif
         @endif
 
+        <x-input label="Invoice" wire:model="invoice" type="text" readonly
+            placeholder="Automatis di buat" :error="$errors->first('invoice')"/>
+
         <x-input label="Meteran Bulan Lalu" wire:model="meter_start" type="number" readonly
             placeholder="Auto isi dari tagihan sebelumnya" :error="$errors->first('meter_start')" min="0"/>
 

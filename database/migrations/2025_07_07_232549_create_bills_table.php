@@ -13,6 +13,7 @@ return new class extends Migration
     {
         Schema::create('bills', function (Blueprint $table) {
             $table->id();
+            $table->string('invoice')->unique(); // Unique invoice number
             $table->foreignId('customer_id')->constrained('customers')->onDelete('cascade');
             $table->string('period', 7); // format YYYY-MM
             $table->unsignedInteger('meter_start');

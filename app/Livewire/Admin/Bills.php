@@ -7,9 +7,12 @@ use App\Models\Customer;
 use App\Models\User;
 use Livewire\Attributes\On;
 use Livewire\Component;
+use Livewire\WithPagination;
 
 class Bills extends Component
 {
+    use WithPagination;
+
     public $filterStatus = '';
     public $search = '';
     public $perPage = 10;

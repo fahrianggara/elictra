@@ -18,7 +18,7 @@
                 <div class="card-body">
                     @include('livewire.admin.bills.filter')
 
-                    <x-dash.table headers="No, Pelanggan, Tarif, Periode, Pemakaian, Total Biaya, Jatuh Tempo, Status,  ">
+                    <x-dash.table headers="No, Pelanggan, Tarif, Periode, Pemakaian, Total Biaya & Invoice, Jatuh Tempo, Status,  ">
                         @forelse ($bills as $bill)
                             <tr>
                                 <td>{{ $bills->firstItem() + $loop->index }}</td>
@@ -29,7 +29,10 @@
                                 <td>{{ $bill->customer->tarif->format_tarif }}</td>
                                 <td>{{ formatPeriod($bill->period) }}</td>
                                 <td>{{ $bill->usage }} kWh</td>
-                                <td>{{ rupiah($bill->amount) }}</td>
+                                <td>
+                                    {{ rupiah($bill->amount) }}
+                                    <p class="mb-0 text-muted">#{{ $bill->invoice }}</p>
+                                </td>
                                 <td>{{ formatDate($bill->due_date, 'l, d F Y') }}</td>
                                 <td>
                                     <p class="d-inline-flex px-2 mb-0 py-1 text-[14px] fw-semibold border rounded-2 {{ $bill->color }}">
