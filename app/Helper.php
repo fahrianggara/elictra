@@ -152,3 +152,20 @@ if (!function_exists('formatPeriod')) {
         }
     }
 }
+
+if (!function_exists('formatDate')) {
+    /**
+     * formatDate
+     *
+     * @param  mixed $date
+     * @return void
+     */
+    function formatDate($date, $format = 'd F Y')
+    {
+        try {
+            return Carbon::parse($date)->translatedFormat($format);
+        } catch (\Exception $e) {
+            return $date; // fallback kalau format salah
+        }
+    }
+}

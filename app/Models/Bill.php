@@ -62,7 +62,7 @@ class Bill extends Model
      */
     public function getAmountAttribute()
     {
-        return $this->usage * $this->customer->tarif->per_kwh;
+        return $this->usage * $this->customer->tarif->price_per_kwh;
     }
 
     /**
@@ -117,5 +117,52 @@ class Bill extends Model
     public function scopeBlocked($query)
     {
         return $query->where('status', 'blocked');
+    }
+
+    /**
+     * getColorAttribute
+     *
+     * @return void
+     */
+    public function getColorAttribute()
+    {
+        $statusBadges = [
+            'unpaid' => 'text-danger-emphasis bg-danger-subtle border-danger-subtle',
+            'paid' => 'text-success-emphasis bg-success-subtle border-success-subtle',
+            'waiting' => 'text-warning-emphasis bg-warning-subtle border-warning-subtle',
+            'blocked' => 'text-secondary-emphasis bg-secondary-subtle border-secondary-subtle',
+            'overdue' => 'text-danger-emphasis bg-danger-subtle border-danger-subtle',
+        ];
+
+        return $statusBadges[$this->status] ?? 'text-secondary-emphasis bg-secondary-subtle border-secondary-subtle';
+    }
+
+    /**
+     * getStatusFormatAttribute
+     *
+     * @return void
+     */
+    public function getStatusFormatAttribute()
+    {
+        $format = [
+            'unpaid' => 'Belum Dibayar',
+            'paid' => 'Lunas',
+            'waiting' => 'Menunggu Konfirmasi',
+            'blocked' => 'Diblokir',
+            'overdue' => 'Terlambat',
+        ];
+
+        return $format[$this->status] ?? 'Tidak Diketahui';
+    }
+
+    public function scopeSearch($query, $search)
+    {
+        $query->where(function ($query) use ($search) {
+            $query->whereHas('customer', function ($query) use ($search) {
+                $query->whereHas('user', function ($query) use ($search) {
+                    $query->where('name', 'like', '%' . $search . '%');
+                })->orWhere('meter_number', 'like', '%' . $search . '%');
+            });
+        });
     }
 }
