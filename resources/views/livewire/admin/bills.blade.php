@@ -10,7 +10,7 @@
                         Data Tagihan
                     </div>
 
-                    <button wire:click="$dispatch('customer:create')" class="btn btn-primary btn-sm">
+                    <button wire:click="$dispatch('bill:create')" class="btn btn-primary btn-sm">
                         Tambah
                     </button>
                 </div>
@@ -40,4 +40,8 @@
             </div>
         </div>
     </div>
+
+    @livewire('modal.bill-modal', [
+        'customers' => $customers
+    ])
 </div>

@@ -14,8 +14,7 @@ return new class extends Migration
         Schema::create('bills', function (Blueprint $table) {
             $table->id();
             $table->foreignId('customer_id')->constrained('customers')->onDelete('cascade');
-            $table->string('month'); // contoh: Juli
-            $table->year('year');
+            $table->string('period', 7); // format YYYY-MM
             $table->unsignedInteger('meter_start');
             $table->unsignedInteger('meter_end');
             $table->enum('status', ['unpaid', 'paid', 'overdue', 'blocked', 'waiting'])->default('unpaid');

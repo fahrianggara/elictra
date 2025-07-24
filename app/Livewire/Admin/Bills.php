@@ -3,6 +3,8 @@
 namespace App\Livewire\Admin;
 
 use App\Models\Bill;
+use App\Models\Customer;
+use App\Models\User;
 use Livewire\Component;
 
 class Bills extends Component
@@ -27,8 +29,14 @@ class Bills extends Component
 
             })->paginate($this->perPage);
 
+        $customers = Customer::with('user')->get()
+        ->mapWithKeys(function ($customer) {
+            return [$customer->id => $customer->user->name . ' (' . $customer->meter_number . ')'];
+        })->toArray();
+
         return view('livewire.admin.bills', [
-            'bills' => $bills
+            'bills' => $bills,
+            'customers' => $customers,
         ])->layout('dash')->title('Tagihan');
     }
 }

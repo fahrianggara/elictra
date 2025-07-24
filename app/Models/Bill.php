@@ -9,12 +9,11 @@ class Bill extends Model
 {
     protected $fillable = [
         'customer_id',
-        'month',
-        'year',
+        'period',
         'meter_start',
         'meter_end',
         'status',
-        'due_date'
+        'due_date',
     ];
 
     /**

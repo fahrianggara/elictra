@@ -12,7 +12,10 @@ class Payment extends Model
         'proof_file',
         'verified',
         'bill_id',
-        'method_id'
+        'method_id',
+        'note',
+        'is_reupload',
+        'approved_by',
     ];
 
     /**
