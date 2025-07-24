@@ -40,4 +40,14 @@ class Tarif extends Model
                 ->orWhere('power', 'like', "%{$search}%");
         });
     }
+
+    /**
+     * getFormatTarifAttribute
+     *
+     * @return void
+     */
+    public function getFormatTarifAttribute()
+    {
+        return "{$this->type} - {$this->power} VA";
+    }
 }

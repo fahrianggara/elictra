@@ -1,5 +1,6 @@
 <?php
 
+use Carbon\Carbon;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Storage;
 use Intervention\Image\Drivers\Gd\Driver;
@@ -132,5 +133,22 @@ if (!function_exists('uploadFile')) {
         Storage::disk('public')->put($imageName, $imageEncoded);
 
         return $imageName;
+    }
+}
+
+if (!function_exists('formatPeriod')) {
+    /**
+     * formatPeriod
+     *
+     * @param  mixed $period
+     * @return void
+     */
+    function formatPeriod($period)
+    {
+        try {
+            return Carbon::createFromFormat('Y-m', $period)->translatedFormat('F Y');
+        } catch (\Exception $e) {
+            return $period; // fallback kalau format salah
+        }
     }
 }

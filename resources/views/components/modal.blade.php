@@ -1,6 +1,7 @@
 @props([
     'centered' => true,
     'action' => 'close',
+    'spinnerTarget' => 'store, update',
 ])
 
 <div id="{{ $id }}" tabindex="-1" aria-labelledby="{{ $id }}Label" aria-hidden="true"
@@ -9,6 +10,7 @@
         <div class="modal-content">
             @if ($showHeader)
                 <div class="modal-header">
+                    <x-spinner :target="$spinnerTarget" class="me-2" />
                     <p class="modal-title" id="{{ $id }}Label">{{ $title }}</p>
                 </div>
             @endif

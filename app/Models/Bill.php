@@ -27,16 +27,6 @@ class Bill extends Model
     }
 
     /**
-     * Get admin fee attribute.
-     *
-     * @return void
-     */
-    public function getAdminFeeAttribute()
-    {
-        return config('app.admin_fee');
-    }
-
-    /**
      * Accessor for penalty attribute.
      *
      * @return void
@@ -82,7 +72,7 @@ class Bill extends Model
      */
     public function getTotalAttribute()
     {
-        return $this->amount + $this->penalty + $this->admin_fee;
+        return $this->amount + $this->penalty;
     }
 
     /**

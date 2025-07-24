@@ -5,6 +5,7 @@ namespace App\Livewire\Admin;
 use App\Models\Bill;
 use App\Models\Customer;
 use App\Models\User;
+use Livewire\Attributes\On;
 use Livewire\Component;
 
 class Bills extends Component
@@ -18,6 +19,7 @@ class Bills extends Component
      *
      * @return void
      */
+    #[On('bill:success')]
     public function render()
     {
         $bills = Bill::query()

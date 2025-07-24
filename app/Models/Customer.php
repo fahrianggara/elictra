@@ -75,4 +75,14 @@ class Customer extends Model
                 });
         });
     }
+
+    /**
+     * Get the last bill for the customer.
+     *
+     * @return void
+     */
+    public function getLastBillAttribute()
+    {
+        return $this->bills->sortByDesc('period')->first();
+    }
 }
