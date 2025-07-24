@@ -51,11 +51,12 @@
         @endif
 
         <x-input label="Jatuh Tempo" wire:model.blur="due_date" type="date" margin="mb-0"
-            placeholder="Pilih jatuh tempo" :error="$errors->first('due_date')" :disabled="!$customerInfo"
-            min="{{ now()->format('Y-m-d') }}" max="{{ now()->addMonth()->format('Y-m-d') }}"/>
+            placeholder="Pilih jatuh tempo" :error="$errors->first('due_date')" :disabled="!$customerInfo || !$period"
+            min="{{ now()->format('Y-m-d') }}" max="{{ now()->addMonth(2)->format('Y-m-d') }}"/>
 
         <p class="text-[15px] text-gray-500 mt-1 mb-3">
-            Note: Jika kosong, jatuh tempo akan otomatis diisi dengan 28 hari setelah periode tagihan.
+            Note: Jatuh tempo otomatis diatur ke tanggal yang sama pada bulan berikutnya dari periode tagihan.
+            Sesuaikan jika diperlukan.
         </p>
 
         @if($total_bill)

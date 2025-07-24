@@ -57,12 +57,28 @@ class BillModal extends Component
 
         if ($property == 'meter_end') {
             $this->resetErrorBag('meter_end');
+
             if (!empty($this->meter_end) && $this->meter_end <= $this->meter_start) {
                 $this->addError('meter_end', 'Meteran bulan ini harus lebih sama dengan meteran bulan lalu.');
                 return;
             }
         }
 
+        if ($property == 'period') {
+            $this->resetErrorBag('period');
+
+            // jika sudah ada periode yg buat sebelumnya, tidak boleh dipakai lagi
+            if (Bill::query()->where('customer_id', $this->customer_id)->where('period', $this->period)->exists()) {
+                $periodFormatted = formatPeriod($this->period);
+                $this->addError('period', "Periode {$periodFormatted} sudah ada tagihan sebelumnya.");
+                $this->due_date = null;
+                $this->period = null;
+                return;
+            }
+
+            // automatis set due date 28 hari setelah periode
+            $this->due_date = Carbon::parse($this->period)->day(24)->addMonth()->format('Y-m-d');
+        }
 
         if (!empty($this->meter_end) && !empty($this->period)) {
             $this->total_meter = $this->meter_end - $this->meter_start;
@@ -110,7 +126,7 @@ class BillModal extends Component
             'meter_end' => $this->meter_end,
             'due_date' => $this->due_date
                 ? Carbon::parse($this->due_date)
-                : Carbon::now()->addDays(28), // Default to 28 days from now if not set
+                : Carbon::parse($this->period)->startOfMonth()->addDays(28),
             'status' => 'unpaid',
         ]);
 
