@@ -4,6 +4,8 @@
     'required' => false,
     'error' => null,
     'src' => null,
+    'maxSize' => "5MB",
+    'margin' => 'mb-3',
 ])
 
 @php
@@ -17,6 +19,11 @@
 
     $name = $model ? Str::afterLast($model, '.') : null;
     $id = $name ? Str::slug($name) : null;
+
+    $formats = collect(explode(',', $accept))
+        ->map(fn($mime) => strtoupper(explode('/', $mime)[1]))
+        ->unique()
+        ->implode(', ');
 @endphp
 
 <div
@@ -43,7 +50,7 @@
         <div class="text-sm text-gray-600 mt-1" x-text="'Mengunggah... ' + progress + '%'"></div>
     </div>
 
-    <div class="mb-3">
+    <div class="{{ $margin }}">
         @if ($label)
             <label for="{{ $id }}" class="form-label {{ $required ? 'required' : '' }}">
                 {{ $label }}
@@ -67,7 +74,9 @@
                 {{ $error }}
             </div>
         @else
-            <div class="form-text">Format gambar: PNG. Maksimal ukuran: 5MB.</div>
+            <div class="form-text">
+                Format gambar: {{ $formats }}. Maksimal ukuran: {{ $maxSize }}.
+            </div>
         @endif
     </div>
 </div>
