@@ -2,6 +2,7 @@
 
 use App\Livewire\Customer\Bills;
 use App\Livewire\Customer\Dashboard;
+use App\Livewire\Customer\Payments;
 use Illuminate\Support\Facades\Route;
 use Diglactic\Breadcrumbs\Breadcrumbs;
 use Diglactic\Breadcrumbs\Generator as BreadcrumbTrail;
@@ -13,6 +14,7 @@ Route::get('/', function () {
 Route::group(['as' => 'customer.'], function() {
     Route::get('dashboard', Dashboard::class)->name('dashboard');
     Route::get('tagihan', Bills::class)->name('bills');
+    Route::get('bayar/{invoice}', Payments::class)->name('payments');
 });
 
 Breadcrumbs::for('customer.dashboard', function (BreadcrumbTrail $trail) {
@@ -21,4 +23,9 @@ Breadcrumbs::for('customer.dashboard', function (BreadcrumbTrail $trail) {
 
 Breadcrumbs::for('customer.bills', function (BreadcrumbTrail $trail) {
     $trail->push('Tagihan', route('customer.bills'));
+});
+
+Breadcrumbs::for('customer.payments', function (BreadcrumbTrail $trail, $invoice) {
+    $trail->parent('customer.bills');
+    $trail->push('Pembayaran', route('customer.payments', ['invoice' => $invoice]));
 });

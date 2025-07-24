@@ -33,7 +33,7 @@
                                 <td>{{ formatPeriod($bill->period) }}</td>
                                 <td>{{ $bill->usage }} kWh</td>
                                 <td>
-                                    <h5 class="mb-0 font-bold">{{ rupiah($bill->amount) }}</h5>
+                                    <p class="mb-0 font-bold text-[17px]">{{ rupiah($bill->amount) }}</p>
                                     <p class="mb-0 text-muted text-[15px]">(Belum Termasuk Biaya Admin)</p>
                                 </td>
                                 <td>
@@ -44,7 +44,7 @@
                                 <td>{{ formatDate($bill->due_date, 'l, d F Y') }}</td>
                                 <td>
                                     @if ($bill->status == 'unpaid')
-                                        <a href="3"
+                                        <a href="{{ route('customer.payments', $bill->invoice) }}"
                                             class="btn btn-sm btn-success text-white rounded-2">
                                             Bayar Sekarang
                                         </a>
