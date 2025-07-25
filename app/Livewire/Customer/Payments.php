@@ -3,6 +3,7 @@
 namespace App\Livewire\Customer;
 
 use App\Models\Bill;
+use App\Models\Payment;
 use App\Models\PaymentMethod;
 use Livewire\Component;
 use Livewire\WithFileUploads;
@@ -114,5 +115,42 @@ class Payments extends Component
             'step_2' => $this->step_2,
             'step_3' => $this->step_3,
         ];
+    }
+
+    /**
+     * Submit the payment.
+     *
+     * @return void
+     */
+    public function submit()
+    {
+        $this->validate([
+            'proof_file' => 'required|file|mimes:jpeg,jpg,png,pdf|max:5120', // 5MB max
+        ], [
+            'proof_file.required' => 'Bukti pembayaran harus diunggah.',
+            'proof_file.file' => 'Bukti pembayaran harus berupa file.',
+            'proof_file.mimes' => 'Bukti pembayaran harus berupa file dengan format jpeg, jpg, png, atau pdf.',
+            'proof_file.max' => 'Bukti pembayaran tidak boleh lebih dari 5MB.',
+        ]);
+
+        // Save the payment proof file
+        $proof = uploadFile($this->proof_file, 'payments');
+
+        // Create a new payment record
+        $payment = Payment::create([
+            'payment_date' => now(),
+            'amount' => $this->total,
+            'proof_file' => $proof,
+            'status' => 'pending',
+            'bill_id' => $this->bill->id,
+            'method_id' => $this->payment_method_id,
+        ]);
+
+        $this->bill->update([
+            'status' => 'waiting',
+        ]);
+
+        $this->dispatch('toast', icon: 'success', message: 'Pembayaran berhasil diajukan. Silakan tunggu verifikasi dari admin.');
+        // return $this->redirect()
     }
 }

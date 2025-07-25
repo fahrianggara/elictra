@@ -1,4 +1,4 @@
-<div class="card">
+<form class="card" wire:submit.prevent="submit">
     <div class="card-header">
         Upload Bukti Pembayaran
     </div>
@@ -20,8 +20,8 @@
             Kembali
         </x-button>
 
-        <x-button color="success" action="submit" target="submit" class="text-white">
+        <x-button color="success" type="submit" target="submit" class="text-white">
             Kirim & Selesai
         </x-button>
     </div>
-</div>
+</form>

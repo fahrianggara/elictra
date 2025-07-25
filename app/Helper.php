@@ -26,8 +26,7 @@ if (!function_exists('setActive')) {
     }
 }
 
-if (!function_exists('rupiah'))
-{
+if (!function_exists('rupiah')) {
     /**
      * fungsi untuk format angka ke format rupiah
      *
@@ -115,24 +114,35 @@ if (!function_exists('uploadFile')) {
      * @return string
      */
     function uploadFile(
-        object $image,
+        object $file,
         string $path = 'uploads',
         int $width = 800,
         int $height = 600,
         int $quality = 75,
     ): string {
-        $manager = new ImageManager(Driver::class);
+        $mimeType = $file->getMimeType();
 
-        // Convert the image to a cover with specified dimensions
-        // $imageRead = $manager->read($image)->cover($width, $height);
-        $imageRead = $manager->read($image);
-        $imageEncoded = $imageRead->encode(new AutoEncoder(quality: $quality));
-        $imageName = "{$path}/{$image->hashName()}";
+        if (str_starts_with($mimeType, 'image/')) {
+            $manager = new ImageManager(Driver::class);
 
-        // Ensure the directory exists
-        Storage::disk('public')->put($imageName, $imageEncoded);
+            // Convert the image to a cover with specified dimensions
+            // $imageRead = $manager->read($image)->cover($width, $height);
+            $fileRead = $manager->read($file);
+            $fileEncoded = $fileRead->encode(new AutoEncoder(quality: $quality));
+            $fileName = "{$path}/{$file->hashName()}";
 
-        return $imageName;
+            // Ensure the directory exists
+            Storage::disk('public')->put($fileName, $fileEncoded);
+        }
+
+        else {
+            // For non-image files, just store the file as is
+            $fileName = "{$path}/{$file->hashName()}";
+            Storage::disk('public')->putFileAs($path, $file, $file->hashName());
+        }
+
+
+        return $fileName;
     }
 }
 
