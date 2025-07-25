@@ -65,7 +65,7 @@ class BillModal extends Component
             $this->resetErrorBag('meter_end');
 
             if (!empty($this->meter_end) && $this->meter_end <= $this->meter_start) {
-                $this->addError('meter_end', 'Meteran bulan ini harus lebih sama dengan meteran bulan lalu.');
+                $this->addError('meter_end', 'Meteran bulan ini harus lebih besar dari meteran bulan lalu.');
                 return;
             }
         }
@@ -79,6 +79,11 @@ class BillModal extends Component
                 $this->addError('period', "Periode {$periodFormatted} sudah ada tagihan sebelumnya.");
                 $this->due_date = null;
                 $this->period = null;
+                return;
+            }
+
+            if (!empty($this->meter_end) && $this->meter_end <= $this->meter_start) {
+                $this->addError('meter_end', 'Meteran bulan ini harus lebih besar dari meteran bulan lalu.');
                 return;
             }
 
@@ -124,6 +129,11 @@ class BillModal extends Component
     public function store()
     {
         $this->validate();
+
+        if ($this->meter_end <= $this->meter_start) {
+            $this->addError('meter_end', 'Meteran bulan ini harus lebih besar dari meteran bulan lalu.');
+            return;
+        }
 
         Bill::create([
             'customer_id' => $this->customer_id,

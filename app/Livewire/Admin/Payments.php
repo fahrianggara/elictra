@@ -53,7 +53,8 @@ class Payments extends Component
      */
     public function modalShow($id, $status)
     {
-        $this->payment_id = decrypt($id);
+        $payment = Payment::findOrFail(decrypt($id));
+        $this->payment_id = $payment->id;
         $this->status = $status;
         $this->note = $payment->note ?? '';
 
@@ -78,12 +79,16 @@ class Payments extends Component
             'is_reupload' => $this->status == 'rejected' ? true : false,
         ]);
 
+        $payment->bill->update([
+            'status' => $this->status == 'verified' ? 'paid' : $payment->bill->status,
+        ]);
+
         $this->close();
         $this->dispatch('toast', icon: 'success', message: 'Catatan pembayaran dan status berhasil diperbarui.');
     }
 
     /**
-     * Close the customer modal.
+     * Close the modal.
      *
      * @return void
      */

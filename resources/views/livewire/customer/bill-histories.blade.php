@@ -4,7 +4,7 @@
             <div class="card">
                 <div class="card-header flex justify-between items-center">
                     <div>
-                        <x-spinner target="search, perPage, filterStatus" />
+                        <x-spinner target="search, perPage, filterStatus, modalShow" />
                         Riwayat Tagihan
                     </div>
                 </div>
@@ -36,7 +36,7 @@
                     </div>
 
                     <x-dash.table
-                        headers="No,  Invoice, Bukti Pembayaran, Periode, Total Bayar, Status, Tanggal Pembayaran, Catatan Operator, ">
+                        headers="No,  Invoice, Bukti, Periode, Total Bayar, Tanggal Pembayaran, Status, Catatan, ">
                         @forelse ($payments as $payment)
                             <tr>
                                 <td>{{ $payments->firstItem() + $loop->index }}</td>
@@ -54,22 +54,36 @@
                                 <td>{{ formatPeriod($payment->bill->period) }}</td>
                                 <td>{{ rupiah($payment->amount) }}</td>
                                 <td>
+                                    {{ formatDate($payment->created_at, 'd F Y') }}
+                                </td>
+                                <td>
                                     <p
                                         class="d-inline-flex px-2 mb-0 py-1 text-[14px] fw-semibold border rounded-2 {{ $payment->color }}">
                                         {{ $payment->status_format }}
                                     </p>
                                 </td>
-                                <td>
-                                    {{ formatDate($payment->created_at, 'l, d F Y') }}
+                                <td style="max-width: 280px;">
+                                    {{ "\"$payment->note\"" ?? '-' }}
                                 </td>
-                                <td>{{ $payment->note ?? '-' }}</td>
                                 <td>
-                                    <button type="button" data-coreui-toggle="tooltip" data-coreui-placement="top"
-                                        data-coreui-title="Cetak Struk"
-                                        href="#" disabled="{{ $payment->status != 'verified' }}"
-                                        class="btn btn-sm btn-success text-white">
-                                        <i class="fas fa-print"></i>
-                                    </button>
+                                    @if ($payment->is_reupload)
+                                        <button type="button" data-coreui-toggle="tooltip"
+                                            data-coreui-placement="top"
+                                            data-coreui-title="Unggah Ulang Bukti"
+                                            wire:click="modalShow('{{ encrypt($payment->id) }}')"
+                                            class="btn btn-sm btn-warning text-white">
+                                            <i class="fas fa-upload"></i>
+                                        </button>
+                                    @else
+                                        <button type="button"
+                                            data-coreui-toggle="tooltip"
+                                            data-coreui-placement="top"
+                                            data-coreui-title="Cetak Invoice"
+                                            href="#" {{ $payment->status != 'verified' ? 'disabled' : '' }}
+                                            class="btn btn-sm btn-success text-white">
+                                            <i class="fas fa-print"></i>
+                                        </button>
+                                    @endif
                                 </td>
                             </tr>
                         @empty
@@ -93,4 +107,6 @@
             </div>
         </div>
     </div>
+
+    @include('livewire.modal.proof-modal')
 </div>

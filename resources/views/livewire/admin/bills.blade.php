@@ -41,21 +41,30 @@
                                 </td>
                                 <td>
                                     <x-dash.table-action>
-                                        <li>
-                                            <a class="dropdown-item" href="javascript:void(0)"
-                                                wire:click="$dispatch('bill:edit', { id: '{{ encrypt($bill->id) }}' })">
-                                                <i class="fas fa-edit text-warning mr-2"></i>
-                                                Edit
-                                            </a>
-                                        </li>
+                                        @if($bill->status != 'paid')
+                                            <li>
+                                                <a class="dropdown-item" href="javascript:void(0)"
+                                                    wire:click="$dispatch('bill:edit', { id: '{{ encrypt($bill->id) }}' })">
+                                                    <i class="fas fa-edit text-warning mr-2"></i>
+                                                    Edit
+                                                </a>
+                                            </li>
 
-                                        <li>
-                                            <a class="dropdown-item" href="javascript:void(0)"
-                                                wire:click="$dispatch('bill:delete', { id: '{{ encrypt($bill->id) }}' })">
-                                                <i class="fas fa-trash-alt text-danger mr-2"></i>
-                                                Hapus
-                                            </a>
-                                        </li>
+                                            <li>
+                                                <a class="dropdown-item" href="javascript:void(0)"
+                                                    wire:click="$dispatch('bill:delete', { id: '{{ encrypt($bill->id) }}' })">
+                                                    <i class="fas fa-trash-alt text-danger mr-2"></i>
+                                                    Hapus
+                                                </a>
+                                            </li>
+                                        @else
+                                            <li>
+                                                <a class="dropdown-item" href="javascript:void(0)">
+                                                    <i class="fas fa-external-link-alt text-info mr-2"></i>
+                                                    Detail Tagihan
+                                                </a>
+                                            </li>
+                                        @endif
                                     </x-dash.table-action>
                                 </td>
                             </tr>
