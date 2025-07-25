@@ -5,7 +5,9 @@ namespace App\Livewire\Customer;
 use App\Models\Bill;
 use App\Models\Payment;
 use App\Models\PaymentMethod;
+use Livewire\Attributes\Validate;
 use Livewire\Component;
+use Livewire\Features\SupportFileUploads\TemporaryUploadedFile;
 use Livewire\WithFileUploads;
 
 class Payments extends Component
@@ -19,12 +21,41 @@ class Payments extends Component
     public $step_3 = false;
     public $steps;
 
-    public $proof_file;
     public $payment_method_id;
     public $invoice;
     public $payment_method;
     public $total;
     public $bill;
+
+    #[Validate]
+    public $proof_file;
+
+    /**
+     * rules
+     *
+     * @return void
+     */
+    public function rules()
+    {
+        return [
+            'proof_file' => 'required|file|mimes:jpeg,jpg,png,pdf|max:5120', // 5MB max
+        ];
+    }
+
+    /**
+     * messages
+     *
+     * @return void
+     */
+    public function messages()
+    {
+        return [
+            'proof_file.required' => 'Bukti pembayaran harus diunggah.',
+            'proof_file.file' => 'Bukti pembayaran harus berupa file.',
+            'proof_file.mimes' => 'Bukti pembayaran harus berupa file dengan format jpeg, jpg, png, atau pdf.',
+            'proof_file.max' => 'Bukti pembayaran tidak boleh lebih dari 5MB.',
+        ];
+    }
 
     /**
      * updated
@@ -38,6 +69,14 @@ class Payments extends Component
             $this->payment_method = PaymentMethod::findOrFail($this->payment_method_id);
             $this->total = $this->bill->amount + $this->payment_method->fee;
         }
+
+        if ($property === 'proof_file') {
+            // maximize the file size to 5MB
+            // if ($this->proof_file && $this->proof_file->getSize() > 5120 * 1024) {
+            //     $this->dispatch('toast', icon: 'error', message: 'Ukuran file bukti pembayaran tidak boleh lebih dari 5MB.');
+            //     $this->proof_file = null; // reset the file
+            // }
+        }
     }
 
     /**
@@ -49,7 +88,9 @@ class Payments extends Component
     public function mount($invoice)
     {
         $this->invoice = $invoice;
-        $this->bill = Bill::where('invoice', $this->invoice)->firstOrFail();
+        $this->bill = Bill::where('invoice', $this->invoice)
+            ->where('status', 'unpaid')
+            ->firstOrFail();
     }
 
     /**
@@ -124,14 +165,7 @@ class Payments extends Component
      */
     public function submit()
     {
-        $this->validate([
-            'proof_file' => 'required|file|mimes:jpeg,jpg,png,pdf|max:5120', // 5MB max
-        ], [
-            'proof_file.required' => 'Bukti pembayaran harus diunggah.',
-            'proof_file.file' => 'Bukti pembayaran harus berupa file.',
-            'proof_file.mimes' => 'Bukti pembayaran harus berupa file dengan format jpeg, jpg, png, atau pdf.',
-            'proof_file.max' => 'Bukti pembayaran tidak boleh lebih dari 5MB.',
-        ]);
+        $this->validate();
 
         // Save the payment proof file
         $proof = uploadFile($this->proof_file, 'payments');
@@ -150,7 +184,12 @@ class Payments extends Component
             'status' => 'waiting',
         ]);
 
+        // remove the old proof file if it exists
+        if ($this->proof_file && $this->proof_file instanceof TemporaryUploadedFile) {
+            deleteFile("livewire-tmp/{$this->proof_file->getFilename()}");
+        }
+
         $this->dispatch('toast', icon: 'success', message: 'Pembayaran berhasil diajukan. Silakan tunggu verifikasi dari admin.');
-        // return $this->redirect()
+        return $this->redirect(route('customer.bills.history'), true);
     }
 }

@@ -1,16 +1,10 @@
 <div>
-    @if(count($bills) > 0)
-        <div class="alert alert-warning mb-3">
-            Silakan bayar tagihan Anda sebelum jatuh tempo untuk menghindari denda keterlambatan.
-        </div>
-    @endif
-
     <div class="row">
         <div class="col-lg-12">
             <div class="card">
                 <div class="card-header flex justify-between items-center">
                     <div>
-                        Tagihan Saya
+                        Riwayat Tagihan
                     </div>
                 </div>
 
@@ -55,7 +49,7 @@
                         @empty
                             <tr>
                                 <td colspan="7" class="text-center text-muted">
-                                    Anda tidak memiliki tagihan saat ini.
+                                    Anda tidak memiliki riwayat tagihan saat ini.
                                 </td>
                             </tr>
                         @endforelse

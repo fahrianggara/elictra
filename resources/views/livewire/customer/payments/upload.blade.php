@@ -9,10 +9,13 @@
             sesuai dengan format yang diterima.
         </p>
 
-        <x-file-upload label="Bukti Pembayaran" wire:model="proof_file"
+        <x-file-upload
+            label="Bukti Pembayaran"
+            wire:model="proof_file"
             accept="image/jpeg,image/jpg,image/png,application/pdf"
             margin="mb-0"
-            :error="$errors->first('proof_file')" />
+            :error="$errors->first('proof_file')"
+            />
     </div>
 
     <div class="card-footer flex justify-end gap-2">
