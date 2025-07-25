@@ -1,5 +1,6 @@
 <form class="card" wire:submit.prevent="submit">
     <div class="card-header">
+        <x-spinner target="submit" />
         Upload Bukti Pembayaran
     </div>
 

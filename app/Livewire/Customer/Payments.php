@@ -72,10 +72,12 @@ class Payments extends Component
 
         if ($property === 'proof_file') {
             // maximize the file size to 5MB
-            // if ($this->proof_file && $this->proof_file->getSize() > 5120 * 1024) {
-            //     $this->dispatch('toast', icon: 'error', message: 'Ukuran file bukti pembayaran tidak boleh lebih dari 5MB.');
-            //     $this->proof_file = null; // reset the file
-            // }
+            if ($this->proof_file && $this->proof_file->getSize() > 5120 * 1024) {
+                // $this->dispatch('toast', icon: 'error', message: 'Ukuran file bukti pembayaran tidak boleh lebih dari 5MB.');
+                if ($this->proof_file && $this->proof_file instanceof TemporaryUploadedFile)
+                    deleteFile("livewire-tmp/{$this->proof_file->getFilename()}");
+                $this->proof_file = null; // reset the file
+            }
         }
     }
 

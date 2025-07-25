@@ -26,7 +26,7 @@ class RedirectIfAuthenticated
                 case 'petugas':
                     return redirect()->route('officer.dashboard');
                 default:
-                    return redirect()->route('home');
+                    return redirect()->route('customer.dashboard');
             }
         }
 
