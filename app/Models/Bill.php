@@ -148,7 +148,7 @@ class Bill extends Model
         $format = [
             'unpaid' => 'Belum Dibayar',
             'paid' => 'Lunas',
-            'waiting' => 'Menunggu Konfirmasi',
+            'waiting' => 'Menunggu Verifikasi',
             'blocked' => 'Diblokir',
             'overdue' => 'Terlambat',
         ];

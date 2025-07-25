@@ -14,7 +14,7 @@
     </div>
 
     <div class="col-12 col-sm-6 col-xl-4 col-xxl-3">
-        <x-widget color="warning" :count="$count_bills_waiting" title="Menunggu Konfirmasi">
+        <x-widget color="warning" :count="$count_bills_waiting" title="Menunggu Verifikasi">
             <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
                 stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                 <path stroke="none" d="M0 0h24v24H0z" fill="none" />

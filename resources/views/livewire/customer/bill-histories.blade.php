@@ -64,7 +64,6 @@
                                 </td>
                                 <td>{{ $payment->note ?? '-' }}</td>
                                 <td>
-
                                     <button type="button" data-coreui-toggle="tooltip" data-coreui-placement="top"
                                         data-coreui-title="Cetak Struk"
                                         href="#" disabled="{{ $payment->status != 'verified' }}"
