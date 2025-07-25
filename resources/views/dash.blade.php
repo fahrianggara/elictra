@@ -63,6 +63,9 @@
             const mixinOptions = e.mixinOptions || {};
             toast(fireOptions, mixinOptions);
         });
+
+        const tooltipTriggerList = document.querySelectorAll('[data-coreui-toggle="tooltip"]')
+        const tooltipList = [...tooltipTriggerList].map(tooltipTriggerEl => new coreui.Tooltip(tooltipTriggerEl))
     </script>
 
     @stack('scripts')
