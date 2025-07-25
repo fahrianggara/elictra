@@ -8,7 +8,7 @@
 
     $title = [
         1 => 'Metode Pembayaran',
-        2 => 'Detail Tagihan',
+        2 => 'Ringkasan Tagihan',
         3 => 'Upload Bukti',
     ];
 @endphp

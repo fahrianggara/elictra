@@ -2,11 +2,15 @@
 
 namespace App\Livewire\Customer;
 
+use App\Models\Bill;
 use App\Models\PaymentMethod;
 use Livewire\Component;
+use Livewire\WithFileUploads;
 
 class Payments extends Component
 {
+    use WithFileUploads;
+
     public $step_total = 3;
     public $step_current = 1;
     public $step_1 = false;
@@ -15,7 +19,37 @@ class Payments extends Component
     public $steps;
 
     public $proof_file;
+    public $payment_method_id;
+    public $invoice;
     public $payment_method;
+    public $total;
+    public $bill;
+
+    /**
+     * updated
+     *
+     * @param  mixed $property
+     * @return void
+     */
+    public function updated($property)
+    {
+        if ($property === 'payment_method_id') {
+            $this->payment_method = PaymentMethod::findOrFail($this->payment_method_id);
+            $this->total = $this->bill->amount + $this->payment_method->fee;
+        }
+    }
+
+    /**
+     * Mount the component with the given invoice.
+     *
+     * @param  mixed $invoice
+     * @return void
+     */
+    public function mount($invoice)
+    {
+        $this->invoice = $invoice;
+        $this->bill = Bill::where('invoice', $this->invoice)->firstOrFail();
+    }
 
     /**
      * Render the component.

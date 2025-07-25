@@ -28,10 +28,10 @@
                                         <input
                                             class="form-check-input"
                                             type="radio"
-                                            name="payment_method"
+                                            name="payment_method_id"
                                             id="method_{{ $method->id }}"
                                             value="{{ $method->id }}"
-                                            wire:model="payment_method"
+                                            wire:model="payment_method_id"
                                             style="position: relative; bottom: 2px;">
 
                                         <label
