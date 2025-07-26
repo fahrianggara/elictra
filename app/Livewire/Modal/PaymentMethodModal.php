@@ -168,7 +168,7 @@ class PaymentMethodModal extends Component
     public function delete($id)
     {
         $id = decrypt($id);
-        $paymentMethod = PaymentMethod::findOrFail($id);
+        $paymentMethod = PaymentMethod::withCount('payments')->findOrFail($id);
 
         $this->deleting = true;
         $this->payment_method_id = $paymentMethod->id;
@@ -177,6 +177,8 @@ class PaymentMethodModal extends Component
             $this->dispatch('toast', icon: 'error', message: 'Metode pembayaran ini tidak dapat dihapus karena masih aktif.');
             return;
         }
+
+        if ($this->isPaymentMethodInUse($paymentMethod)) return;
 
         $this->reset('editing'); // Reset editing state to false
         $this->dispatch('modal:show');
@@ -189,13 +191,15 @@ class PaymentMethodModal extends Component
      */
     public function deleted()
     {
-        $paymentMethod = PaymentMethod::findOrFail($this->payment_method_id);
+        $paymentMethod = PaymentMethod::withCount('payments')->findOrFail($this->payment_method_id);
 
         // Check if the payment method is in use
         if ($paymentMethod->is_active) {
             $this->dispatch('toast', icon: 'error', message: 'Metode pembayaran ini tidak dapat dihapus karena masih aktif.');
             return;
         }
+
+        if ($this->isPaymentMethodInUse($paymentMethod)) return;
 
         // Delete the payment method
         deleteFile($paymentMethod->logo); // Delete the existing logo file
@@ -320,5 +324,28 @@ class PaymentMethodModal extends Component
         if ($this->oldLogo && $this->oldLogo instanceof TemporaryUploadedFile) {
             deleteFile("livewire-tmp/{$this->oldLogo->getFilename()}");
         }
+    }
+
+    /**
+     * Check if method payment is used by any customer and show error toast if true.
+     *
+     * @param  PaymentMethod  $paymentMethod
+     * @return bool
+     */
+    private function isPaymentMethodInUse(PaymentMethod $paymentMethod): bool
+    {
+        if ($paymentMethod->payments_count > 0) {
+            $message = "Metode pembayaran ini tidak dapat dihapus! karena sudah digunakan oleh {$paymentMethod->payments_count} pelanggan.";
+
+            $this->dispatch(
+                'toast',
+                fireOptions: ['icon' => 'error', 'title' => $message],
+                mixinOptions: ['position' => 'top-end', 'timer' => 5000],
+            );
+
+            return true;
+        }
+
+        return false;
     }
 }

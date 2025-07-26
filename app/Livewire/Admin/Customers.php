@@ -28,6 +28,7 @@ class Customers extends Component
             ->when($this->filterTarif, fn ($q) => $q->where('tarif_id', $this->filterTarif))
             ->when($this->filterStatus !== 'all', fn ($q) => $q->where('is_blocked', $this->filterStatus))
             ->with(['tarif', 'user'])
+            ->withCount(['bills'])
             ->orderBy('created_at', 'desc');
     }
 

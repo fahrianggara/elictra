@@ -151,7 +151,9 @@ class CustomerModal extends Component
     public function delete($id)
     {
         $id = decrypt($id);
-        $customer = Customer::with('user')->findOrFail($id);
+        $customer = Customer::with('user')->withCount('bills')->findOrFail($id);
+
+        if ($this->customerHasBill($customer)) return;
 
         $this->deleting = true;
         $this->customer_id = $customer->id;
@@ -168,7 +170,10 @@ class CustomerModal extends Component
      */
     public function deleted()
     {
-        $customer = Customer::with('user')->findOrFail($this->customer_id);
+        $customer = Customer::with('user')->withCount('bills')->findOrFail($this->customer_id);
+
+        if ($this->customerHasBill($customer)) return;
+
         $customer->user->delete(); // Delete the user associated with the customer
         $customer->delete(); // Delete the customer record
 
@@ -285,5 +290,25 @@ class CustomerModal extends Component
             'password_confirmation.same' => 'Konfirmasi kata sandi tidak cocok dengan kata sandi.',
             'password_confirmation.string' => 'Konfirmasi kata sandi harus berupa teks.',
         ];
+    }
+
+    /**
+     * Check if the customer has any bills before deletion.
+     *
+     * @param  mixed $customer
+     * @return bool
+     */
+    private function customerHasBill(Customer $customer): bool
+    {
+        if ($customer->bills()->count() > 0) {
+            $this->dispatch(
+                'toast',
+                fireOptions: ['icon' => 'error', 'title' => 'Pelanggan ini memiliki tagihan, tidak dapat dihapus.'],
+                mixinOptions: ['position' => 'top-end', 'timer' => 5000],
+            );
+            return true;
+        }
+
+        return false;
     }
 }

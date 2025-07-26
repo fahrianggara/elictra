@@ -41,7 +41,7 @@
                         </div>
                     </div>
 
-                    <x-dash.table headers="No, Nama & Email, Alamat, Tarif Listrik, No. Meteran, Berlangganan Pada, Status, ">
+                    <x-dash.table headers="No, Nama & Email, Alamat, Tarif Listrik, No. Meteran, Berlangganan Pada, Tagihan, Status, ">
                         @forelse ($customers as $customer)
                             <tr>
                                 <td>{{ $customers->firstItem() + $loop->index }}</td>
@@ -58,6 +58,9 @@
                                 </td>
                                 <td class="w-[200px]">
                                     {{ $customer->created_at->translatedFormat('l, d F Y') }}
+                                </td>
+                                <td>
+                                    {{ $customer->bills_count == 0 ? '-' : $customer->bills_count }}
                                 </td>
                                 <td>
                                     <span class="badge bg-{{ $customer->is_blocked ? 'danger' : 'success' }}">
