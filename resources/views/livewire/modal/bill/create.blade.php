@@ -25,7 +25,8 @@
     placeholder="Auto isi dari tagihan sebelumnya" :error="$errors->first('meter_start')" min="0" />
 
 <x-input label="Pemakaian" wire:model.change="usage" type="number" :required="$required"
-    placeholder="Masukkan pemakaian listrik bulan ini" :error="$errors->first('usage')" min="0" :disabled="!$customerInfo" append="kWh"
+    placeholder="Masukkan pemakaian listrik bulan ini" :error="$errors->first('usage')" min="0"
+    :disabled="!$customerInfo" append="kWh"
     margin="mb-0" />
 
 <p class="text-[14px] text-gray-500 mt-1 mb-3">
@@ -33,7 +34,8 @@
 </p>
 
 <x-input label="Periode" wire:model.change="period" type="month" :required="$required" placeholder="Pilih periode"
-    :error="$errors->first('period')" :disabled="!$customerInfo" :readonly="$customerInfo && !$customerInfo->last_bill" :margin="$customerInfo && !$customerInfo->last_bill ? 'mb-0' : 'mb-3'" min="{{ now()->format('Y-m') }}"
+    :error="$errors->first('period')" :disabled="!$customerInfo" :readonly="$customerInfo && !$customerInfo->last_bill"
+    :margin="$customerInfo && !$customerInfo->last_bill ? 'mb-0' : 'mb-3'" min="{{ now()->format('Y-m') }}"
     max="{{ now()->addMonth()->format('Y-m') }}" />
 
 @if ($customerInfo && !$customerInfo->last_bill)

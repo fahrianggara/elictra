@@ -57,14 +57,15 @@
                                                     Hapus
                                                 </a>
                                             </li>
-                                        @else
-                                            <li>
-                                                <a class="dropdown-item" href="javascript:void(0)">
-                                                    <i class="fas fa-external-link-alt text-info mr-2"></i>
-                                                    Detail Tagihan
-                                                </a>
-                                            </li>
                                         @endif
+
+                                        <li>
+                                            <a class="dropdown-item" href="javascript:void(0)"
+                                                wire:click="$dispatch('bill:show', { id: '{{ encrypt($bill->id) }}' })">
+                                                <i class="fas fa-external-link-alt text-info mr-2"></i>
+                                                Detail
+                                            </a>
+                                        </li>
                                     </x-dash.table-action>
                                 </td>
                             </tr>

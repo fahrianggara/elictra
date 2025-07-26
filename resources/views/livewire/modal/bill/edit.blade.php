@@ -12,11 +12,22 @@
     Note: Minimal 10 kWh untuk pemakaian listrik.
 </p>
 
-<x-input label="Periode" wire:model.change="period" type="month" :required="$required" placeholder="Pilih periode"
-    :error="$errors->first('period')" min="{{ now()->format('Y-m') }}" max="{{ now()->addMonth()->format('Y-m') }}" />
+<x-input label="Periode"
+    wire:model.change="period"
+    type="month"
+    :required="$required" placeholder="Pilih periode"
+    :readonly="$customerInfo && !$customerInfo->last_bill"
+    :error="$errors->first('period')"
+    min="{{ now()->format('Y-m') }}"
+    max="{{ now()->addMonth()->format('Y-m') }}" />
 
-<x-input label="Jatuh Tempo" wire:model.blur="due_date" type="date" margin="mb-0" placeholder="Pilih jatuh tempo"
-    :error="$errors->first('due_date')" max="{{ now()->addMonth(2)->format('Y-m-d') }}" />
+<x-input label="Jatuh Tempo"
+    wire:model.blur="due_date"
+    type="date"
+    margin="mb-0"
+    placeholder="Pilih jatuh tempo"
+    :error="$errors->first('due_date')"
+    max="{{ now()->addMonth(2)->format('Y-m-d') }}" />
 
 <p class="text-[15px] text-gray-500 mt-1 mb-3">
     Note: Jatuh tempo otomatis diatur ke tanggal 20 pada bulan berikutnya dari periode tagihan.

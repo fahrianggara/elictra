@@ -15,6 +15,7 @@ class BillModal extends Component
 {
     public $deleting = false;
     public $editing = false;
+    public $showing = false;
     public $bill_id;
     public $customer_id = '';
     public $period;
@@ -29,6 +30,7 @@ class BillModal extends Component
     public $total_bill;
     public $invoice;
     public $customer_name;
+    public $bill;
 
     /**
      * Mount the component with the given customers.
@@ -168,6 +170,7 @@ class BillModal extends Component
         }
 
         $this->editing = true;
+        $this->bill = $bill;
         $this->bill_id = $bill->id;
         $this->customer_name = "{$bill->customer->user->name} ({$bill->customer->meter_number})";
         $this->invoice = $bill->invoice;
@@ -178,7 +181,7 @@ class BillModal extends Component
         $this->customer_id = $bill->customer_id;
         $this->customerInfo = $bill->customer;
 
-        $this->reset('deleting'); // Reset deleting state to false
+        $this->reset(['deleting', 'showing']); // Reset deleting state to false
         $this->dispatch('modal:show');
     }
 
@@ -230,7 +233,7 @@ class BillModal extends Component
         $this->period = formatPeriod($bill->period);
         $this->usage = $bill->usage;
 
-        $this->reset('editing'); // Reset editing state to false
+        $this->reset(['editing', 'showing']); // Reset editing state to false
         $this->dispatch('modal:show');
     }
 
@@ -247,6 +250,28 @@ class BillModal extends Component
         $this->close();
         $this->dispatch('bill:success'); // <-- send event to Bill component
         $this->dispatch('toast', icon: 'success', message: 'Data tagihan berhasil dihapus.');
+    }
+
+    /**
+     * Show the bill details in a modal.
+     *
+     * @param  mixed $id
+     * @return void
+     */
+    #[On('bill:show')]
+    public function detail($id)
+    {
+        $bill = Bill::with([
+            'customer',
+            'customer.tarif',
+            'customer.user',
+            'payment'
+        ])->findOrFail(decrypt($id));
+
+        $this->showing = true;
+        $this->bill = $bill;
+
+        $this->dispatch('modal:show');
     }
 
     /**
@@ -283,6 +308,8 @@ class BillModal extends Component
             'invoice',
             'usage',
             'customer_name',
+            'bill',
+            'showing',
         ]);
 
         $this->resetErrorBag();

@@ -1,9 +1,9 @@
 @php
-    $color = $deleting ? 'danger' : 'primary';
-    $action = $deleting ? 'deleted' : ($editing ? 'update' : 'store');
-    $actionText = $deleting ? 'Hapus' : ($editing ? 'Edit' : 'Tambah');
-    $title = $editing ? 'Edit Tagihan' : 'Tambah Tagihan';
-    $required = $editing ? false : true;
+    $color = $deleting ? 'danger' : ($showing ? 'info' : 'primary');
+    $action = $deleting ? 'deleted' : ($editing ? 'update' : ($showing ? 'show' : 'store'));
+    $actionText = $deleting ? 'Hapus' : ($editing ? 'Edit' : ($showing ? 'Lihat' : 'Tambah'));
+    $title = $deleting ? 'Hapus Tagihan' : ($editing ? 'Edit Tagihan' : ($showing ? 'Detail Tagihan' : 'Tambah Tagihan'));
+    $required = ($editing || $showing) ? false : true;
     $isDeleting = $deleting ? false : true; // Show header only when not deleting
 @endphp
 
@@ -13,6 +13,8 @@
     @if ($deleting) <!-- Deleting state -->
         Apakah Anda yakin ingin menghapus tagihan untuk pelanggan <strong>{{ $customerInfo->user->name }}</strong> pada periode
         <strong>{{ $period }}</strong> dengan pemakaian <strong>{{ $usage }} kWh</strong>?
+    @elseif ($showing) <!-- Showing state -->
+        @include('livewire.modal.bill.show')
     @else
         @if ($editing)
             @include('livewire.modal.bill.edit')
@@ -21,12 +23,14 @@
         @endif
     @endif
 
-    <x-slot name="actions">
-        <x-button :color="$color" :action="$action" target="store, update, deleted"
-            class="{{ $deleting ? 'text-white' : '' }}">
-            {{ $actionText }}
-        </x-button>
-    </x-slot>
+    @if(!$showing)
+        <x-slot name="actions">
+            <x-button :color="$color" :action="$action" target="store, update, deleted"
+                class="{{ $deleting ? 'text-white' : '' }}">
+                {{ $actionText }}
+            </x-button>
+        </x-slot>
+    @endif
 </x-modal>
 
 @script

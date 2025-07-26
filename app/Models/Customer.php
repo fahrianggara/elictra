@@ -83,6 +83,9 @@ class Customer extends Model
      */
     public function getLastBillAttribute()
     {
-        return $this->bills->sortByDesc('period')->first();
+        return $this->bills
+            ->where('status', '!=', 'unpaid')
+            ->sortByDesc('period')
+            ->first();
     }
 }
