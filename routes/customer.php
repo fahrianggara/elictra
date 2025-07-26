@@ -12,7 +12,7 @@ Route::get('/', function () {
     return redirect()->route('customer.dashboard');
 });
 
-Route::group(['as' => 'customer.'], function() {
+Route::group(['as' => 'customer.'], function () {
     Route::get('dashboard', Dashboard::class)->name('dashboard');
     Route::get('tagihan', Bills::class)->name('bills');
     Route::get('bayar/{invoice}', Payments::class)->name('payments');
@@ -20,10 +20,12 @@ Route::group(['as' => 'customer.'], function() {
 });
 
 Breadcrumbs::for('customer.dashboard', function (BreadcrumbTrail $trail) {
+    $trail->parent('customer');
     $trail->push('Dashboard', route('customer.dashboard'));
 });
 
 Breadcrumbs::for('customer.bills', function (BreadcrumbTrail $trail) {
+    $trail->parent('customer');
     $trail->push('Tagihan', route('customer.bills'));
 });
 
@@ -33,5 +35,6 @@ Breadcrumbs::for('customer.payments', function (BreadcrumbTrail $trail, $invoice
 });
 
 Breadcrumbs::for('customer.bills.history', function (BreadcrumbTrail $trail) {
+    $trail->parent('customer');
     $trail->push('Riwayat Tagihan', route('customer.bills.history'));
 });

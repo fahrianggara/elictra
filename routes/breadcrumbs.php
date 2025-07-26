@@ -7,6 +7,10 @@ Breadcrumbs::for('admin', function (BreadcrumbTrail $trail) {
     $trail->push('Admin', "javascript:void(0);");
 });
 
+Breadcrumbs::for('customer', function (BreadcrumbTrail $trail) {
+    $trail->push('Pelanggan', "javascript:void(0);");
+});
+
 Breadcrumbs::for('admin.dashboard', function (BreadcrumbTrail $trail) {
     $trail->parent('admin');
     $trail->push('Dashboard', route('admin.dashboard'));

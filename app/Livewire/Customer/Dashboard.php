@@ -13,8 +13,14 @@ class Dashboard extends Component
      */
     public function render()
     {
-        return view('livewire.customer.dashboard', [
+        $user = auth()->user();
+        $customer = $user->customer;
 
+        return view('livewire.customer.dashboard', [
+            'count_bills' => $customer->bills()->count(),
+            'count_bills_unpaid' => $customer->bills()->where('status', 'unpaid')->count(),
+            'count_bills_paid' => $customer->bills()->where('status', 'paid')->count(),
+            'user' => $user,
         ])->layout('dash')->title('Dashboard');
     }
 }
