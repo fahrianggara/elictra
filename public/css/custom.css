@@ -33,7 +33,7 @@ body {
         padding-left: 15px !important;
     }
 
-    [data-coreui-toggle='unfoldable'] {
+    [data-coreui-toggle="unfoldable"] {
         display: none !important;
     }
 }
@@ -45,7 +45,7 @@ body {
 
 .table tr th {
     white-space: nowrap;
-    font-size: 0.90rem;
+    font-size: 0.9rem;
 }
 
 .table-rounded {
@@ -97,4 +97,29 @@ body.swal2-toast-shown .swal2-container {
 
 .swal2-popup.swal2-toast {
     border-radius: 10px;
+}
+
+.disabled-link {
+    pointer-events: none;
+    opacity: 0.5;
+    cursor: default;
+}
+
+.bill-detail td {
+    padding: 4px;
+    font-size: 0.95rem;
+    vertical-align: top;
+}
+
+.bill-detail td:first-child {
+    width: 35%;
+}
+
+.bill-detail td:nth-child(2) {
+    width: 5%;
+    text-align: center;
+}
+
+.bill-detail td:last-child {
+    width: 50%;
 }

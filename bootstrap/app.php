@@ -21,6 +21,10 @@ return Application::configure(basePath: dirname(__DIR__))
                 ->prefix('petugas')
                 ->group(base_path('routes/officer.php'));
 
+            Route::middleware(['web', 'auth', 'check.role:pelanggan'])
+                ->prefix('pelanggan')
+                ->group(base_path('routes/customer.php'));
+
             Route::middleware(['web'])
                 ->group(base_path('routes/web.php'));
         }

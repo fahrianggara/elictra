@@ -30,6 +30,7 @@ class Users extends Component
             ->when($this->search, fn ($q) => $q->search($this->search))
             ->when($this->filterRole, fn ($q) => $q->whereHas('role', fn ($q) => $q->where('id', $this->filterRole)))
             ->where('id', '!=', Auth::id())
+            ->where('role_id', '!=', 3) // Exclude 'pelanggan' role
             ->orderBy('created_at', 'desc');
     }
 

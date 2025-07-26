@@ -15,7 +15,7 @@
 
 <x-modal id="modal-metode-pembyaran" :title="$title" :show-header="$isDeleting" :centered="$isDeleting">
     @if ($deleting) <!-- Deleting state -->
-        <p>Apakah Anda yakin ingin menghapus metode pembayaran ini?</p>
+        Apakah Anda yakin ingin menghapus metode pembayaran ini?
     @else
         <x-file-upload :src="$src" label="Logo" wire:model="logo" :required="$required"
             :error="$errors->first('logo')" />

@@ -25,10 +25,12 @@ return new class extends Migration
 
         Schema::create('payments', function (Blueprint $table) {
             $table->id();
-            $table->dateTime('payment_date');
             $table->unsignedInteger('amount');
-            $table->string('proof_file')->nullable();
-            $table->boolean('verified')->default(false);
+            $table->string('proof_file');
+            $table->enum('status', ['pending', 'verified', 'rejected'])->default('pending'); // Status of verification
+            $table->tinyText('note')->nullable(); // Optional note for the payment
+            $table->boolean('is_reupload')->default(false); // true if the payment proof is re-uploaded
+            $table->foreignId('approved_by')->nullable()->constrained('users')->onDelete('set null'); // User who approved the payment
             $table->foreignId('bill_id')->constrained('bills')->onDelete('cascade');
             $table->foreignId('method_id')->constrained('payment_methods')->onDelete('cascade');
             $table->timestamps();

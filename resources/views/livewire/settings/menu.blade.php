@@ -5,6 +5,7 @@
                 {{ request()->routeIs('settings') ? 'active' : '' }}">
             Akun Saya
         </a>
+
         <a href="{{ route('settings.security') }}" class="list-group-item list-group-item-action d-flex align-items-center
             {{ request()->routeIs('settings.security') ? 'active' : '' }}">
             Keamanan

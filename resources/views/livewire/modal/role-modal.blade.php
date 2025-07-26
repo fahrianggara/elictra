@@ -9,7 +9,7 @@
 
 <x-modal id="modal-role" :title="$title" :show-header="$isDeleting" :centered="$isDeleting">
     @if ($deleting) <!-- Deleting state -->
-        <p>Apakah Anda yakin ingin menghapus peran <b>{{ $name }}</b>?</p>
+        Apakah Anda yakin ingin menghapus peran <b>{{ $name }}</b>?
     @else
         <x-input label="Nama" wire:model="name" :required="$required"
             placeholder="Masukkan nama peran pengguna" :error="$errors->first('name')" />

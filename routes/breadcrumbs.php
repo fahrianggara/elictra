@@ -7,6 +7,10 @@ Breadcrumbs::for('admin', function (BreadcrumbTrail $trail) {
     $trail->push('Admin', "javascript:void(0);");
 });
 
+Breadcrumbs::for('customer', function (BreadcrumbTrail $trail) {
+    $trail->push('Pelanggan', "javascript:void(0);");
+});
+
 Breadcrumbs::for('admin.dashboard', function (BreadcrumbTrail $trail) {
     $trail->parent('admin');
     $trail->push('Dashboard', route('admin.dashboard'));
@@ -54,6 +58,11 @@ Breadcrumbs::for('settings', function (BreadcrumbTrail $trail) {
 
 Breadcrumbs::for('settings.security', function (BreadcrumbTrail $trail) {
     // $trail->parent('admin');
-    $trail->parent('settings');
+    if (auth()->user()->role->name != 'pelanggan') {
+        $trail->parent('settings');
+    } else {
+        $trail->push('Pengaturan', "javascript:void(0);");
+    }
+
     $trail->push('Keamanan', route('settings.security'));
 });

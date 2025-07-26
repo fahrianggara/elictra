@@ -41,7 +41,7 @@
                         </div>
                     </div>
 
-                    <x-dash.table headers="No, Nama & Email, Alamat, Tarif Listrik & No. Meteran, Berlangganan Pada, Status, ">
+                    <x-dash.table headers="No, Nama & Email, Alamat, Tarif Listrik, No. Meteran, Berlangganan Pada, Status, ">
                         @forelse ($customers as $customer)
                             <tr>
                                 <td>{{ $customers->firstItem() + $loop->index }}</td>
@@ -49,12 +49,14 @@
                                     {{ $customer->user->name }}
                                     <p class="mb-0 text-muted">{{ $customer->user->email }}</p>
                                 </td>
-                                <td class="w-[400px]">{{ $customer->address }}</td>
-                                <td>
-                                    <p class="mb-1">{{ $customer->tarif?->type }} - {{ $customer->tarif?->power }}VA</p>
-                                    {{ $customer->meter_number }}
+                                <td >{{ $customer->address }}</td>
+                                <td class="w-[140px]">
+                                    {{ $customer->tarif?->format_tarif }}
                                 </td>
                                 <td>
+                                    {{ $customer->meter_number }}
+                                </td>
+                                <td class="w-[200px]">
                                     {{ $customer->created_at->translatedFormat('l, d F Y') }}
                                 </td>
                                 <td>

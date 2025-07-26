@@ -9,6 +9,7 @@
     'append' => false,
     'prepend' => false,
     'readonly' => false,
+    'margin' => 'mb-3',
 ])
 
 @php
@@ -26,7 +27,7 @@
     $isPassword = $type === 'password';
 @endphp
 
-<div class="mb-3">
+<div class="{{ $margin }}">
     @if ($label)
         <label for="{{ $id }}" class="form-label {{ $required ? 'required' : '' }}">
             {{ $label }}
@@ -47,8 +48,8 @@
             placeholder="{{ $placeholder }}"
             {{ $required ? 'required' : '' }}
             {{ $readonly ? 'readonly' : '' }}
-            @if ($type === 'number' && $min !== null) min="{{ $min }}" @endif
-            @if ($type === 'number' && $max !== null) max="{{ $max }}" @endif
+            @if ($min !== null) min="{{ $min }}" @endif
+            @if ($max !== null) max="{{ $max }}" @endif
             {{ $attributes->class([
                 'form-control',
                 $error ? 'is-invalid' : '',

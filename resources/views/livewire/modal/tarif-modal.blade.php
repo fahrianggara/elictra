@@ -9,7 +9,7 @@
 
 <x-modal id="modal-tarif" :title="$title" :show-header="$isDeleting" :centered="$isDeleting">
     @if ($deleting) <!-- Deleting state -->
-        <p>Apakah Anda yakin ingin menghapus tarif dengan tipe & daya <b>{{ $type }} - {{ $power }}VA</b>?</p>
+        Apakah Anda yakin ingin menghapus tarif dengan tipe & daya <b>{{ $type }} - {{ $power }}VA</b>?
     @else
         <x-input label="Tipe" wire:model="type" :required="$required"
             placeholder="Masukkan tipe tarif listrik" :error="$errors->first('type')" />
