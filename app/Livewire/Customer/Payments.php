@@ -174,7 +174,6 @@ class Payments extends Component
 
         // Create a new payment record
         $payment = Payment::create([
-            'payment_date' => now(),
             'amount' => $this->total,
             'proof_file' => $proof,
             'status' => 'pending',

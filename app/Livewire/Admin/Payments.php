@@ -33,7 +33,7 @@ class Payments extends Component
     public function render()
     {
         $payments = Payment::with(['bill', 'method'])
-            ->orderBy('payment_date', 'desc')
+            ->orderBy('created_at', 'desc')
             ->paginate($this->perPage);
 
         return view('livewire.admin.payments', [

@@ -25,7 +25,6 @@ return new class extends Migration
 
         Schema::create('payments', function (Blueprint $table) {
             $table->id();
-            $table->dateTime('payment_date');
             $table->unsignedInteger('amount');
             $table->string('proof_file');
             $table->enum('status', ['pending', 'verified', 'rejected'])->default('pending'); // Status of verification

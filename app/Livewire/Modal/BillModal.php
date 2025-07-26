@@ -55,7 +55,7 @@ class BillModal extends Component
             $billLast = $this->customerInfo->bills()->latest()->first();
             $this->meter_start = $billLast ? $billLast->meter_end : $this->customerInfo->initial_meter;
             $this->period = $billLast ? null : now()->format('Y-m');
-            $this->invoice = Random::generate(15, '0-9A-Z');
+            $this->invoice = "INV-" . Random::generate(8, '0-9A-Z');
 
             $this->resetErrorBag(['customer_id', 'meter_start']);
             if (!$billLast) $this->resetErrorBag('period');
