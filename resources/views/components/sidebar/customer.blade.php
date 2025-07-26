@@ -5,4 +5,4 @@
 <x-dash.nav-item href="customer.bills.history" icon="fas fa-history">Riwayat Tagihan</x-dash.nav-item>
 
 <li class="nav-title">Pengaturan</li>
-<x-dash.nav-item href="settings.security" icon="fas fa-cogs">Pengaturan</x-dash.nav-item>
+<x-dash.nav-item href="settings" icon="fas fa-cogs">Pengaturan</x-dash.nav-item>

@@ -24,6 +24,17 @@
                                 @enderror
                             </div>
 
+                            @if($user->role->name == 'pelanggan')
+                                <div class="mb-3">
+                                    <label for="address" class="form-label">Alamat</label>
+                                    <input type="text" class="form-control @error('address') is-invalid @enderror" id="address" wire:model="address"
+                                        required placeholder="Masukkan alamat Anda">
+                                    @error('address')
+                                        <span class="invalid-feedback d-block">{{ $message }}</span>
+                                    @enderror
+                                </div>
+                            @endif
+
                             @if($user->role->name != 'pelanggan')
                                 <div class="mb-3">
                                     <label for="email" class="form-label">Email</label>

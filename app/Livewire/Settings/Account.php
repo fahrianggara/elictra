@@ -10,6 +10,7 @@ class Account extends Component
     public $user;
     public $name;
     public $email;
+    public $address;
 
     /**
      * rules
@@ -18,10 +19,16 @@ class Account extends Component
      */
     protected function rules()
     {
-        return [
+        $rules = [
             'name' => 'required|string|max:255|min:3',
             'email' => 'required|email|max:255|unique:users,email,' . $this->user->id,
         ];
+
+        if ($this->user->customer) {
+            $rules['address'] = 'required|string|max:500';
+        }
+
+        return $rules;
     }
 
     /**
@@ -34,12 +41,15 @@ class Account extends Component
         return [
             'name.required' => 'Nama tidak boleh kosong.',
             'name.string' => 'Nama harus berupa teks.',
-            'name.max' => 'Nama tidak boleh lebih dari 255 karakter.',
-            'name.min' => 'Nama harus minimal 3 karakter.',
+            'name.max' => 'Nama tidak boleh lebih dari :max karakter.',
+            'name.min' => 'Nama harus minimal :min karakter.',
             'email.required' => 'Email tidak boleh kosong.',
             'email.email' => 'Format email tidak valid.',
-            'email.max' => 'Email tidak boleh lebih dari 255 karakter.',
+            'email.max' => 'Email tidak boleh lebih dari :max karakter.',
             'email.unique' => 'Email sudah terdaftar.',
+            'address.required' => 'Alamat tidak boleh kosong.',
+            'address.string' => 'Alamat harus berupa teks.',
+            'address.max' => 'Alamat tidak boleh lebih dari :max karakter.',
         ];
     }
 
@@ -52,13 +62,11 @@ class Account extends Component
     {
         $this->user = Auth::user();
 
-        // Redirect jika role pelanggan
-        if ($this->user->role->name == 'pelanggan') {
-            return redirect()->route('settings.security');
-        }
-
         $this->name = $this->user->name;
         $this->email = $this->user->email;
+
+        if ($this->user->customer)
+            $this->address = $this->user->customer->address;
     }
 
     /**
@@ -85,6 +93,11 @@ class Account extends Component
         $this->user->name = $this->name;
         $this->user->email = $this->email;
         $this->user->save();
+
+        if ($this->user->customer) {
+            $this->user->customer->address = $this->address;
+            $this->user->customer->save();
+        }
 
         $this->dispatch('toast', icon: 'success', message: 'Profil berhasil diperbarui.');
     }

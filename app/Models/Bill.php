@@ -38,6 +38,16 @@ class Bill extends Model
     }
 
     /**
+     * Payments relationship.
+     *
+     * @return void
+     */
+    public function payments()
+    {
+        return $this->hasMany(Payment::class);
+    }
+
+    /**
      * Accessor for penalty attribute.
      *
      * @return void

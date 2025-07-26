@@ -85,6 +85,7 @@ class BillModal extends Component
                 $this->addError('period', "Periode {$periodFormatted} sudah ada tagihan sebelumnya.");
                 $this->due_date = $this->editing ? $this->due_date : null;
                 $this->period = null;
+                $this->total_bill = null;
                 return;
             }
 

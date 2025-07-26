@@ -10,12 +10,11 @@
                     Tidak ada pembayaran yang perlu diverifikasi.
                 </div>
             @else
-                <x-dash.table headers="Invoice, Pelanggan, Periode, Total Bayar, Bukti, Aksi">
+                <x-dash.table headers="Invoice, Pelanggan, Total Bayar, Bukti, Aksi">
                     @foreach ($payments as $payment)
                         <tr>
                             <td>{{ $payment->bill->invoice }}</td>
                             <td>{{ $payment->bill->customer->user->name }}</td>
-                            <td>{{ formatPeriod($payment->bill->period) }}</td>
                             <td>{{ rupiah($payment->amount) }}</td>
                             <td>
                                 @if (checkFile($payment->proof_file))

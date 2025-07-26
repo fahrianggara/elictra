@@ -21,6 +21,10 @@ class Dashboard extends Component
             'count_bills_unpaid' => $customer->bills()->where('status', 'unpaid')->count(),
             'count_bills_paid' => $customer->bills()->where('status', 'paid')->count(),
             'user' => $user,
+            'has_unpaid_bill' => $customer->bills()->where('status', 'unpaid')->exists(),
+            'has_rejected_bill' => $customer->bills()
+                ->whereHas('payments', fn($q) => $q->where('status', 'rejected'))
+                ->exists(),
         ])->layout('dash')->title('Dashboard');
     }
 }
