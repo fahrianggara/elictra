@@ -10,8 +10,8 @@
 <x-modal id="modal-bill" :title="$title" :show-header="$isDeleting" :centered="$isDeleting"
     spinnerTarget="store, update, customer_id, usage, period">
     @if ($deleting) <!-- Deleting state -->
-        Apakah Anda yakin ingin menghapus tagihan untuk pelanggan <strong>{{ $customer->name }}</strong> pada periode
-        <strong>{{ $period }}</strong>?
+        Apakah Anda yakin ingin menghapus tagihan untuk pelanggan <strong>{{ $customerInfo->user->name }}</strong> pada periode
+        <strong>{{ $period }}</strong> dengan pemakaian <strong>{{ $usage }} kWh</strong>?
     @else
         @if ($editing)
             <x-input label="Nama Pelanggan" wire:model="customer_name" type="text" disabled
@@ -80,7 +80,7 @@
             <x-input label="Meteran Bulan Lalu/Awal" wire:model="meter_start" type="number" readonly
                 placeholder="Auto isi dari tagihan sebelumnya" :error="$errors->first('meter_start')" min="0" />
 
-            <x-input label="Pemakaian" wire:model="usage" type="number" :required="$required"
+            <x-input label="Pemakaian" wire:model.change="usage" type="number" :required="$required"
                 placeholder="Masukkan pemakaian listrik bulan ini" :error="$errors->first('usage')" min="0" :disabled="!$customerInfo"
                 append="kWh" margin="mb-0" />
 

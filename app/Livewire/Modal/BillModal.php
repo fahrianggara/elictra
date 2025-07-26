@@ -157,6 +157,12 @@ class BillModal extends Component
     {
         $bill = Bill::findOrFail(decrypt($id));
 
+        // Check if the bill is already paid
+        if ($bill->status == 'paid') {
+            $this->dispatch('toast', icon: 'error', message: 'Tagihan sudah dibayar, tidak bisa diubah.');
+            return;
+        }
+
         $this->editing = true;
         $this->bill_id = $bill->id;
         $this->customer_name = "{$bill->customer->user->name} ({$bill->customer->meter_number})";
@@ -195,6 +201,48 @@ class BillModal extends Component
         $this->close();
         $this->dispatch('bill:success'); // <-- send event to Bill component
         $this->dispatch('toast', icon: 'success', message: 'Data tagihan berhasil diperbarui.');
+    }
+
+    /**
+     * Delete a bill.
+     *
+     * @param  mixed $id
+     * @return void
+     */
+    #[On('bill:delete')]
+    public function delete($id)
+    {
+        $id = decrypt($id);
+        $bill = Bill::findOrFail($id);
+
+        if ($bill->status == 'paid') {
+            $this->dispatch('toast', icon: 'error', message: 'Tagihan sudah dibayar, tidak bisa dihapus.');
+            return;
+        }
+
+        $this->deleting = true;
+        $this->bill_id = $bill->id;
+        $this->customerInfo = $bill->customer;
+        $this->period = formatPeriod($bill->period);
+        $this->usage = $bill->usage;
+
+        $this->reset('editing'); // Reset editing state to false
+        $this->dispatch('modal:show');
+    }
+
+    /**
+     * Delete the bill and associated customer user.
+     *
+     * @return void
+     */
+    public function deleted()
+    {
+        $bill = Bill::findOrFail($this->bill_id);
+        $bill->delete(); // Delete the bill
+
+        $this->close();
+        $this->dispatch('bill:success'); // <-- send event to Bill component
+        $this->dispatch('toast', icon: 'success', message: 'Data tagihan berhasil dihapus.');
     }
 
     /**
