@@ -42,7 +42,7 @@
                                 wire:model.live.debounce.500ms="search">
                         </div>
                     </div>
-                    <x-dash.table headers="No, Logo, Nama, Tipe Pembayaran, Label, Nomor Pembayaran, Status, Biaya Admin, ">
+                    <x-dash.table headers="No, Logo, Nama, Tipe Pembayaran, Label, Nomor Pembayaran, Status, Total Digunakan, Biaya Admin, ">
                         @forelse ($paymentMethods as $paymentMethod)
                             <tr wire:key="payment-method-{{ $paymentMethod->id }}">
                                 <td>{{ $paymentMethods->firstItem() + $loop->index }}</td>
@@ -58,13 +58,15 @@
                                 <td>
                                     <select wire:change="updateStatus('{{ encrypt($paymentMethod->id) }}', $event.target.value)"
                                         wire:loading.attr="disabled" wire:target="updateStatus"
-                                        class="form-select w-[135px]" wire:key="select-{{ $paymentMethod->id }}">
+                                        class="form-select" wire:key="select-{{ $paymentMethod->id }}"
+                                        style="width: 140px;">
                                         <option value="1" {{ $paymentMethod->is_active ? 'selected' : '' }}>Aktif
                                         </option>
                                         <option value="0" {{ !$paymentMethod->is_active ? 'selected' : '' }}>Tidak
                                             Aktif</option>
                                     </select>
                                 </td>
+                                <td>{{ $paymentMethod->payments_count == 0 ? '-' : $paymentMethod->payments_count }}</td>
                                 <td>{{ rupiah($paymentMethod->fee) }}</td>
                                 <td>
                                     <x-dash.table-action>

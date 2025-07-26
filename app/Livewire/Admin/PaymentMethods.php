@@ -42,6 +42,7 @@ class PaymentMethods extends Component
             ->when($this->filterStatus !== '' && $this->filterStatus !== 'all', function ($query) {
                 $query->where('is_active', $this->filterStatus == 1);
             })
+            ->withCount(['payments'])
             ->orderBy('is_active', 'desc')
             ->orderBy('id', 'desc');
     }
