@@ -28,6 +28,7 @@ class BillModal extends Component
     public $total_meter;
     public $total_bill;
     public $invoice;
+    public $customer_name;
 
     /**
      * Mount the component with the given customers.
@@ -66,10 +67,17 @@ class BillModal extends Component
             $this->resetErrorBag('period');
 
             // jika sudah ada periode yg buat sebelumnya, tidak boleh dipakai lagi
-            if (Bill::query()->where('customer_id', $this->customer_id)->where('period', $this->period)->exists()) {
+            $checkPeriod = Bill::query()
+                ->where('customer_id', $this->customer_id)
+                ->where('period', $this->period)
+                ->when($this->bill_id, function ($query) {
+                    return $query->where('id', '!=', $this->bill_id);
+                })->exists();
+
+            if ($checkPeriod) {
                 $periodFormatted = formatPeriod($this->period);
                 $this->addError('period', "Periode {$periodFormatted} sudah ada tagihan sebelumnya.");
-                $this->due_date = null;
+                $this->due_date = $this->editing ? $this->due_date : null;
                 $this->period = null;
                 return;
             }
@@ -139,6 +147,57 @@ class BillModal extends Component
     }
 
     /**
+     * Edit an existing bill.
+     *
+     * @param  mixed $id
+     * @return void
+     */
+    #[On('bill:edit')]
+    public function edit($id)
+    {
+        $bill = Bill::findOrFail(decrypt($id));
+
+        $this->editing = true;
+        $this->bill_id = $bill->id;
+        $this->customer_name = "{$bill->customer->user->name} ({$bill->customer->meter_number})";
+        $this->invoice = $bill->invoice;
+        $this->meter_start = $bill->meter_start;
+        $this->usage = $bill->usage;
+        $this->period = Carbon::parse($bill->period)->format('Y-m');
+        $this->due_date = Carbon::parse($bill->due_date)->format('Y-m-d');
+        $this->customer_id = $bill->customer_id;
+        $this->customerInfo = $bill->customer;
+
+        $this->reset('deleting'); // Reset deleting state to false
+        $this->dispatch('modal:show');
+    }
+
+    /**
+     * Update the bill data.
+     *
+     * @return void
+     */
+    public function update()
+    {
+        $this->validate();
+
+        $this->meter_end = $this->meter_start + $this->usage;
+
+        $bill = Bill::findOrFail($this->bill_id);
+        $bill->update([
+            'period' => $this->period,
+            'meter_end' => $this->meter_end,
+            'due_date' => $this->due_date
+                ? Carbon::parse($this->due_date)
+                : Carbon::parse($this->period)->startOfMonth()->addDays(28),
+        ]);
+
+        $this->close();
+        $this->dispatch('bill:success'); // <-- send event to Bill component
+        $this->dispatch('toast', icon: 'success', message: 'Data tagihan berhasil diperbarui.');
+    }
+
+    /**
      * Close the bill modal.
      *
      * @return void
@@ -171,6 +230,7 @@ class BillModal extends Component
             'total_bill',
             'invoice',
             'usage',
+            'customer_name',
         ]);
 
         $this->resetErrorBag();
