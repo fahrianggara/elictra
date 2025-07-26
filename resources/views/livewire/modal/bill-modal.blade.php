@@ -8,7 +8,7 @@
 @endphp
 
 <x-modal id="modal-bill" :title="$title" :show-header="$isDeleting" :centered="$isDeleting"
-    spinnerTarget="store, update, customer_id, meter_end, period">
+    spinnerTarget="store, update, customer_id, usage, period">
     @if ($deleting) <!-- Deleting state -->
         Apakah Anda yakin ingin menghapus tagihan untuk pelanggan <strong>{{ $customer->name }}</strong> pada periode <strong>{{ $period }}</strong>?
     @else
@@ -19,8 +19,7 @@
             <div class="alert alert-info mb-{{ $customerInfo->last_bill ? '3' : '0' }}">
                 Pelanggan ini menggunakan Tarif <b>{{ $customerInfo->tarif->format_tarif }}</b> dengan harga per kWh <b>{{ rupiah($customerInfo->tarif->price_per_kwh) }}</b>.
                 @if($customerInfo->last_bill)
-                    dan terakhir memiliki tagihan pada periode <b>{{ formatPeriod($customerInfo->last_bill->period) }}</b>
-                    dengan angka meteran sebelumnya <b>{{ $customerInfo->last_bill->meter_end }}</b>.
+                    dan terakhir memiliki tagihan pada periode <b>{{ formatPeriod($customerInfo->last_bill->period) }}</b>.
                 @else
                     dan belum memiliki tagihan sebelumnya.
                 @endif
@@ -34,12 +33,16 @@
         <x-input label="Invoice" wire:model="invoice" type="text" readonly
             placeholder="Automatis di buat" :error="$errors->first('invoice')"/>
 
-        <x-input label="Meteran Bulan Lalu" wire:model="meter_start" type="number" readonly
+        <x-input label="Meteran Bulan Lalu/Awal" wire:model="meter_start" type="number" readonly
             placeholder="Auto isi dari tagihan sebelumnya" :error="$errors->first('meter_start')" min="0"/>
 
-        <x-input label="Meteran Bulan Ini" wire:model.blur="meter_end" type="number" :required="$required"
-            placeholder="Masukkan meteran bulan ini" :error="$errors->first('meter_end')" min="0"
-            :disabled="!$customerInfo"/>
+        <x-input label="Pemakaian" wire:model="usage" type="number" :required="$required"
+            placeholder="Masukkan pemakaian listrik bulan ini" :error="$errors->first('usage')" min="0"
+            :disabled="!$customerInfo" append="kWh" margin="mb-0" />
+
+        <p class="text-[14px] text-gray-500 mt-1 mb-3">
+            Note: Minimal 10 kWh untuk pemakaian listrik.
+        </p>
 
         <x-input label="Periode" wire:model.change="period" type="month" :required="$required"
             placeholder="Pilih periode" :error="$errors->first('period')" :disabled="!$customerInfo"
@@ -64,10 +67,10 @@
 
         @if($total_bill)
             <div class="alert alert-info mb-1">
-                Total biaya tagihan untuk periode <strong>{{ formatPeriod($period) }}</strong> adalah <strong>{{ rupiah($total_bill) }}</strong>.
+                Total biaya tagihan untuk periode <strong>{{ formatPeriod($period) }}</strong> adalah <strong>{{ rupiah($total_bill) }}</strong>
             </div>
 
-            <p class="mb-0 text-[15px]">Rumus: <strong>(Meter Bulan Ini - Meter Bulan Lalu) x Tarif</strong></p>
+            <p class="mb-0 text-[15px]">Rumus: <strong>(Meter Awal - Meter Akhir) x Tarif</strong></p>
         @endif
     @endif
 

@@ -48,6 +48,6 @@ class Tarif extends Model
      */
     public function getFormatTarifAttribute()
     {
-        return "{$this->type} - {$this->power} VA";
+        return "{$this->type} / {$this->power} VA";
     }
 }

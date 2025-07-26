@@ -20,6 +20,7 @@ class BillModal extends Component
     public $period;
     public $meter_start;
     public $meter_end;
+    public $usage;
     public $status;
     public $due_date;
     public $customers = [];
@@ -57,17 +58,8 @@ class BillModal extends Component
             $this->period = $billLast ? null : now()->format('Y-m');
             $this->invoice = "INV-" . Random::generate(8, '0-9A-Z');
 
-            $this->resetErrorBag(['customer_id', 'meter_start']);
+            $this->resetErrorBag(['customer_id', 'meter_start', 'invoice',]);
             if (!$billLast) $this->resetErrorBag('period');
-        }
-
-        if ($property == 'meter_end') {
-            $this->resetErrorBag('meter_end');
-
-            if (!empty($this->meter_end) && $this->meter_end <= $this->meter_start) {
-                $this->addError('meter_end', 'Meteran bulan ini harus lebih besar dari meteran bulan lalu.');
-                return;
-            }
         }
 
         if ($property == 'period') {
@@ -82,16 +74,12 @@ class BillModal extends Component
                 return;
             }
 
-            if (!empty($this->meter_end) && $this->meter_end <= $this->meter_start) {
-                $this->addError('meter_end', 'Meteran bulan ini harus lebih besar dari meteran bulan lalu.');
-                return;
-            }
-
             // automatis set due date 28 hari setelah periode
             $this->due_date = Carbon::parse($this->period)->day(24)->addMonth()->format('Y-m-d');
         }
 
-        if (!empty($this->meter_end) && !empty($this->period)) {
+        if (!empty($this->usage) && !empty($this->period)) {
+            $this->meter_end = $this->meter_start + $this->usage;
             $this->total_meter = $this->meter_end - $this->meter_start;
             $rate = $this->customerInfo->tarif->price_per_kwh ?? 0;
             $this->total_bill = $this->total_meter * $rate;
@@ -130,10 +118,8 @@ class BillModal extends Component
     {
         $this->validate();
 
-        if ($this->meter_end <= $this->meter_start) {
-            $this->addError('meter_end', 'Meteran bulan ini harus lebih besar dari meteran bulan lalu.');
-            return;
-        }
+        // Calculate meter end with usage + meter start
+        $this->meter_end = $this->meter_start + $this->usage;
 
         Bill::create([
             'customer_id' => $this->customer_id,
@@ -184,6 +170,7 @@ class BillModal extends Component
             'total_meter',
             'total_bill',
             'invoice',
+            'usage',
         ]);
 
         $this->resetErrorBag();
@@ -200,7 +187,7 @@ class BillModal extends Component
             'customer_id' => 'required|exists:customers,id',
             'period' => 'required|date_format:Y-m',
             'meter_start' => 'required|numeric|min:0',
-            'meter_end' => 'required|numeric|min:0',
+            'usage' => 'required|numeric|min:10',
             'due_date' => 'nullable|date|after_or_equal:today',
             'invoice' => [
                 'required',
@@ -228,10 +215,10 @@ class BillModal extends Component
             'period.date_format'           => 'Format periode harus YYYY-MM.',
             'meter_start.required'         => 'Meteran bulan lalu wajib diisi.',
             'meter_start.numeric'          => 'Meteran bulan lalu harus berupa angka.',
-            'meter_start.min'              => 'Meteran bulan lalu minimal 0.',
-            'meter_end.required'           => 'Meteran bulan ini wajib diisi.',
-            'meter_end.numeric'            => 'Meteran bulan ini harus berupa angka.',
-            'meter_end.min'                => 'Meteran bulan ini minimal 0.',
+            'meter_start.min'              => 'Meteran bulan lalu minimal :min.',
+            'usage.required'               => 'Pemakaian listrik wajib diisi.',
+            'usage.numeric'                => 'Pemakaian listrik harus berupa angka.',
+            'usage.min'                    => 'Pemakaian listrik minimal :min kWh.',
             'due_date.date'                => 'Tanggal jatuh tempo harus berupa tanggal yang valid.',
             'due_date.after_or_equal'      => 'Tanggal jatuh tempo tidak boleh kurang dari hari ini.',
             'invoice.required'             => 'Nomor invoice wajib diisi.',
