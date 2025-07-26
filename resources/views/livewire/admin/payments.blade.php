@@ -22,7 +22,12 @@
                                     <p class="mb-0 text-muted">{{ $payment->bill->customer->meter_number }}</p>
                                 </td>
                                 <td>{{ formatPeriod($payment->bill->period) }}</td>
-                                <td>{{ $payment->method->name }}</td>
+                                <td>
+                                    {{ $payment->method->name }}
+                                    <p class="mb-0 text-muted">
+                                        {{ $payment->method->type_format }}
+                                    </p>
+                                </td>
                                 <td>{{ rupiah($payment->amount) }}</td>
                                 <td>
                                     @if (checkFile($payment->proof_file))
@@ -66,11 +71,13 @@
                                             <i class="fas fa-times"></i>
                                         </button>
                                     @else
-                                        <a data-coreui-toggle="tooltip" data-coreui-placement="top"
+                                        <a href="{{ route('print.bill', encrypt($payment->id)) }}"
+                                            target="_blank"
+                                            data-coreui-toggle="tooltip"
+                                            data-coreui-placement="top"
                                             data-coreui-title="Cetak Invoice"
-                                            href="{{ route('print.bill', encrypt($payment->id)) }}"
-                                            :disabled="$payment->status != 'verified'"
-                                            class="btn btn-sm btn-success text-white">
+                                            class="btn btn-sm  text-white
+                                            {{ $payment->status != 'verified' ? 'disabled-link btn-secondary' : 'btn-success' }}">
                                             <i class="fas fa-print"></i>
                                         </a>
                                     @endif

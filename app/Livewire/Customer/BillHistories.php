@@ -70,7 +70,9 @@ class BillHistories extends Component
             ->when($this->filterStatus  !== 'all', fn ($query) => $query->where('status', $this->filterStatus))
             ->whereHas('bill', function ($query) {
                 $query->where('customer_id', auth()->user()->customer->id);
-            })->paginate($this->perPage);
+            })
+            ->latest('created_at')
+            ->paginate($this->perPage);
 
         return view('livewire.customer.bill-histories', [
             'payments' => $payments,

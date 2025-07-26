@@ -63,7 +63,7 @@
                                     </p>
                                 </td>
                                 <td style="max-width: 280px;">
-                                    {{ "\"$payment->note\"" ?? '-' }}
+                                    {{ $payment->note ? "\"$payment->note\"" : '-' }}
                                 </td>
                                 <td>
                                     @if ($payment->is_reupload)
@@ -75,14 +75,15 @@
                                             <i class="fas fa-upload"></i>
                                         </button>
                                     @else
-                                        <button type="button"
+                                        <a href="{{ route('print.bill', encrypt($payment->id)) }}"
+                                            target="_blank"
                                             data-coreui-toggle="tooltip"
                                             data-coreui-placement="top"
                                             data-coreui-title="Cetak Invoice"
-                                            href="#" {{ $payment->status != 'verified' ? 'disabled' : '' }}
-                                            class="btn btn-sm btn-success text-white">
+                                            class="btn btn-sm  text-white
+                                            {{ $payment->status != 'verified' ? 'disabled-link btn-secondary' : 'btn-success' }}">
                                             <i class="fas fa-print"></i>
-                                        </button>
+                                        </a>
                                     @endif
                                 </td>
                             </tr>

@@ -98,3 +98,9 @@ body.swal2-toast-shown .swal2-container {
 .swal2-popup.swal2-toast {
     border-radius: 10px;
 }
+
+.disabled-link {
+    pointer-events: none;
+    opacity: 0.5;
+    cursor: default;
+}
