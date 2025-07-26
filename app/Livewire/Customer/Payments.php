@@ -190,7 +190,7 @@ class Payments extends Component
             deleteFile("livewire-tmp/{$this->proof_file->getFilename()}");
         }
 
-        $this->dispatch('toast', icon: 'success', message: 'Pembayaran berhasil diajukan. Silakan tunggu verifikasi dari admin.');
+        session()->flash('success', 'Pembayaran berhasil diajukan. Silakan tunggu verifikasi dari admin.');
         return $this->redirect(route('customer.bills.history'), true);
     }
 }

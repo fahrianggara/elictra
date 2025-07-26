@@ -60,6 +60,11 @@ class BillHistories extends Component
      */
     public function render()
     {
+        if (session()->has('success')) {
+            $this->dispatch('toast', icon: 'success', message: session('success'));
+            session()->forget('success');
+        }
+
         $payments = Payment::query()
             ->with(['bill.customer', 'bill.customer.tarif', 'bill.customer.user'])
             ->when($this->search, function ($query) {

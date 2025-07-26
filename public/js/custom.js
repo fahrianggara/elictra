@@ -56,3 +56,17 @@ function swal(options = {}) {
 
     return Swal.fire({ ...defaultOptions, ...options });
 }
+
+Livewire.on('toast', (e) => {
+    const fireOptions = {
+        icon: e.icon || 'success',
+        title: e.title || e.message || '',
+        ...e.fireOptions, // if using nested fireOptions
+    };
+
+    const mixinOptions = e.mixinOptions || {};
+    toast(fireOptions, mixinOptions);
+});
+
+const tooltipTriggerList = document.querySelectorAll('[data-coreui-toggle="tooltip"]')
+const tooltipList = [...tooltipTriggerList].map(tooltipTriggerEl => new coreui.Tooltip(tooltipTriggerEl))
