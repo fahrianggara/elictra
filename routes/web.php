@@ -8,7 +8,7 @@ use App\Livewire\Settings\Security;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
-    return view('welcome');
+    return redirect()->route('login');
 });
 
 Route::middleware(['guest', 'prevent.back.history'])->group(function () {

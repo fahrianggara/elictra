@@ -105,4 +105,8 @@ jobs:
 
 # 7. php artisan migrate --seed (jika mau di migrate)
 
-# 7. buat document root arahin ke (domain.com/public)
+# 8. composer dump-autoload
+
+# 9. php artisan config:cache (jika mau nge-cache config)
+
+# 10. buat document root arahin ke (domain.com/public)
