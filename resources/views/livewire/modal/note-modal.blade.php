@@ -1,4 +1,4 @@
-<x-modal id="modal-note" title="Catatan Pembayaran">
+<x-modal id="modal-note" :title="'Catatan untuk ' . $status_format">
     <x-textarea label="Catatan" wire:model="note" rows="3" :required="true"
         placeholder="Silakan masukkan catatan agar pelanggan mengetahui alasan penolakan atau verifikasi pembayaran."
         :error="$errors->first('note')" />
@@ -23,6 +23,13 @@
 
         target.addEventListener('hidden.bs.modal', () => {
             Livewire.dispatch('modal:onreset');
+        });
+
+        target.addEventListener('shown.bs.modal', () => {
+            const textarea = target.querySelector('textarea');
+            if (textarea) {
+                textarea.focus();
+            }
         });
     </script>
 @endscript

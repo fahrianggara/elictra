@@ -14,6 +14,7 @@ class Payments extends Component
     public $note;
     public $payment_id;
     public $status;
+    public $status_format;
 
     protected $rules = [
         'note' => 'required|string|max:500|min:5',
@@ -55,9 +56,15 @@ class Payments extends Component
     public function modalShow($id, $status)
     {
         $payment = Payment::findOrFail(decrypt($id));
+
         $this->payment_id = $payment->id;
         $this->status = $status;
-        $this->note = $payment->note ?? '';
+        // $this->note = $payment->note ?? '';
+        $this->status_format = match ($status) {
+            'verified' => 'Verifikasi Pembayaran',
+            'rejected' => 'Tolak Pembayaran',
+            default => 'Tidak Diketahui',
+        };
 
         $this->dispatch('modal:show');
     }
@@ -110,6 +117,7 @@ class Payments extends Component
             'note',
             'payment_id',
             'status',
+            'status_format',
         ]);
 
         $this->resetErrorBag();

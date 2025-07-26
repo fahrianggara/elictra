@@ -31,6 +31,7 @@ class Dashboard extends Component
             'count_bill_unpaid' => Bill::where('status', 'unpaid')->count(),
             'count_payment_pending' => Payment::where('status', 'pending')->count(),
             'monthly_income' => $monthlyIncome,
+            'has_pending_payment' => Payment::where('status', 'pending')->exists(),
         ])->layout('dash')->title('Admin Dashboard');
     }
 }
