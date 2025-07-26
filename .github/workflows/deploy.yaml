@@ -1,0 +1,108 @@
+name: Publish Project to Hosting
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  deploy:
+    name: Deploy to Hosting
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v3
+
+    - name: Cache Composer Dependencies
+      uses: actions/cache@v3
+      with:
+        path: vendor
+        key: composer-${{ hashFiles('**/composer.lock') }}
+        restore-keys: composer-
+
+    - name: Setup PHP
+      uses: shivammathur/setup-php@2
+      with:
+        php-version: '8.2'
+
+    - name: Install Composer Dependencies
+      run: composer install --no-dev --optimize-autoloader --prefer-dist --no-progress
+
+    - name: Setup Node.js
+      uses: actions/setup-node@v3
+      with:
+        node-version: '20'
+
+    - name: Cache Node Modules
+      uses: actions/cache@v3
+      with:
+        path: |
+          node_modules
+        key: node-modules-${{ hashFiles('**/package-lock.json') }}
+        restore-keys: node-modules-
+
+    - name: Install NPM Dependencies
+      run: npm ci
+
+    - name: Build Assets with Vite
+      run: npm run build
+
+    - name: Cache FTP Deploy State
+      uses: actions/cache@v3
+      with:
+        path: .ftp-deploy-sync-state
+        key: ftp-cache-${{ github.sha }}
+        restore-keys: ftp-cache-
+
+    - name: FTP Deploy Action
+      uses: SamKirkland/FTP-Deploy-Action@4.3.3
+      with:
+        server: ${{ secrets.FTP_SERVER }}
+        username: ${{ secrets.FTP_USERNAME }}
+        password: ${{ secrets.FTP_PASSWORD }}
+        exclude: |
+          **/.git*
+          **/.git*/**
+          **/node_modules/**
+          **/storage/**
+          **/vendor/**
+          **/.env
+          **/bootstrap/cache/**
+          **/tests/**
+
+    - name: Set Directory Permissions
+      run: chmod -R 777 storage bootstrap/cache || true
+
+    - name: Clear Config and Cache
+      run: |
+        php artisan config:clear || true
+        php artisan cache:clear || true
+        php artisan route:clear || true
+        php artisan view:clear || true
+
+    - name: Copy .env Files if Missing
+      run: php -r "file_exists('.env') || copy('.env.example', '.env');"
+
+    - name: Storage Link
+      run: php artisan storage:link || true
+
+
+# abis itu konfigurasi di cpanel
+
+# 1. mkdir -p storage/framework/{cache,sessions,views}
+#    mkdir -p bootstrap/cache
+#    chmod -R 777 storage bootstrap/cache
+
+# 2. composer install --no-dev --optimize-autoloader
+
+# 3. cp .env.example .env (jika gaada .env)
+
+# 4. php artisan key:generate
+
+# 5. konfigurasi .env (app_url, database, etc.)
+
+# 6. php artisan storage:link (jika blm ngelink)
+
+# 7. php artisan migrate --seed (jika mau di migrate)
+
+# 7. buat document root arahin ke (domain.com/public)
