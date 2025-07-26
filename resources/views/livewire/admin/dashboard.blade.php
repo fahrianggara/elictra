@@ -9,11 +9,7 @@
         </div>
 
         <div class="col-lg-6">
-            <div class="card">
-                <div class="card-header">
-                    Pelanggan Terbaru dalam 7 Hari
-                </div>
-            </div>
+            @livewire('admin.dashboard.new-customer')
         </div>
     </div>
 </div>
