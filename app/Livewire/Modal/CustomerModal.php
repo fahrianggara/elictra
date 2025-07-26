@@ -282,7 +282,7 @@ class CustomerModal extends Component
             'password.max' => 'Kata sandi maksimal :max karakter.',
 
             'password_confirmation.required' => 'Konfirmasi kata sandi wajib diisi.',
-            'password_confirmation.same' => 'Konfirmasi kata sandi harus sama dengan kata sandi.',
+            'password_confirmation.same' => 'Konfirmasi kata sandi tidak cocok dengan kata sandi.',
             'password_confirmation.string' => 'Konfirmasi kata sandi harus berupa teks.',
         ];
     }

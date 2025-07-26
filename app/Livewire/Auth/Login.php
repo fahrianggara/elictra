@@ -49,6 +49,12 @@ class Login extends Component
      */
     public function render()
     {
+        // check session success message
+        if (session()->has('success')) {
+            $this->dispatch('toast', icon: 'success', message: session('success'));
+            session()->forget('success');
+        }
+
         return view('livewire.auth.login')->layout('auth')->title('Login');
     }
 
@@ -74,6 +80,6 @@ class Login extends Component
             }
         }
 
-        $this->addError('email', 'Oops! Akun tidak ditemukan atau kata sandi salah.');
+        $this->dispatch('toast', icon: 'error', message: 'Oops.. Akun tidak ditemukan atau kata sandi salah.');
     }
 }

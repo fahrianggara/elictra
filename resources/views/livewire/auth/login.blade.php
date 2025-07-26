@@ -8,25 +8,27 @@
                     Silakan masuk ke akun Anda untuk melanjutkan.
                 </p>
                 <form wire:submit.prevent="login">
-                    <div class="mb-4">
-                        <input type="email" id="email" wire:model="email"
-                            class="border rounded-lg w-full py-3 px-4 leading-tight focus:outline-none focus:shadow-outline border-gray-300 ring-0 focus:border-blue-500 placeholder-gray-400 @error('email') border-red-500 @enderror"
-                             autofocus placeholder="Masukkan alamat email anda">
-
+                    <div class="form-auth">
+                        <span class="auth-input-icon @error('email') bottom-[28px] @enderror">
+                            <i class="fas fa-envelope"></i>
+                        </span>
+                        <input type="email" wire:model="email" placeholder="Masukkan alamat email"
+                            class="auth-input-field @error('email') border-red-500 focus:ring-red-500 @enderror">
                         @error('email')
-                            <p class="text-red-600 text-sm mt-2">
-                                {{ $message }}
-                            </p>
+                            <p class="auth-error-text">{{ $message }}</p>
                         @enderror
                     </div>
 
-                    <div class="mb-4">
+                    <div class="form-auth">
+                        <span class="auth-input-icon @error('password') bottom-[28px] @enderror">
+                            <i class="fas fa-lock"></i>
+                        </span>
                         <input type="password" id="password" wire:model="password"
-                            class="border rounded-lg w-full py-3 px-4 leading-tight focus:outline-none focus:shadow-outline border-gray-300 ring-0 focus:border-blue-500 placeholder-gray-400 @error('password') border-red-500 @enderror"
-                             placeholder="Masukkan kata sandi anda">
+                            class="auth-input-field @error('password') border-red-500 focus:ring-red-500 @enderror"
+                            placeholder="Masukkan kata sandi anda">
 
                         @error('password')
-                            <p class="text-red-600 text-sm mt-2">
+                            <p class="auth-error-text">
                                 {{ $message }}
                             </p>
                         @enderror
@@ -56,7 +58,7 @@
 
             <p class="text-center text-gray-600">
                 Belum punya akun?
-                <a href="#" class="text-blue-500 hover:text-blue-600">Daftar sekarang</a>
+                <a href="{{ route('register') }}" class="text-blue-500 hover:text-blue-600">Daftar sekarang</a>
             </p>
         </div>
     </div>

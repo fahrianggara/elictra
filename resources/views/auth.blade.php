@@ -6,14 +6,35 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{{ $title ? "$title - " . config('app.name') : config('app.name') }}</title>
 
-    @vite('resources/css/app.css')
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11.12.3/dist/sweetalert2.min.css">
+
+    @vite(['resources/css/app.css', 'public/css/custom.css'])
     @livewireStyles
     @stack('styles')
 </head>
 
 <body>
     {{ $slot }}
+
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"
+        integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.12.3/dist/sweetalert2.all.min.js"></script>
+    <script src="{{ asset('js/custom.js') }}"></script>
     @livewireScripts
+
+    <script>
+        Livewire.on('toast', (e) => {
+            const fireOptions = {
+                icon: e.icon || 'success',
+                title: e.title || e.message || '',
+                ...e.fireOptions, // if using nested fireOptions
+            };
+
+            const mixinOptions = e.mixinOptions || {};
+            toast(fireOptions, mixinOptions);
+        });
+    </script>
 </body>
 
 </html>
