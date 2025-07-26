@@ -66,12 +66,13 @@
                                             <i class="fas fa-times"></i>
                                         </button>
                                     @else
-                                        <button type="button" data-coreui-toggle="tooltip" data-coreui-placement="top"
+                                        <a data-coreui-toggle="tooltip" data-coreui-placement="top"
                                             data-coreui-title="Cetak Invoice"
-                                            href="#" :disabled="$payment->status != 'verified'"
+                                            href="{{ route('print.bill', encrypt($payment->id)) }}"
+                                            :disabled="$payment->status != 'verified'"
                                             class="btn btn-sm btn-success text-white">
                                             <i class="fas fa-print"></i>
-                                        </button>
+                                        </a>
                                     @endif
                                 </td>
                             </tr>
