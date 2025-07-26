@@ -2,6 +2,7 @@
     'color' => 'primary',
     'count' => 0,
     'title' => '',
+    'subSize' => '2xl',
 ])
 
 <div class="card">
@@ -10,7 +11,7 @@
             {{ $slot }}
         </div>
         <div>
-            <div class="fw-semibold text-{{ $color }} text-2xl">
+            <div class="fw-semibold text-{{ $color }} text-{{ $subSize }}">
                 {{ $count }}
             </div>
             <div class=" text-uppercase fw-semibold small">

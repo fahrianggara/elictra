@@ -1,6 +1,7 @@
 <div>
     @if(count($bills) > 0)
         <div class="alert alert-warning mb-3">
+            <i class="fas fa-exclamation-circle me-1"></i>
             Silakan bayar tagihan Anda sebelum jatuh tempo untuk menghindari denda keterlambatan.
         </div>
     @endif

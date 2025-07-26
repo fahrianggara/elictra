@@ -5,27 +5,27 @@
 
     <div class="card-body">
         <p class="">
-            Gunakan informasi berikut untuk menyelesaikan pembayaran tagihan listrik kamu.
+            Gunakan informasi berikut untuk menyelesaikan pembayaran tagihan listrik Anda.
         </p>
 
         <div class="table-responsive">
             <div class="rounded border py-2 px-3">
                 <table class="table table-borderless mb-0">
                     <tr>
-                        <td class="text-muted">Invoice</td>
-                        <td>#{{ $bill->invoice }}</td>
-                    </tr>
-                    <tr>
                         <td class="text-muted">Nama Pelanggan</td>
                         <td>{{ $bill->customer->user->name }}</td>
                     </tr>
                     <tr>
-                        <td class="text-muted">Nomor kWh</td>
+                        <td class="text-muted">Nomor kWh atau Meteran</td>
                         <td>{{ $bill->customer->meter_number }}</td>
                     </tr>
                     <tr>
                         <td class="text-muted">Periode</td>
                         <td>{{ formatPeriod($bill->period) }}</td>
+                    </tr>
+                    <tr>
+                        <td class="text-muted">No. Invoice</td>
+                        <td>#{{ $bill->invoice }}</td>
                     </tr>
                     <tr>
                         <td class="text-muted">Meter Awal</td>
@@ -36,18 +36,8 @@
                         <td>{{ $bill->meter_end }} kWh</td>
                     </tr>
                     <tr>
-                        <td class="text-muted">Jumlah Pemakaian</td>
+                        <td class="text-muted">Pemakaian</td>
                         <td>{{ $bill->usage }} kWh</td>
-                    </tr>
-                    <tr>
-                        <td class="text-muted">Metode Pembayaran</td>
-                        <td>{{ $payment_method->name }}</td>
-                    </tr>
-                    <tr>
-                        <td class=" text-muted">Jatuh Tempo</td>
-                        <td class="">
-                            {{ formatDate($bill->due_date, 'l, d F Y') }}
-                        </td>
                     </tr>
                     <tr>
                         <td class="text-muted">Tarif</td>
@@ -58,18 +48,29 @@
                         <td>{{ rupiah($bill->customer->tarif->price_per_kwh) }}</td>
                     </tr>
                     <tr>
+                        <td class=" text-muted">Jatuh Tempo</td>
+                        <td class="">
+                            {{ formatDate($bill->due_date, 'l, d F Y') }}
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="text-muted">Metode Pembayaran</td>
+                        <td>{{ $payment_method->type_format }} - {{ $payment_method->name }}</td>
+                    </tr>
+                    <tr>
+                        <td class="text-muted">{{ $payment_method->label }}</td>
+                        <td>{{ $payment_method->number }}</td>
+                    </tr>
+                    <tr>
                         <td class=" text-muted">Biaya Admin</td>
                         <td class="">
                             {{ rupiah($payment_method->fee) }}
                         </td>
                     </tr>
                     <tr>
-                        <td class="pb-3 text-muted">Tagihan</td>
+                        <td class="pb-3 text-muted">Total Tagihan</td>
                         <td class="pb-3">
                             {{ rupiah($bill->amount) }}
-                            <p class="text-muted mb-0">
-                                (Meter Akhir - Meter Awal) x Tarif per kWh
-                            </p>
                         </td>
                     </tr>
                     <tr style="border-top: 1px solid #e3e3e3;">
@@ -107,6 +108,7 @@
         </div>
 
         <div class="alert alert-warning mb-0 mt-3">
+            <i class="fas fa-exclamation-circle me-1"></i>
             Jangan lupa untuk menyimpan bukti pembayaran setelah melakukan transfer.
         </div>
     </div>
