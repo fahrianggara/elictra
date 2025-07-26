@@ -1,16 +1,13 @@
 <?php
 
-namespace App\Livewire\Admin;
+namespace App\Livewire\Admin\Dashboard;
 
 use App\Models\Payment;
 use Livewire\Attributes\On;
 use Livewire\Component;
 
-class Payments extends Component
+class PaymentPending extends Component
 {
-    public $perPage = 10;
-    public $search;
-
     public $note;
     public $payment_id;
     public $status;
@@ -27,22 +24,21 @@ class Payments extends Component
     ];
 
     /**
-     * Render the component view.
+     * Render the payment pending view for the admin dashboard.
      *
      * @return void
      */
     public function render()
     {
         $payments = Payment::with(['bill', 'method'])
+            ->where('status', 'pending')
             ->orderBy('created_at', 'desc')
-            ->paginate($this->perPage);
+            ->take(5)
+            ->get();
 
-        return view('livewire.admin.payments', [
-            'payments' => $payments,
-            'count_pending' => Payment::query()->where('status', 'pending')->count(),
-            'count_verified' => Payment::query()->where('status', 'verified')->count(),
-            'count_rejected' => Payment::query()->where('status', 'rejected')->count(),
-        ])->layout('dash')->title('Pembayaran');
+        return view('livewire.admin.dashboard.payment-pending', [
+            'payments' => $payments
+        ]);
     }
 
     /**
@@ -85,6 +81,7 @@ class Payments extends Component
         ]);
 
         $this->close();
+        $this->dispatch('dashboard:refresh');
         $this->dispatch('toast', icon: 'success', message: 'Catatan pembayaran dan status berhasil diperbarui.');
     }
 

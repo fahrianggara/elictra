@@ -6,6 +6,7 @@ use App\Models\Bill;
 use App\Models\Customer;
 use App\Models\Payment;
 use Carbon\Carbon;
+use Livewire\Attributes\On;
 use Livewire\Component;
 
 class Dashboard extends Component
@@ -15,6 +16,7 @@ class Dashboard extends Component
      *
      * @return void
      */
+    #[On('dashboard:refresh')]
     public function render()
     {
         $now = Carbon::now();

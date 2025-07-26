@@ -1,4 +1,4 @@
-<x-modal id="modal-note" title="Catatan/Note Pembayaran">
+<x-modal id="modal-note" title="Catatan Pembayaran">
     <x-textarea label="Catatan" wire:model="note" rows="3" :required="true"
         placeholder="Silakan masukkan catatan agar pelanggan mengetahui alasan penolakan atau verifikasi pembayaran."
         :error="$errors->first('note')" />
