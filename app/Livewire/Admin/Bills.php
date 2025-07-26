@@ -33,7 +33,7 @@ class Bills extends Component
             ->when($this->search, function ($query) {
                 $query->search($this->search);
             })
-            ->orderBy('period', 'desc')->orderBy('status', 'asc')
+            ->orderBy('status', 'asc')
             ->paginate($this->perPage);
 
         $customers = Customer::with('user')->get()

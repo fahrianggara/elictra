@@ -58,8 +58,12 @@ class BillModal extends Component
             $this->meter_start = $billLast ? $billLast->meter_end : $this->customerInfo->initial_meter;
             $this->period = $billLast ? null : now()->format('Y-m');
             $this->invoice = "INV-" . Random::generate(8, '0-9A-Z');
+            $this->due_date = $billLast
+                ? $billLast->due_date
+                : Carbon::parse($this->period)->day(20)->addMonth()->format('Y-m-d');
 
             $this->resetErrorBag(['customer_id', 'meter_start', 'invoice',]);
+
             if (!$billLast) $this->resetErrorBag('period');
         }
 
@@ -83,7 +87,7 @@ class BillModal extends Component
             }
 
             // automatis set due date 28 hari setelah periode
-            $this->due_date = Carbon::parse($this->period)->day(24)->addMonth()->format('Y-m-d');
+            $this->due_date = Carbon::parse($this->period)->day(20)->addMonth()->format('Y-m-d');
         }
 
         if (!empty($this->usage) && !empty($this->period)) {

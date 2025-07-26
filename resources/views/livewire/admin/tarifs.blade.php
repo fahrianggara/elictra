@@ -34,7 +34,7 @@
                         @forelse ($tarifs as $tarif)
                             <tr>
                                 <td>{{ $tarifs->firstItem() + $loop->index }}</td>
-                                <td>{{ $tarif->type }} - {{ $tarif->power }}VA</td>
+                                <td>{{ $tarif->format_tarif }}</td>
                                 <td class="w-[600px]">{{ $tarif->description }}</td>
                                 <td>{{ rupiah($tarif->price_per_kwh) }}</td>
                                 <td>{{ rupiah($tarif->penalty_per_day) }}</td>

@@ -50,13 +50,13 @@
                                     <p class="mb-0 text-muted">{{ $customer->user->email }}</p>
                                 </td>
                                 <td >{{ $customer->address }}</td>
-                                <td>
-                                    {{ $customer->tarif?->type }} - {{ $customer->tarif?->power }}VA
+                                <td class="w-[140px]">
+                                    {{ $customer->tarif?->format_tarif }}
                                 </td>
                                 <td>
                                     {{ $customer->meter_number }}
                                 </td>
-                                <td>
+                                <td class="w-[200px]">
                                     {{ $customer->created_at->translatedFormat('l, d F Y') }}
                                 </td>
                                 <td>
